@@ -10,7 +10,9 @@ class Module(BaseModule):
         SVC_SAMPLE: 'module.service.SampleService',
     }
 
-    cmd = {}
+    cmd = {
+        'sample': 'module.cli.SampleCmd'
+    }
 
     def build(self):
         pass

@@ -7,7 +7,8 @@ def get_version():
 
 # DI Keys
 DI_CONFIG = 'config'
-DI_APP = 'app'
+DI_FLASK = 'app'
+DI_APP = 'main'
 DI_MODULES = 'modules'
 DI_SERVICE_MANAGER = 'svc_manager'
 DI_DB = 'db'

@@ -1,4 +1,6 @@
 from rick.resource.config import EnvironmentConfig
+
+from example.module.cli import SampleCmd
 from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
@@ -19,4 +21,8 @@ modules = ['pokie.contrib.auth', 'module']
 factories = [PgSqlFactory, ]
 
 # build app
-app = FlaskApplication(cfg).build(modules, factories)
+main = FlaskApplication(cfg)
+app = main.build(modules, factories)
+
+if __name__ == '__main__':
+    main.cli()
