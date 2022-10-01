@@ -1,0 +1,6 @@
+rick-db
+rick==0.3.1
+flask_login
+flask
+iso8601
+setuptools==60.7.0

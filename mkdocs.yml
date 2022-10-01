@@ -1,0 +1,22 @@
+site_name: Pokie
+site_description: Flask boilerplate
+strict: true
+site_url: https://github.com/oddbit-project/pokie/
+repo_name: oddbit-project/pokie
+repo_url: https://github.com/oddbit-project/pokie/
+
+theme:
+  name: material
+
+nav:
+- Overview: index.md
+
+plugins:
+- search
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences

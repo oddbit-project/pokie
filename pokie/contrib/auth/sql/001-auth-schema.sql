@@ -1,0 +1,41 @@
+CREATE TABLE "user"(
+    id_user SERIAL NOT NULL PRIMARY KEY,
+    active TINYINT DEFAULT 1,
+    admin TINYINT DEFAULT 0,
+    username VARCHAR(200) NOT NULL UNIQUE,
+    first_name VARCHAR(100),
+    last_name VARCHAR(100),
+    email VARCHAR(200),
+    password TEXT NOT NULL,
+    creation_date TIMESTAMP WITH TIMEZONE default NOW(),
+    last_login TIMESTAMP WITH TIMEZONE default NULL,
+    attributes JSONB DEFAULT {}
+);
+
+CREATE INDEX user_idx01 on "user"(username);
+
+CREATE TABLE acl_role(
+    id_acl_role SERIAL NOT NULL PRIMARY KEY,
+    description VARCHAR(200) NOT NULL UNIQUE
+);
+
+CREATE TABLE acl_resource(
+    id_acl_resource VARCHAR NOT NULL UNIQUE PRIMARY KEY,
+    description VARCHAR(200) NOT NULL UNIQUE
+);
+
+CREATE TABLE acl_role_resource(
+    id_acl_role_resource SERIAL NOT NULL PRIMARY KEY,
+    fk_acl_role INT NOT NULL REFERENCES acl_role,
+    fk_acl_resource VARCHAR NOT NULL REFERENCES acl_resource
+);
+
+CREATE TABLE acl_user_role (
+    id_acl_user_role SERIAL NOT NULL PRIMARY KEY,
+    fk_acl_role INT NOT NULL REFERENCES acl_role,
+    fk_user INT NOT NULL REFERENCES "user"
+);
+
+CREATE INDEX acl_user_role_idx01 on acl_user_role(fk_user);
+
+
