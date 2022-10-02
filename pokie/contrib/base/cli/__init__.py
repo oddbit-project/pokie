@@ -1,2 +1,3 @@
-from .list import ListCmd
-from .help import HelpCmd
+from .base import ListCmd, HelpCmd, RunServerCmd, VersionCmd
+from .db import DbInitCmd, DbCheckCmd, DbUpdateCmd
+

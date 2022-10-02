@@ -1,15 +1,15 @@
 CREATE TABLE "user"(
     id_user SERIAL NOT NULL PRIMARY KEY,
-    active TINYINT DEFAULT 1,
-    admin TINYINT DEFAULT 0,
+    active smallint DEFAULT 1,
+    admin smallint DEFAULT 0,
     username VARCHAR(200) NOT NULL UNIQUE,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     email VARCHAR(200),
     password TEXT NOT NULL,
-    creation_date TIMESTAMP WITH TIMEZONE default NOW(),
-    last_login TIMESTAMP WITH TIMEZONE default NULL,
-    attributes JSONB DEFAULT {}
+    creation_date timestamp with time zone default NOW(),
+    last_login TIMESTAMP WITH TIME ZONE default NULL,
+    attributes JSONB DEFAULT '{}'
 );
 
 CREATE INDEX user_idx01 on "user"(username);
