@@ -1,4 +1,5 @@
-from pokie.contrib.auth.constants import SVC_USER, SVC_ACL, SVC_AUTH
+from pokie.contrib.base.constants import SVC_VALIDATOR
+from pokie.contrib.base.validators import init_validators
 from pokie.core import BaseModule
 
 
@@ -19,5 +20,10 @@ class Module(BaseModule):
         'dbupdate': 'pokie.contrib.base.cli.DbUpdateCmd',
     }
 
+    services = {
+        # db-related validators
+        SVC_VALIDATOR: 'pokie.contrib.service.ValidatorService'
+    }
+
     def build(self):
-        pass
+        init_validators(self.get_di())

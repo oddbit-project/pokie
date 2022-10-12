@@ -2,8 +2,11 @@ from argparse import ArgumentParser
 
 
 class ArgParser(ArgumentParser):
-    failed = False
-    error_message = ""
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.failed = False
+        self.error_message = ""
 
     def error(self, message):
         self.failed = True

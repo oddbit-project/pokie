@@ -9,6 +9,10 @@ class BaseConfigTemplate:
     # Autentication providers to use
     AUTH_PROVIDERS = ['pokie.contrib.auth.provider.auth.DbAuthProvider']
 
+    # cache table-related metadata (such as primary key info)
+    # development should be false
+    DB_CACHE_METADATA = False
+
 
 class PgConfigTemplate:
     # Postgresql Configuration
