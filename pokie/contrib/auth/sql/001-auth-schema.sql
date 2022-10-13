@@ -1,7 +1,7 @@
 CREATE TABLE "user"(
     id_user SERIAL NOT NULL PRIMARY KEY,
-    active smallint DEFAULT 1,
-    admin smallint DEFAULT 0,
+    active BOOL DEFAULT True,
+    admin BOOL DEFAULT False,
     username VARCHAR(200) NOT NULL UNIQUE,
     first_name VARCHAR(100),
     last_name VARCHAR(100),

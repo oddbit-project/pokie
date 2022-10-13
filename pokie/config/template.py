@@ -16,7 +16,7 @@ class BaseConfigTemplate:
 
 class PgConfigTemplate:
     # Postgresql Configuration
-    DB_NAME = 'postgres'
+    DB_NAME = 'pokie'
     DB_HOST = 'localhost'
     DB_PORT = 5432
     DB_USER = StrOrFile('postgres')

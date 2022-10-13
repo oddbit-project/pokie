@@ -5,7 +5,7 @@ from rick.crypto.hasher.bcrypt import BcryptHasher
 
 from rick.mixin.injectable import Injectable
 
-from pokie.contrib.auth.dto import User
+from pokie.contrib.auth.dto import UserRecord
 from pokie.contrib.auth.service.acl import AclService
 from pokie.contrib.auth.service.user import UserService
 from pokie.constants import DI_SERVICE_MANAGER
@@ -13,12 +13,12 @@ from pokie.contrib.auth.constants import SVC_ACL, SVC_USER
 
 
 class AuthUser(UserMixin):
-    record = None  # type: User
+    record = None  # type: UserRecord
     resources = None  # type: List
     roles = None  # type: List
     id = -1
 
-    def __init__(self, usr: User, _di: Di):
+    def __init__(self, usr: UserRecord, _di: Di):
         self.record = usr
         self.id = usr.id
         svc_acl = _di.get(DI_SERVICE_MANAGER).get(SVC_ACL)  # type: AclService
@@ -34,7 +34,7 @@ class AuthUser(UserMixin):
 
 class AuthService(Injectable):
 
-    def authenticate(self, user: User, password) -> bool:
+    def authenticate(self, user: UserRecord, password) -> bool:
         """
         Check if user password is valid
         :param user: User DTO

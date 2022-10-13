@@ -4,3 +4,4 @@ flask_login
 flask
 iso8601
 setuptools==60.7.0
+tabulate

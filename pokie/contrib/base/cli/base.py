@@ -40,6 +40,7 @@ class BaseCommand(CliCommand):
 
         return True
 
+
 class VersionCmd(BaseCommand):
     description = "display pokie version"
 

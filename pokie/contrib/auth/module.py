@@ -12,7 +12,12 @@ class Module(BaseModule):
         SVC_USER: 'pokie.contrib.auth.service.UserService',
     }
 
-    cmd = {}
+    cmd = {
+        'usercreate': 'pokie.contrib.auth.cli.UserCreateCmd',
+        'userinfo': 'pokie.contrib.auth.cli.UserInfoCmd',
+        'usermod': 'pokie.contrib.auth.cli.UserModCmd',
+    }
+
 
     def build(self):
         pass

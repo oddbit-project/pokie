@@ -2,11 +2,11 @@ from rick_db import fieldmapper
 
 
 @fieldmapper(tablename='user', pk='id_user')
-class User:
+class UserRecord:
     id = 'id_user'
-    active='active'
-    admin='admin'
-    username = 'login'
+    active = 'active'
+    admin = 'admin'
+    username = 'username'
     first_name = 'first_name'
     last_name = 'last_name'
     email = 'email'
