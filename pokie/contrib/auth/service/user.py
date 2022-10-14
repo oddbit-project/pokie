@@ -1,11 +1,34 @@
 from typing import Optional
 
+from flask_login import UserMixin
+from rick.base import Di
 from rick.mixin import Injectable
 
+from pokie.contrib.auth.constants import SVC_ACL
 from pokie.contrib.auth.repository.user import UserRepository
 from pokie.constants import DI_SERVICE_MANAGER, DI_DB
 from rick.util.datetime import iso8601_now
 from pokie.contrib.auth.dto import UserRecord
+
+
+class AuthUser(UserMixin):
+    record = None  # type: UserRecord
+    resources = None  # type: List
+    roles = None  # type: List
+    id = -1
+
+    def __init__(self, usr: UserRecord, _di: Di):
+        self.record = usr
+        self.id = usr.id
+        svc_acl = _di.get(DI_SERVICE_MANAGER).get(SVC_ACL)  # type: AclService
+        self.resources = svc_acl.get_user_resource_list(usr.id)
+        self.roles = svc_acl.get_user_role_list(usr.id)
+
+    def can_access(self, id_resource: str) -> bool:
+        return id_resource in self.resources
+
+    def has_role(self, id_role: int):
+        return id_role in self.roles
 
 
 class UserService(Injectable):
@@ -19,7 +42,7 @@ class UserService(Injectable):
     def update_password(self, id_user: int, password_hash: str):
         self.user_repository.update(UserRecord(id=id_user, password=password_hash))
 
-    def add_user(self, record:UserRecord) -> int:
+    def add_user(self, record: UserRecord) -> int:
         """
         Creates a new user
         :param record:
@@ -27,7 +50,7 @@ class UserService(Injectable):
         """
         return self.user_repository.insert_pk(record)
 
-    def update_user(self, record:UserRecord):
+    def update_user(self, record: UserRecord):
         return self.user_repository.update(record)
 
     @property

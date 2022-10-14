@@ -6,8 +6,8 @@ class BaseConfigTemplate:
     MODULES = []
     # if true, all endpoints are authenticated by default
     USE_AUTH = True
-    # Autentication providers to use
-    AUTH_PROVIDERS = ['pokie.contrib.auth.provider.auth.DbAuthProvider']
+    # Autentication plugins to use
+    AUTH_PLUGINS = ['pokie.contrib.auth.plugin.DbAuthPlugin']
 
     # cache table-related metadata (such as primary key info)
     # development should be false

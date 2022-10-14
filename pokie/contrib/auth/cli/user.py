@@ -113,7 +113,7 @@ class UserModCmd(UserCommand):
                             help="Remove admin privileges")
         parser.add_argument('-A', '--admin', action='store_true',
                             help="Set admin privileges")
-        parser.add_argument('-d', '--disabled',  action='store_true',
+        parser.add_argument('-d', '--disabled', action='store_true',
                             help="Disable user")
         parser.add_argument('-e', '--enabled', action='store_true',
                             help="Enable user")
@@ -157,14 +157,19 @@ class UserModCmd(UserCommand):
                 pwd = pwd.strip()
                 confirmation = confirmation.strip()
                 if pwd != confirmation:
-                    self.tty.write(self.tty.colorizer.red("password and confirmation don't match, try again or press return to leave"))
+                    self.tty.write(self.tty.colorizer.red(
+                        "password and confirmation don't match, try again or press return to leave"))
                 else:
                     not_valid = False
 
             if len(pwd) > 0:
                 changes = True
-                self.tty.write(self.tty.colorizer.green("> updated user password"))
-                record.password = self.svc_auth.hash_pwd(pwd)
+                if self.svc_auth.update_password(record.username, pwd):
+                    self.tty.write(self.tty.colorizer.green("> updated user password"))
+                else:
+                    self.tty.write(self.tty.colorizer.yellow(
+                        "> password update failed; maybe the auth backend doesn't support local password changes?"))
+                    return False
 
         if args.noadmin:
             if record.admin:
