@@ -3,7 +3,7 @@ from typing import Any, Optional
 from rick.base import Di
 from rick.mixin import Injectable
 
-from contrib.base.repository import ValidatorRepository
+from pokie.contrib.base.repository import ValidatorRepository
 from pokie.constants import DI_CONFIG, DI_DB
 
 
@@ -18,16 +18,18 @@ class ValidatorService(Injectable):
         if cfg.get('db_cache_metadata', False):
             self._cache = {}
 
-    def id_exists(self, pk_value, table_name: str, schema: str = None) -> bool:
+    def id_exists(self, pk_name:str, pk_value, table_name: str, schema: str = None) -> bool:
         """
         Check if pk_value exists on the specified table as primary key value
 
+        :param pk_name: primary key name (optional)
         :param pk_value: primary key value
         :param table_name: table name
         :param schema: optional schema name
         :return: True if id is a valid primary key, False if it doesn't
         """
-        pk_name = self.get_pk_field(table_name, schema)
+        if not pk_name:
+            pk_name = self.get_pk_field(table_name, schema)
         return self.repo_validator.pk_exists(pk_value, pk_name, table_name, schema)
 
     def get_pk_field(self, table_name: str, schema: str = None) -> Optional[str]:

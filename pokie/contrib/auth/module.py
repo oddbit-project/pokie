@@ -13,9 +13,25 @@ class Module(BaseModule):
     }
 
     cmd = {
+        # user-related operations
         'usercreate': 'pokie.contrib.auth.cli.UserCreateCmd',
         'userinfo': 'pokie.contrib.auth.cli.UserInfoCmd',
         'usermod': 'pokie.contrib.auth.cli.UserModCmd',
+        'userlist': 'pokie.contrib.auth.cli.UserListCmd',
+        'acluserrole': 'pokie.contrib.auth.cli.AclUserRoleCmd',
+
+        # acl operations
+        'aclrolelist': 'pokie.contrib.auth.cli.AclRoleListCmd',
+        'aclrolecreate': 'pokie.contrib.auth.cli.AclRoleCreateCmd',
+        'aclroleremove': 'pokie.contrib.auth.cli.AclRoleRemoveCmd',
+        'aclroleinfo': 'pokie.contrib.auth.cli.AclRoleInfoCmd',
+        'aclrolelink': 'pokie.contrib.auth.cli.AclRoleLinkCmd',
+        'aclroleunlink': 'pokie.contrib.auth.cli.AclRoleUnlinkCmd',
+
+        'aclresourcelist': 'pokie.contrib.auth.cli.AclResourceListCmd',
+        'aclresourcecreate': 'pokie.contrib.auth.cli.AclResourceCreateCmd',
+        'aclresourcelink': 'pokie.contrib.auth.cli.AclResourceLinkCmd',
+        'aclresourceunlink': 'pokie.contrib.auth.cli.AclResourceUnlinkCmd',
     }
 
 

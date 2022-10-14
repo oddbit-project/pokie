@@ -21,8 +21,8 @@ class AuthUser(UserMixin):
         self.record = usr
         self.id = usr.id
         svc_acl = _di.get(DI_SERVICE_MANAGER).get(SVC_ACL)  # type: AclService
-        self.resources = svc_acl.get_user_resource_list(usr.id)
-        self.roles = svc_acl.get_user_role_list(usr.id)
+        self.resources = svc_acl.list_user_resource_id(usr.id)
+        self.roles = svc_acl.list_user_role_id(usr.id)
 
     def can_access(self, id_resource: str) -> bool:
         return id_resource in self.resources
@@ -34,12 +34,28 @@ class AuthUser(UserMixin):
 class UserService(Injectable):
 
     def get_by_username(self, username: str) -> Optional[UserRecord]:
+        """
+        Find user by username
+        :param username:
+        :return:
+        """
         return self.user_repository.find_by_username(username)
 
     def update_lastlogin(self, id_user: int):
+        """
+        Update user last login timestamp
+        :param id_user:
+        :return:
+        """
         self.user_repository.update(UserRecord(id=id_user, last_login=iso8601_now()))
 
     def update_password(self, id_user: int, password_hash: str):
+        """
+        Update user password
+        :param id_user:
+        :param password_hash:
+        :return:
+        """
         self.user_repository.update(UserRecord(id=id_user, password=password_hash))
 
     def add_user(self, record: UserRecord) -> int:
@@ -50,9 +66,14 @@ class UserService(Injectable):
         """
         return self.user_repository.insert_pk(record)
 
+
+    def list_users(self, offset, limit, sort_field=None, sort_order=None):
+        return self.user_repository.list_users(offset, limit, sort_field, sort_order)
+
     def update_user(self, record: UserRecord):
         return self.user_repository.update(record)
 
     @property
     def user_repository(self) -> UserRepository:
         return UserRepository(self._di.get(DI_DB))
+

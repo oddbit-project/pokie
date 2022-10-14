@@ -20,7 +20,7 @@ class UserCreateRequest(RequestRecord):
 
 class UserInfoRequest(RequestRecord):
     fields = {
-        'username': field(validators="required|minlen:1|maxlen:200", error="invalid username")
+        'username': field(validators="required|pk:user,username", error="invalid username")
     }
 
 
@@ -205,3 +205,40 @@ class UserModCmd(UserCommand):
     @property
     def svc_auth(self) -> AuthService:
         return self.get_di().get(DI_SERVICE_MANAGER).get(SVC_AUTH)
+
+
+class UserListCmd(UserCommand):
+    description = "list users"
+
+    def arguments(self, parser: ArgumentParser):
+        parser.add_argument('-o', '--offset', type=int, help="Start offset", default=0)
+        parser.add_argument('-c', '--count', type=int, help="Records to show", default=0)
+        parser.add_argument('-i', '--id', action='store_true', help="Sort by id", default=False)
+
+    def run(self, args) -> bool:
+
+        if args.offset < 0:
+            self.tty.write(self.tty.colorizer.red("Error: offset cannot be negative"))
+            return False
+
+        if args.count < 0:
+            self.tty.write(self.tty.colorizer.red("Error: count cannot be negative"))
+            return False
+
+        sort_field = None
+        limit = 100
+        if not args.id:
+            sort_field = UserRecord.username
+        if args.count != 0:
+            limit = args.count
+        details = self.svc_user.list_users(args.offset, limit, sort_field)
+        # update limit var for display purposes
+        if args.count == 0:
+            limit = details[0]
+        self.tty.write(self.tty.colorizer.green("Displaying {} of {} users:".format(limit, details[0])))
+
+        for user in details[1]:  # type: UserRecord
+            self.tty.write(
+                "{:<12}: {}, {}, {} {}".format(user.id, user.username, user.email, user.first_name, user.last_name))
+
+        return True

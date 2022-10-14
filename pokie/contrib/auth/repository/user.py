@@ -1,6 +1,7 @@
 from typing import Union
 
 from rick_db import Repository
+from rick_db.sql import Sql
 
 from pokie.contrib.auth.dto import UserRecord
 
@@ -20,3 +21,11 @@ class UserRepository(Repository):
             self._cache_set(key, sql)
         with self._db.cursor() as c:
             return c.fetchone(sql, [username], cls=UserRecord)
+
+    def list_users(self, offset: int, limit: int, sort_field=None, sort_order=None) -> tuple:
+        if not sort_field:
+            sort_field = UserRecord.id
+        if not sort_order:
+            sort_order = Sql.SQL_ASC
+        qry = self.select().order(sort_field, sort_order)
+        return self.list(qry, limit, offset, UserRecord)

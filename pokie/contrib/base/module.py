@@ -22,7 +22,7 @@ class Module(BaseModule):
 
     services = {
         # db-related validators
-        SVC_VALIDATOR: 'pokie.contrib.service.ValidatorService'
+        SVC_VALIDATOR: 'pokie.contrib.base.service.ValidatorService'
     }
 
     def build(self):

@@ -35,9 +35,13 @@ class DbPrimaryKey(Rule):
         if len(tokens) == 2:
             schema = tokens[1]
 
+        pk_name = ''
+        if len(options) > 1:
+            pk_name = str(options[1])
+
         svc = _di.get(DI_SERVICE_MANAGER).get(SVC_VALIDATOR)
         try:
-            if svc.id_exists(self, value, table_name, schema):
+            if svc.id_exists(pk_name, value, table_name, schema):
                 return True, ""
             return False, self.error_message(error_msg, translator)
 
