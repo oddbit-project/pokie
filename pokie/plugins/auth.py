@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from rick.mixin import Injectable
 
 
-class AuthPlugin(Injectable, abc.ABC):
+class AuthPluginInterface(Injectable, abc.ABC):
     UPDATE_PASSWORD = 1
 
     @abc.abstractmethod

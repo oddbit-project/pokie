@@ -58,7 +58,7 @@ class AclService(Injectable):
         return self.role_repository.delete_pk(id_role)
 
     def remove_resource(self, id_resource: int):
-        pass
+        return self.resource_repository.delete_pk(id_resource)
 
     def can_remove_role(self, id_role: int) -> bool:
         return self.role_repository.can_remove(id_role)
@@ -67,10 +67,10 @@ class AclService(Injectable):
         return self.role_repository.truncate(id_role)
 
     def can_remove_resource(self, id_resource: int) -> bool:
-        pass
+        return self.resource_repository.can_remove(id_resource)
 
     def truncate_resource(self, id_resource: int):
-        pass
+        return self.resource_repository.truncate(id_resource)
 
     def remove_role_resource(self, id_role: int, id_resource: int):
         return self.role_repository.remove_role_resource(id_role, id_resource)

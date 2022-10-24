@@ -3,13 +3,13 @@ from rick.crypto.hasher.bcrypt import BcryptHasher
 
 from pokie.constants import DI_SERVICE_MANAGER
 from pokie.contrib.auth.service.user import AuthUser
-from pokie.interfaces.plugins.auth import AuthPlugin
+from pokie.plugins.auth import AuthPluginInterface
 from pokie.contrib.auth.constants import SVC_USER
 from pokie.contrib.auth.service import UserService
 
 
-class DbAuthPlugin(AuthPlugin):
-    capabilities = [AuthPlugin.UPDATE_PASSWORD]
+class DbAuthPlugin(AuthPluginInterface):
+    capabilities = [AuthPluginInterface.UPDATE_PASSWORD]
 
     def autenticate(self, username: str, password: str):
         record = self.svc_user.get_by_username(username)

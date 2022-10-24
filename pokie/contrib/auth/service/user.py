@@ -66,7 +66,6 @@ class UserService(Injectable):
         """
         return self.user_repository.insert_pk(record)
 
-
     def list_users(self, offset, limit, sort_field=None, sort_order=None):
         return self.user_repository.list_users(offset, limit, sort_field, sort_order)
 
@@ -76,4 +75,3 @@ class UserService(Injectable):
     @property
     def user_repository(self) -> UserRepository:
         return UserRepository(self._di.get(DI_DB))
-

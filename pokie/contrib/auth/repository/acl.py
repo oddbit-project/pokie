@@ -211,3 +211,30 @@ class AclResourceRepository(Repository):
 
         with self._db.cursor() as c:
             return c.fetchall(sql, [id_role], cls=AclResource)
+
+    def can_remove(self, id_resource: int):
+        """
+        Check if a given resource can be removed
+        :param id_resource:
+        :return:
+        """
+        # check if role references resources
+        sql, values = Select(self._dialect) \
+            .from_(AclRoleResource, cols={Literal('COUNT(*)'): 'total'}, schema=self._schema) \
+            .where(AclRoleResource.id_resource, '=', id_resource) \
+            .assemble()
+
+        with self._db.cursor() as c:
+            result = c.fetchone(sql, values)
+            return result['total'] == 0
+
+    def truncate(self, id_resource: int):
+        # delete role resources
+        sql, values = Delete(self._dialect) \
+            .from_(AclRoleResource) \
+            .where(AclRoleResource.id_resource, '=', id_resource) \
+            .assemble()
+        self.exec(sql, values)
+
+        # finally, delete resource
+        self.delete_pk(id_resource)
