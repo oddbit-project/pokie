@@ -33,6 +33,14 @@ class AuthUser(UserMixin):
 
 class UserService(Injectable):
 
+    def get_by_id(self, id_user: int) -> Optional[UserRecord]:
+        """
+        Find user by id
+        :param id_user:
+        :return:
+        """
+        return self.user_repository.fetch_pk(id_user)
+
     def get_by_username(self, username: str) -> Optional[UserRecord]:
         """
         Find user by username

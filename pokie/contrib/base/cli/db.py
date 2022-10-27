@@ -95,12 +95,12 @@ class DbCheckCmd(DbCliCommand):
             self.tty.error(self.error_noinit)
             return False
 
-        for module_name, module in self.get_di().get(DI_APP).modules.items():
-            self.tty.write("Checking migrations for module {}:".format(module_name))
+        for name, module in self.get_di().get(DI_APP).modules,items():
+            self.tty.write("Checking migrations for module {}:".format(name))
             path = Path(os.path.dirname(inspect.getfile(module.__class__))) / self.folder
             if path.exists() and path.is_dir():
                 try:
-                    for record in self.load_migrations(module_name, path):
+                    for record in self.load_migrations(name, path):
                         mig, content = record
                         self.tty.write("\t{name}... ".format(name=mig.name), False)
 
@@ -115,12 +115,10 @@ class DbCheckCmd(DbCliCommand):
                         else:
                             self.tty.write(self.tty.colorizer.green("new migration", attr='bold'))
 
-                    return True
-
                 except Exception as e:
                     self.tty.error("Error : " + str(e))
                     return False
-
+        return True
 
 class DbUpdateCmd(DbCliCommand):
     description = "apply pending migrations"
@@ -179,9 +177,8 @@ class DbUpdateCmd(DbCliCommand):
                                 # dry run, just assume everyting is fine
                                 self.tty.write(self.tty.colorizer.green("success", attr='bold'))
 
-                    return True
-
                 except Exception as e:
                     self.tty.write("\n")
                     self.tty.error("Error : " + str(e))
                     return False
+        return True
