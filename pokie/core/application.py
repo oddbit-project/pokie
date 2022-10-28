@@ -85,7 +85,7 @@ class FlaskApplication:
 
         # initialize modules
         for _, module in self.modules.items():
-            module.build()
+            module.build(self)
 
         return self.app
 

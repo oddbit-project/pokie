@@ -30,6 +30,21 @@ class AuthUser(UserMixin):
     def has_role(self, id_role: int):
         return id_role in self.roles
 
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return self.record.active
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
 
 class UserService(Injectable):
 

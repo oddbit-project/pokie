@@ -35,5 +35,5 @@ class Module(BaseModule):
     }
 
 
-    def build(self):
+    def build(self, parent=None):
         pass

@@ -29,3 +29,6 @@ CFG_REDIS_PORT = 'redis_port'
 CFG_REDIS_PASSWORD = 'redis_password'
 CFG_REDIS_DB = 'redis_db'
 CFG_REDIS_SSL = 'redis_ssl'
+
+# Auth Configuration
+CFG_AUTH_SECRET = 'auth_secret'

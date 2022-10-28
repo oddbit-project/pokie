@@ -27,3 +27,7 @@ class AuthPluginInterface(Injectable, abc.ABC):
     @abc.abstractmethod
     def has_capability(self, capability: int) -> bool:
         pass
+
+    @abc.abstractmethod
+    def load_id(self, id_user):
+        pass

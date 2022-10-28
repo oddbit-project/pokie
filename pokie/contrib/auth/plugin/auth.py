@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rick.crypto.hasher import HasherInterface
 from rick.crypto.hasher.bcrypt import BcryptHasher
 
@@ -28,6 +30,21 @@ class DbAuthPlugin(AuthPluginInterface):
             self.svc_user.update_lastlogin(record.id)
             return AuthUser(record, self.get_di())
 
+    def load_id(self, id_user) -> Optional[AuthUser]:
+        """
+        Loads a user record by id
+        :param id_user:
+        :return:
+        """
+        record = self.svc_user.get_by_id(id_user)
+        if record is None:
+            return None
+
+        if not record.active:
+            return None
+
+        return AuthUser(record, self.get_di())
+
     def valid_username(self, username: str) -> bool:
         """
         Checks if the given username is valid (exists and account is enabled)
@@ -48,7 +65,6 @@ class DbAuthPlugin(AuthPluginInterface):
         """
         if len(password) == 0:
             return False
-
         record = self.svc_user.get_by_username(username)
         if record is None:
             return False

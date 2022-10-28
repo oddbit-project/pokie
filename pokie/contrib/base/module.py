@@ -25,5 +25,5 @@ class Module(BaseModule):
         SVC_VALIDATOR: 'pokie.contrib.base.service.ValidatorService'
     }
 
-    def build(self):
+    def build(self, parent=None):
         init_validators(self.get_di())

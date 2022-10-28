@@ -1,3 +1,5 @@
+import uuid
+
 from rick.resource.config import StrOrFile
 
 
@@ -8,6 +10,9 @@ class BaseConfigTemplate:
     USE_AUTH = True
     # Autentication plugins to use
     AUTH_PLUGINS = ['pokie.contrib.auth.plugin.DbAuthPlugin']
+
+    # Secret key for flask-login hashing
+    AUTH_SECRET = uuid.uuid4().hex
 
     # cache table-related metadata (such as primary key info)
     # development should be false

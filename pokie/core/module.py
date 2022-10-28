@@ -14,5 +14,10 @@ class BaseModule(Injectable, abc.ABC):
     cmd = {}
 
     @abc.abstractmethod
-    def build(self):
+    def build(self, parent=None):
+        """
+        Initialize module internals
+        :param parent: FlaskApplication instance
+        :return:
+        """
         pass

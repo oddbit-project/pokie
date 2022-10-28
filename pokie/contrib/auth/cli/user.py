@@ -165,6 +165,8 @@ class UserModCmd(UserCommand):
             if len(pwd) > 0:
                 changes = True
                 if self.svc_auth.update_password(record.username, pwd):
+                    # reload record
+                    record = self.svc_user.get_by_username(args.username)
                     self.tty.write(self.tty.colorizer.green("> updated user password"))
                 else:
                     self.tty.write(self.tty.colorizer.yellow(

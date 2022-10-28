@@ -24,6 +24,20 @@ class AuthService(Injectable):
                 return plugin.update_password(username, password)
         return False
 
+    def load_id(self, id_user, plugin_cls=None) -> Optional[AuthUser]:
+        """
+        Attempts to find a user profile by id, using the registed plugins
+        :param id_user: unique user identifier
+        :param plugin_cls: optional class of plugin to use
+        :return: AuthUser object or None
+        """
+        for plugin in self.auth_plugins:  # type: AuthPluginInterface
+            if plugin_cls is None or isinstance(plugin, plugin_cls):
+                result = plugin.load_id(id_user)
+                if result is not None:
+                    return result
+        return None
+
     @property
     def auth_plugins(self) -> list:
         di = self.get_di()
