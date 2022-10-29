@@ -2,13 +2,15 @@ import os
 import sys
 from argparse import ArgumentParser
 from typing import List
+from collections import OrderedDict
 
 from flask import Flask
 from rick.base import Di, Container, MapLoader
+from rick.event import EventManager
 from rick.util.loader import load_class
 from rick.resource.console import ConsoleWriter
 
-from pokie.constants import DI_CONFIG, DI_SERVICE_MANAGER, DI_FLASK, DI_APP
+from pokie.constants import DI_CONFIG, DI_SERVICE_MANAGER, DI_FLASK, DI_APP, DI_EVENT
 from .module import BaseModule
 from .command import CliCommand
 from ..util.cli_args import ArgParser
@@ -83,6 +85,18 @@ class FlaskApplication:
             else:
                 factory(self.di)
 
+        # parse events from modules
+        evt_mgr = EventManager()
+        for _, module in self.modules.items():
+            module_events = getattr(module, 'events', None)
+            if isinstance(module_events, dict):
+                for evt_name, evt_details in module_events.items():
+                    for priority, handlers in evt_details.items():
+                        for handler in handlers:
+                            evt_mgr.add_handler(evt_name, handler, int(priority))
+
+        self.di.add(DI_EVENT, evt_mgr)
+        print(evt_mgr._handlers)
         # initialize modules
         for _, module in self.modules.items():
             module.build(self)
