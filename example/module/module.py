@@ -40,14 +40,14 @@ class Module(BaseModule):
         },
     }
 
-    # jobs map
+    # jobs list
     #
     # jobs are tasks that are executed cooperatively as soon as possible; these tasks are useful for background operations
-    # such as sending email or resizing images
+    # such as sending email or resizing images;
     #
-    jobs = {
-
-    }
+    # jobs are defined by the full path name of the handler class; job classes must extend Injectable and Runnable mixins
+    #
+    jobs = []
 
     def build(self, parent=None):
         pass

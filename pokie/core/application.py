@@ -96,7 +96,7 @@ class FlaskApplication:
                             evt_mgr.add_handler(evt_name, handler, int(priority))
 
         self.di.add(DI_EVENT, evt_mgr)
-        print(evt_mgr._handlers)
+
         # initialize modules
         for _, module in self.modules.items():
             module.build(self)
