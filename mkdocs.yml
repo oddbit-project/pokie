@@ -10,6 +10,7 @@ theme:
 
 nav:
 - Overview: index.md
+- Tutorial: tutorial/tutorial.md
 
 plugins:
 - search

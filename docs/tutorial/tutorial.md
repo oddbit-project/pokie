@@ -81,13 +81,15 @@ To fully bootstrap the application, three components are required: the configura
 (a *ShallowContainer* instance), the module list to be instantiated, and the factory list to be initialized.
 
 The typical sequence of operations (both explicit and implicit) of a Pokie application is:
-1. load configuration;
-2. build base Flask app;
-3. load configured modules (instantiate Module objects only);
-4. build a service map and initialize the Service Manager;
-5. run factories defined in the factory list;
-6. parse event definitions from modules and build the Event Manager;
-7. initialize modules (by calling *build()* on each Module object);
+
+* load configuration; 
+* build base Flask app; 
+* load configured modules (instantiate Module objects only);
+* build a service map and initialize the Service Manager;
+* run factories defined in the factory list;
+* parse event definitions from modules and build the Event Manager;
+* initialize modules (by calling *build()* on each Module object);
+* run appropriate CLI wrapper, or pass app variable to a WSGI server;
 
 ### Configuration
 
