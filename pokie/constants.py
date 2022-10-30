@@ -15,6 +15,7 @@ DI_SERVICE_MANAGER = 'svc_manager'
 DI_DB = 'db'
 DI_REDIS = 'redis'
 DI_EVENT = 'event_manager'
+DI_TTY = 'tty'
 
 # DB Configuration
 CFG_DB_NAME = 'db_name'

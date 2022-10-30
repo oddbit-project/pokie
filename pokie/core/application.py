@@ -4,13 +4,14 @@ from argparse import ArgumentParser
 from typing import List
 from collections import OrderedDict
 
+import DistUpgrade.apt_btrfs_snapshot
 from flask import Flask
 from rick.base import Di, Container, MapLoader
 from rick.event import EventManager
 from rick.util.loader import load_class
 from rick.resource.console import ConsoleWriter
 
-from pokie.constants import DI_CONFIG, DI_SERVICE_MANAGER, DI_FLASK, DI_APP, DI_EVENT
+from pokie.constants import DI_CONFIG, DI_SERVICE_MANAGER, DI_FLASK, DI_APP, DI_EVENT, DI_TTY
 from .module import BaseModule
 from .command import CliCommand
 from ..util.cli_args import ArgParser
@@ -96,6 +97,9 @@ class FlaskApplication:
                             evt_mgr.add_handler(evt_name, handler, int(priority))
 
         self.di.add(DI_EVENT, evt_mgr)
+
+        # initialize TTY
+        self.di.add(DI_TTY, ConsoleWriter())
 
         # initialize modules
         for _, module in self.modules.items():

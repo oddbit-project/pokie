@@ -18,12 +18,20 @@ class Module(BaseModule):
         'dbinit': 'pokie.contrib.base.cli.DbInitCmd',
         'dbcheck': 'pokie.contrib.base.cli.DbCheckCmd',
         'dbupdate': 'pokie.contrib.base.cli.DbUpdateCmd',
+
+        # worker job commands
+        'joblist': 'pokie.contrib.base.cli.JobListCmd',
+        'jobrun': 'pokie.contrib.base.cli.JobRunCmd',
     }
 
     services = {
         # db-related validators
         SVC_VALIDATOR: 'pokie.contrib.base.service.ValidatorService'
     }
+
+    jobs = [
+        'pokie.contrib.base.job.IdleJob',
+    ]
 
     def build(self, parent=None):
         init_validators(self.get_di())
