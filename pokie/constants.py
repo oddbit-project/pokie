@@ -5,6 +5,12 @@ POKIE_VERSION = ["0", "1", "0"]
 def get_version():
     return ".".join(POKIE_VERSION)
 
+# Http Codes
+HTTP_OK = 200
+HTTP_BADREQ = 400
+HTTP_NOAUTH = 401
+HTTP_FORBIDDEN = 403
+HTTP_INTERNAL_ERROR = 500
 
 # DI Keys
 DI_CONFIG = 'config'
