@@ -89,7 +89,16 @@ class UserService(Injectable):
         """
         return self.user_repository.insert_pk(record)
 
-    def list_users(self, offset, limit, sort_field=None, sort_order=None):
+    def list_users(self, offset, limit, sort_field=None, sort_order=None) -> tuple:
+        """
+        Returns a tuple with a list of users
+
+        :param offset:
+        :param limit:
+        :param sort_field:
+        :param sort_order:
+        :return: (total user count, [records])
+        """
         return self.user_repository.list_users(offset, limit, sort_field, sort_order)
 
     def update_user(self, record: UserRecord):

@@ -1,4 +1,4 @@
-from pokie.contrib.base.constants import SVC_VALIDATOR
+from pokie.contrib.base.constants import SVC_VALIDATOR, SVC_SETTINGS
 from pokie.contrib.base.validators import init_validators
 from pokie.core import BaseModule
 
@@ -26,7 +26,9 @@ class Module(BaseModule):
 
     services = {
         # db-related validators
-        SVC_VALIDATOR: 'pokie.contrib.base.service.ValidatorService'
+        SVC_VALIDATOR: 'pokie.contrib.base.service.ValidatorService',
+        # settings service
+        SVC_SETTINGS: 'pokie.contrib.base.service.SettingsService'
     }
 
     jobs = [
@@ -35,3 +37,4 @@ class Module(BaseModule):
 
     def build(self, parent=None):
         init_validators(self.get_di())
+
