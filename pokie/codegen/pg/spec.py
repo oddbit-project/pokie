@@ -2,8 +2,8 @@ from typing import Optional
 
 from rick_db.conn import Connection
 from rick_db.util.pg.records import ColumnRecord
+from rick_db.util.pg import PgInfo
 
-from pginfo import PgInfo
 from pokie.codegen.spec import TableSpec, FieldSpec
 
 

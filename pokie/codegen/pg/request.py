@@ -1,5 +1,5 @@
 from rick.util.string import snake_to_camel, snake_to_pascal
-
+from rick.form import RequestRecord, field
 from pokie.codegen.spec import FieldSpec, TableSpec
 from pokie.codegen.textfile import TextBuffer
 
@@ -84,8 +84,29 @@ class RequestGenerator:
 
         gen.writeln("class {}Record(RequestRecord):".format(snake_to_pascal(spec.table)))
         gen.writeln("fields = {", level=1)
-        for field in spec.fields:
-            gen.writeln(self._gen_field_src(field, camelcase, db_camelcase), level=2)
+        for f in spec.fields:
+            gen.writeln(self._gen_field_src(f, camelcase, db_camelcase), level=2)
         gen.writeln("}", level=1)
         gen.writeln(gen.newline())
         return gen.read()
+
+    def gen_class(self, spec: TableSpec, camelcase=False, db_camelcase=False) -> RequestRecord:
+        """
+        Generate a Rick RequestRecord class from a spec
+        :param spec:
+        :param camelcase: if True, attributes will be camelCased
+        :param db_camelcase: if True, db record attributes will be camelCased
+        :return: RequestRecord class
+        """
+
+        class reqRecord(RequestRecord):
+            pass
+
+        fields = {}
+        for f in spec.fields:
+            name, validators, target = self._field(f, camelcase, db_camelcase)
+            fields[name] = field(validators="|".join(validators), bind=target)
+
+        setattr(reqRecord, 'fields', fields)
+
+        return reqRecord
