@@ -12,8 +12,6 @@ CREATE TABLE "user"(
     attributes JSONB DEFAULT '{}'
 );
 
-CREATE INDEX user_idx01 on "user"(username);
-
 CREATE TABLE acl_role(
     id_acl_role SERIAL NOT NULL PRIMARY KEY,
     description VARCHAR(200) NOT NULL UNIQUE
