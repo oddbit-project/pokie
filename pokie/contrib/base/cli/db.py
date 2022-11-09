@@ -48,12 +48,6 @@ class DbCliCommand(CliCommand):
 class DbInitCmd(DbCliCommand):
     description = "initialize database migrations"
 
-    def get_db(self) -> Optional[Connection]:
-        di = self.get_di()
-        if not di.has(DI_DB):
-            return None
-        return di.get(DI_DB)
-
     def run(self, args) -> bool:
         db = self.get_db()
         if not db:
@@ -77,12 +71,6 @@ class DbInitCmd(DbCliCommand):
 
 class DbCheckCmd(DbCliCommand):
     description = "show existing database migrations status"
-
-    def get_db(self) -> Optional[Connection]:
-        di = self.get_di()
-        if not di.has(DI_DB):
-            return None
-        return di.get(DI_DB)
 
     def run(self, args) -> bool:
         db = self.get_db()
@@ -126,12 +114,6 @@ class DbUpdateCmd(DbCliCommand):
     def arguments(self, parser: ArgumentParser):
         parser.add_argument('--dry', help='Dry run - no database changes are performed', action='store_true',
                             default=False)
-
-    def get_db(self) -> Optional[Connection]:
-        di = self.get_di()
-        if not di.has(DI_DB):
-            return None
-        return di.get(DI_DB)
 
     def run(self, args) -> bool:
         db = self.get_db()

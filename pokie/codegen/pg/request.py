@@ -36,9 +36,9 @@ class RequestGenerator:
             # primary key name is always id
             # if it is an auto number, validate as id
             name = 'id'
+            target = 'id'
             if f.auto:
                 validators.append('id')
-            target = f.name if db_camelcase is False else snake_to_camel(f.name)
 
         # add predefined validators for data types
         if f.dtype in self.validators.keys():
@@ -68,7 +68,7 @@ class RequestGenerator:
         return "'{name}': field(validators='{validators}', bind='{bind}')," \
             .format(name=name, validators=validators, bind=target)
 
-    def gen_source(self, spec: TableSpec, camelcase=False, db_camelcase=False, gen: TextBuffer = None):
+    def gen_source(self, spec: TableSpec, camelcase=False, db_camelcase=False, gen: TextBuffer = None, imports=True):
         """
         Generate a Rick RequestRecord source file
 
@@ -76,13 +76,16 @@ class RequestGenerator:
         :param camelcase: if True, attributes will be camelCased
         :param db_camelcase: if True, db record attributes will be camelCased
         :param gen: optional TextBuffer
+        :param imports: if True, generate import line
         :return: source code string
         """
         if gen is None:
             gen = TextBuffer()
+
+        if imports is True:
             gen.writeln("from rick.form import RequestRecord, field", newlines=2)
 
-        gen.writeln("class {}Record(RequestRecord):".format(snake_to_pascal(spec.table)))
+        gen.writeln("class {}Request(RequestRecord):".format(snake_to_pascal(spec.table)))
         gen.writeln("fields = {", level=1)
         for f in spec.fields:
             gen.writeln(self._gen_field_src(f, camelcase, db_camelcase), level=2)

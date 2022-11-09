@@ -7,18 +7,21 @@ from pokie.codegen.textfile import TextBuffer
 
 class RecordGenerator:
 
-    def gen_source(self, spec: TableSpec, camelcase=False, gen: TextBuffer = None):
+    def gen_source(self, spec: TableSpec, camelcase=False, gen: TextBuffer = None, imports=True):
         """
         Generate a RickDB Record class source definition
 
         :param spec:
         :param camelcase: if True, attributes will be camelCased
         :param gen: optional TextBuffer
+        :param imports: include import line
         :return: source code string
         """
         if gen is None:
             gen = TextBuffer()
-            gen.writeln("from rick.db import fieldmapper", newlines=2)
+
+        if imports is True:
+            gen.writeln("from rick_db import fieldmapper", newlines=3)
 
         gen.writeln("@fieldmapper(tablename='{}', pk='{}', schema='{}')".format(spec.table, spec.pk, spec.schema))
         gen.writeln("class {}Record:".format(snake_to_pascal(spec.table)))

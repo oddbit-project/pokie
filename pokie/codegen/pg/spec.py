@@ -15,6 +15,9 @@ class PgTableSpec:
         self._tables = {}
         self._indexes = {}
 
+    def manager(self):
+        return self.mgr
+
     def get_pk(self, table, schema) -> Optional[str]:
         for f in self.mgr.list_table_indexes(table, schema):
             if f.primary:

@@ -22,6 +22,10 @@ class Module(BaseModule):
         # worker job commands
         'joblist': 'pokie.contrib.base.cli.JobListCmd',
         'jobrun': 'pokie.contrib.base.cli.JobRunCmd',
+
+        # code generation
+        'codegen:dto': 'pokie.contrib.base.cli.GenDtoCmd',
+        'codegen:request': 'pokie.contrib.base.cli.GenRequestRecordCmd',
     }
 
     services = {

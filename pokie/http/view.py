@@ -49,6 +49,12 @@ class PokieView(MethodView):
             return self.json(JsonStatus(success=True, message=''), code=code)
         return self.json(data, code)
 
+    def empty_body(self):
+        return self.error('empty body', code=HTTP_BADREQ)
+
+    def not_found(self):
+        return self.error("record not found", code=HTTP_BADREQ)
+
     def forbidden(self):
         return self.error("access denied", code=HTTP_FORBIDDEN)
 
