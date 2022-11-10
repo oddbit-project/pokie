@@ -1,1 +1,0 @@
-from .svc_rest import RestServiceMixin

@@ -1,16 +1,16 @@
 from rick.form import RequestRecord
 from flask import request
-from rick_db import Repository
 from .helpers import ParseListError, parse_list_parameters
-from pokie.mixin import RestServiceMixin
+from pokie.rest import RestService
 from pokie.constants import DI_SERVICE_MANAGER
 from inspect import isclass
+
 
 class RestMixin:
     request_class = None  # type: rick.form.RequestRecord
     record_class = None
-
-    svc_name = ''
+    search_fields = None  # type: List
+    svc_name = None
 
     def get(self, id_record=None):
         """
@@ -32,9 +32,11 @@ class RestMixin:
         Query records
         :return:
         """
+        search_fields = self.search_fields if self.search_fields is not None else []
         text, match, limit, offset, sort = parse_list_parameters(request.args, self.record_class)
         try:
             count, data = self.svc.list(
+                search_fields=search_fields,
                 search_text=text,
                 match_fields=match,
                 limit=limit,
@@ -62,7 +64,7 @@ class RestMixin:
             return self.request_error(req)
 
         record = req.bind(self.record_class)
-        self.svc.insert(self.record)
+        self.svc.insert(record)
         return self.success()
 
     def put(self, id_record):
@@ -82,7 +84,7 @@ class RestMixin:
             return self.request_error(req)
 
         record = req.bind(self.record_class)
-        self.svc.update(id_record, self.record)
+        self.svc.update(id_record, record)
         return self.success()
 
     def delete(self, id_record):
@@ -104,8 +106,22 @@ class RestMixin:
         return self.request_class
 
     @property
-    def svc(self) -> RestServiceMixin:
-        svc = self.di.get(DI_SERVICE_MANAGER).get(self.svc_name)
-        if not isinstance(svc, RestServiceMixin):
+    def svc(self) -> RestService:
+        mgr = self.di.get(DI_SERVICE_MANAGER)
+        if self.svc_name is None:
+            svc_name = "svc.rest.{}.{}".format(self.__module__, str(self.record_class.__name__).replace('Record', '', 1))
+            if mgr.contains(svc_name):
+                return mgr.get(svc_name)
+
+            # register new service that relies on a RestService instance
+            mgr.add(svc_name, 'pokie.rest.RestService')
+            # get new service to patch it
+            svc = mgr.get(svc_name)
+            # patch it
+            svc.set_record_class(self.record_class)
+            return svc
+
+        svc = mgr.get(self.svc_name)
+        if not isinstance(svc, RestService):
             raise RuntimeError("Service '{}' does not implement RestService mixin")
         return svc

@@ -83,7 +83,7 @@ class DbCheckCmd(DbCliCommand):
             self.tty.error(self.error_noinit)
             return False
 
-        for name, module in self.get_di().get(DI_APP).modules,items():
+        for name, module in self.get_di().get(DI_APP).modules.items():
             self.tty.write("Checking migrations for module {}:".format(name))
             path = Path(os.path.dirname(inspect.getfile(module.__class__))) / self.folder
             if path.exists() and path.is_dir():
