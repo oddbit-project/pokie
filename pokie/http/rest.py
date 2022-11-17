@@ -1,3 +1,5 @@
+from typing import List
+
 from rick.form import RequestRecord
 from flask import request
 from .helpers import ParseListError, parse_list_parameters
@@ -7,7 +9,7 @@ from inspect import isclass
 
 
 class RestMixin:
-    request_class = None  # type: rick.form.RequestRecord
+    request_class = None  # type: RequestRecord
     record_class = None
     search_fields = None  # type: List
     svc_name = None
@@ -109,7 +111,8 @@ class RestMixin:
     def svc(self) -> RestService:
         mgr = self.di.get(DI_SERVICE_MANAGER)
         if self.svc_name is None:
-            svc_name = "svc.rest.{}.{}".format(self.__module__, str(self.record_class.__name__).replace('Record', '', 1))
+            svc_name = "svc.rest.{}.{}".format(self.__module__,
+                                               str(self.record_class.__name__).replace('Record', '', 1))
             if mgr.contains(svc_name):
                 return mgr.get(svc_name)
 

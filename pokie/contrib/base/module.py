@@ -15,13 +15,13 @@ class Module(BaseModule):
         'runserver': 'pokie.contrib.base.cli.RunServerCmd',
 
         # database-related commands
-        'dbinit': 'pokie.contrib.base.cli.DbInitCmd',
-        'dbcheck': 'pokie.contrib.base.cli.DbCheckCmd',
-        'dbupdate': 'pokie.contrib.base.cli.DbUpdateCmd',
+        'db:init': 'pokie.contrib.base.cli.DbInitCmd',
+        'db:check': 'pokie.contrib.base.cli.DbCheckCmd',
+        'db:update': 'pokie.contrib.base.cli.DbUpdateCmd',
 
         # worker job commands
-        'joblist': 'pokie.contrib.base.cli.JobListCmd',
-        'jobrun': 'pokie.contrib.base.cli.JobRunCmd',
+        'job:list': 'pokie.contrib.base.cli.JobListCmd',
+        'job:run': 'pokie.contrib.base.cli.JobRunCmd',
 
         # code generation
         'codegen:dto': 'pokie.contrib.base.cli.GenDtoCmd',
@@ -41,4 +41,3 @@ class Module(BaseModule):
 
     def build(self, parent=None):
         init_validators(self.get_di())
-

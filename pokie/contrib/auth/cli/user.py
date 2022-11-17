@@ -97,8 +97,8 @@ class UserInfoCmd(UserCommand):
             return False
 
         data = record.asdict()
-        for field, label in self.fields_labels.items():
-            print("{:<16}: {}".format(label, str(data[field])))
+        for f, label in self.fields_labels.items():
+            print("{:<16}: {}".format(label, str(data[f])))
 
         return True
 

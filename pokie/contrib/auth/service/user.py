@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from flask_login import UserMixin
 from rick.base import Di
@@ -20,7 +20,7 @@ class AuthUser(UserMixin):
     def __init__(self, usr: UserRecord, _di: Di):
         self.record = usr
         self.id = usr.id
-        svc_acl = _di.get(DI_SERVICE_MANAGER).get(SVC_ACL)  # type: AclService
+        svc_acl = _di.get(DI_SERVICE_MANAGER).get(SVC_ACL)
         self.resources = svc_acl.list_user_resource_id(usr.id)
         self.roles = svc_acl.list_user_role_id(usr.id)
 

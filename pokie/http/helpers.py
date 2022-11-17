@@ -1,5 +1,6 @@
 from rick.util.misc import optional
 
+
 class ParseListError(Exception):
     pass
 
@@ -33,7 +34,7 @@ def parse_list_parameters(args, record):
             if offset < 0:
                 raise ValueError
         except ValueError:
-            raise ParseListError('invalid offset value'.format(f))
+            raise ParseListError('invalid offset value')
 
     if limit is not None:
         try:
@@ -41,7 +42,7 @@ def parse_list_parameters(args, record):
             if limit < 1:
                 raise ValueError
         except ValueError:
-            raise ParseListError('invalid limit value'.format(f))
+            raise ParseListError('invalid limit value')
 
     # validate sort fields
     if sort is not None:
@@ -63,4 +64,3 @@ def parse_list_parameters(args, record):
         sort = result
 
     return search_text, match_fields, limit, offset, sort
-

@@ -14,26 +14,25 @@ class Module(BaseModule):
 
     cmd = {
         # user-related operations
-        'usercreate': 'pokie.contrib.auth.cli.UserCreateCmd',
-        'userinfo': 'pokie.contrib.auth.cli.UserInfoCmd',
-        'usermod': 'pokie.contrib.auth.cli.UserModCmd',
-        'userlist': 'pokie.contrib.auth.cli.UserListCmd',
-        'acluserrole': 'pokie.contrib.auth.cli.AclUserRoleCmd',
+        'user:create': 'pokie.contrib.auth.cli.UserCreateCmd',
+        'user:info': 'pokie.contrib.auth.cli.UserInfoCmd',
+        'user:mod': 'pokie.contrib.auth.cli.UserModCmd',
+        'user:list': 'pokie.contrib.auth.cli.UserListCmd',
+        'user:role': 'pokie.contrib.auth.cli.AclUserRoleCmd',
 
         # acl operations
-        'aclrolelist': 'pokie.contrib.auth.cli.AclRoleListCmd',
-        'aclrolecreate': 'pokie.contrib.auth.cli.AclRoleCreateCmd',
-        'aclroleremove': 'pokie.contrib.auth.cli.AclRoleRemoveCmd',
-        'aclroleinfo': 'pokie.contrib.auth.cli.AclRoleInfoCmd',
-        'aclrolelink': 'pokie.contrib.auth.cli.AclRoleLinkCmd',
-        'aclroleunlink': 'pokie.contrib.auth.cli.AclRoleUnlinkCmd',
+        'role:list': 'pokie.contrib.auth.cli.AclRoleListCmd',
+        'role:create': 'pokie.contrib.auth.cli.AclRoleCreateCmd',
+        'role:remove': 'pokie.contrib.auth.cli.AclRoleRemoveCmd',
+        'role:info': 'pokie.contrib.auth.cli.AclRoleInfoCmd',
+        'role:link': 'pokie.contrib.auth.cli.AclRoleLinkCmd',
+        'role:unlink': 'pokie.contrib.auth.cli.AclRoleUnlinkCmd',
 
-        'aclresourcelist': 'pokie.contrib.auth.cli.AclResourceListCmd',
-        'aclresourcecreate': 'pokie.contrib.auth.cli.AclResourceCreateCmd',
-        'aclresourcelink': 'pokie.contrib.auth.cli.AclResourceLinkCmd',
-        'aclresourceunlink': 'pokie.contrib.auth.cli.AclResourceUnlinkCmd',
+        'resource:list': 'pokie.contrib.auth.cli.AclResourceListCmd',
+        'resource:create': 'pokie.contrib.auth.cli.AclResourceCreateCmd',
+        'resource:link': 'pokie.contrib.auth.cli.AclResourceLinkCmd',
+        'resource:unlink': 'pokie.contrib.auth.cli.AclResourceUnlinkCmd',
     }
-
 
     def build(self, parent=None):
         pass
