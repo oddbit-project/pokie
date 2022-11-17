@@ -4,7 +4,6 @@ from argparse import ArgumentParser
 from typing import List
 from collections import OrderedDict
 
-import DistUpgrade.apt_btrfs_snapshot
 from flask import Flask
 from rick.base import Di, Container, MapLoader
 from rick.event import EventManager
