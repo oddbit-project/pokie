@@ -30,6 +30,7 @@ class JobListCmd(JobBaseCmd):
 
         return True
 
+
 class JobRunCmd(JobBaseCmd):
     description = "run  all job workers"
 

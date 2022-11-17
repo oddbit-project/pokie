@@ -1,11 +1,9 @@
 from argparse import ArgumentParser
-import getpass
 from rick.form import RequestRecord, field
 
-from pokie.contrib.auth.constants import SVC_USER, SVC_AUTH, SVC_ACL
+from pokie.contrib.auth.constants import SVC_USER, SVC_ACL
 from pokie.constants import DI_SERVICE_MANAGER
-from pokie.contrib.auth.dto import UserRecord
-from pokie.contrib.auth.service import UserService, AuthService, AclService
+from pokie.contrib.auth.service import UserService, AclService
 from pokie.core import CliCommand
 
 
@@ -253,6 +251,7 @@ class AclRoleUnlinkCmd(AclCommand):
         self.tty.write("Removed association of user '{}' with role #{}".format(user.username, id_role))
 
         return True
+
 
 class AclUserRoleCmd(AclCommand):
     description = "list roles associated with a given username"
