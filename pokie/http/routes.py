@@ -1,27 +1,27 @@
 # predefined method names and route rule expansions
 controller_action_map = {
-    'list': ['/{slug}', ['GET'], '.list'],
-    'show': ['/{slug}/<{type}:id>', ['GET'], '.show'],
-    'create': ['/{slug}', ['POST'], '.create'],
-    'update': ['/{slug}/<{type}:id>', ['PUT', 'PATCH'], '.update'],
-    'delete': ['/{slug}/<{type}:id>', ['DELETE'], '.delete'],
+    'list': ['/{slug}', ['GET'], '_list'],
+    'show': ['/{slug}/<{type}:id>', ['GET'], '_show'],
+    'create': ['/{slug}', ['POST'], '_create'],
+    'update': ['/{slug}/<{type}:id>', ['PUT', 'PATCH'], '_update'],
+    'delete': ['/{slug}/<{type}:id>', ['DELETE'], '_delete'],
 }
 
 # predefined resource methods and route rule expansions
 resource_action_map = {
     # method_name: [rule, rule, ...]
     'get': [
-        ['/{slug}', ['GET'], '.list'],
-        ['/{slug}/<{type}:id>', ['GET'], '.show']
+        ['/{slug}', ['GET'], '_list'],
+        ['/{slug}/<{type}:id>', ['GET'], '_show']
     ],
     'post': [
-        ['/{slug}', ['POST'], '.create']
+        ['/{slug}', ['POST'], '_create']
     ],
     'put': [
-        ['/{slug}/<{type}:id>', ['PUT', 'PATCH'], '.update']
+        ['/{slug}/<{type}:id>', ['PUT', 'PATCH'], '_update']
     ],
     'delete': [
-        ['/{slug}/<{type}:id>', ['DELETE'], '.delete']
+        ['/{slug}/<{type}:id>', ['DELETE'], '_delete']
     ]
 }
 
@@ -53,7 +53,7 @@ def route_resource(app, slug, cls, id_type:str='int'):
     :param id_type: optional datatype for id
     :return:
     """
-    name = ".".join([cls.__module__, cls.__name__])
+    name = ".".join([cls.__module__, cls.__name__]).replace('.', '_')
     for view_name, routes in resource_action_map.items():
         for item in routes:
             route, methods, suffix = item

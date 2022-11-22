@@ -13,7 +13,12 @@ from pokie.constants import HTTP_OK, HTTP_BADREQ, HTTP_INTERNAL_ERROR, HTTP_NOAU
 
 
 class PokieView(MethodView):
-    request_class = None
+    # allowed HTTP methods
+    allow_methods = ['get', 'post', 'put', 'patch', 'delete', 'head']
+
+    # optional RequestRecord class for request body unmarshall
+    # see self.request below
+    request_class = None # type: RequestRecord
 
     def __init__(self, *args, **kwargs):
         super().__init__()
@@ -92,11 +97,13 @@ class PokieView(MethodView):
         method = request.method.lower()
         handler = getattr(self, method, None)
 
+        if method not in self.allow_methods:
+            return self.exception_handler(None)
+
         # If the request method is HEAD and we don't have a handler for it
         # retry with GET.
         if handler is None and method == "head":
             handler = getattr(self, "get", None)
-
         # support for named views
         if '_action_method_' in kwargs.keys():
             handler = getattr(self, kwargs['_action_method_'], None)
@@ -131,7 +138,7 @@ class PokieView(MethodView):
         """"""
         """
         if name is None:
-            name = ".".join([cls.__module__, cls.__name__, action_method])
+            name = ".".join([cls.__module__, cls.__name__, action_method]).replace('.', '_')
 
         def view(*args: Any, **kwargs: Any) -> ResponseReturnValue:
             self = view.view_class(*class_args, **class_kwargs)  # type: ignore
@@ -164,6 +171,8 @@ class PokieView(MethodView):
         :param e:
         :return:
         """
+        if e is not None:
+            logging.error(e)
         if request.is_json:
             return self.error('bad request')
         return "<!doctype html>\n<html lang=en>\n<title>{code} {err}</title>\n<h1>{err}</h1>\n".format(code=HTTP_BADREQ,

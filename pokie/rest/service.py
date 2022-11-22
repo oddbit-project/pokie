@@ -3,9 +3,9 @@ from rick.base import Di
 from pokie.constants import DI_DB
 from rick.mixin import Injectable
 from rick_db import DbGrid, Repository
+from .mixin import RestServiceMixin
 
-
-class RestService(Injectable):
+class RestService(Injectable, RestServiceMixin):
     record_class = None  # record class
     repository_class = None  # optional custom repository class
 
