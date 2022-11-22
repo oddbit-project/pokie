@@ -10,10 +10,14 @@ theme:
 
 nav:
 - Overview: index.md
-- Tutorial: tutorial/tutorial.md
+- Introduction:
+    - Architecture: tutorial/architecture.md
+    - Scaffolding: tutorial/scaffolding.md
+    - Tutorial: tutorial/tutorial.md
 - Views:
     - Pokie Views: views/index.md
     - REST Views: views/rest.md
+    - Controllers: views/controllers.md
 plugins:
 - search
 
