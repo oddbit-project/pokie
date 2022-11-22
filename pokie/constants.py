@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "2", "2"]
+POKIE_VERSION = ["0", "3", "0"]
 
 
 def get_version():
@@ -11,6 +11,7 @@ HTTP_OK = 200
 HTTP_BADREQ = 400
 HTTP_NOAUTH = 401
 HTTP_FORBIDDEN = 403
+HTTP_NOT_FOUND = 404
 HTTP_INTERNAL_ERROR = 500
 
 # DI Keys

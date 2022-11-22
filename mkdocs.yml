@@ -11,7 +11,9 @@ theme:
 nav:
 - Overview: index.md
 - Tutorial: tutorial/tutorial.md
-
+- Views:
+    - Pokie Views: views/index.md
+    - REST Views: views/rest.md
 plugins:
 - search
 
