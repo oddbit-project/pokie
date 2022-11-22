@@ -6,3 +6,5 @@
 
 Pokie is a Flask application boilerplate, using [Rick](https://github.com/oddbit-project/rick) and 
 [Rick-db](https://github.com/oddbit-project/rick_db) components.
+
+For more information, please check the [Documentation](https://oddbit-project.github.io/pokie/)
