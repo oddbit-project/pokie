@@ -10,21 +10,21 @@
       
       
       
-        <link rel="canonical" href="https://github.com/oddbit-project/pokie/">
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/tutorial/architecture/">
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.1.2">
     
     
       
-        <title>Pokie</title>
+        <title>Pokie Architecture - Pokie</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.f7951f6f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.f7951f6f.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.e6a45f82.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
         
       
     
@@ -38,7 +38,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-pokie" class="md-skip">
+        <a href="#pokie-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -76,7 +76,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -95,7 +95,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Pokie Architecture
             
           </span>
         </div>
@@ -174,7 +174,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -203,21 +203,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         Overview
       </a>
-      
     </li>
   
 
@@ -230,7 +220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorial/tutorial/" class="md-nav__link">
+      <a href="../tutorial/" class="md-nav__link">
         Tutorial
       </a>
     </li>
@@ -271,7 +261,7 @@
   
   
     <li class="md-nav__item">
-      <a href="views/" class="md-nav__link">
+      <a href="../../views/" class="md-nav__link">
         Pokie Views
       </a>
     </li>
@@ -285,7 +275,7 @@
   
   
     <li class="md-nav__item">
-      <a href="views/rest/" class="md-nav__link">
+      <a href="../../views/rest/" class="md-nav__link">
         REST Views
       </a>
     </li>
@@ -319,6 +309,35 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#presentation-layer" class="md-nav__link">
+    Presentation layer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#service-layer" class="md-nav__link">
+    Service layer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-layer" class="md-nav__link">
+    Data layer
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -329,21 +348,44 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/oddbit-project/pokie/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/oddbit-project/pokie/edit/master/docs/tutorial/architecture.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
 
 
-<h1 id="welcome-to-pokie">Welcome to Pokie</h1>
-<p><a href="https://github.com/oddbit-project/pokie/actions"><img alt="Tests" src="https://github.com/oddbit-project/pokie/workflows/Tests/badge.svg?branch=master" /></a>
-<a href="https://pypi.org/project/pokie/"><img alt="pypi" src="https://img.shields.io/pypi/v/pokie.svg" /></a>
-<a href="https://github.com/oddbit-project/pokie/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/pypi/l/pokie.svg" /></a></p>
-<p>Pokie is a Flask application boilerplate, built on top of <a href="https://github.com/oddbit-project/rick">Rick</a> and 
-<a href="https://github.com/oddbit-project/rick_db">Rick-db</a> components.</p>
-<p>Contents:
-- <a href="tutorial/tutorial/">Pokie Tutorial</a>
-- <a href="views/">Pokie Views</a>
-- <a href="views/rest/">Pokie REST Views</a></p>
+<h1 id="pokie-architecture">Pokie Architecture</h1>
+<p>Pokie promotes both <strong>two-tier</strong> and <strong>three-tier</strong> designs with heavy decoupling, in line with both 
+<strong>clean architecture</strong> principles and <strong>onion architecture</strong> principles. The goal is to have only pure object records being carried
+through the layers, such as <a href="https://oddbit-project.github.io/rick_db/object_mapper/">RickDB's DTO Objects</a>. Communication
+is performed strictly top-down: each layer can only interect with the one immediately below,</p>
+<p>A typical three-tier design has the following layers:</p>
+<h2 id="presentation-layer">Presentation layer</h2>
+<p>This is the level where Flask views are implemented, using class-based definitions; It is responsible for receiving requests, invoking dependencies, and
+assembling responses; No specific business-related logic should reside here, adhering to the philosophy of "thin controllers".</p>
+<p>As a default, these classes are instantiated as short-lived objects, and often only exist during the execution of a request, being 
+destroyed afterwards. As such, all required initialization boilerplate must be as lightweight as possible. </p>
+<p>To override this behaviour and allow for long-lived view objects, please refer to the Flask documentation.  </p>
+<h2 id="service-layer">Service layer</h2>
+<p>The service layer provides internal complex functionality to the presentation layer or for internal operation of the
+application. Services are long-lived (by default atmost one instance created per service), but lazy-loaded - they are
+only created if invoked for.</p>
+<p>Services <strong>cannot interact</strong> with the Presentation layer; they are invoked (via service locator) from the Presentation layer; 
+the service method signature may or may not be part of a formal interface, depending on design requirements.</p>
+<p>Services <strong>can interact</strong> with other services, as well as with the data layer, immediately below. Also, it is quite common
+to implement caching at the service level.</p>
+<p>Keep in mind, services are - from a caller's perspective - stateless; they have no context of the application 
+(eg. if its http or console, what is the current user session, etc), and all operations are - from a caller's perspective -
+atomic. As such, if cache is implemented, it is up to the internal implementation of the service to ensure cache consistency
+in such a way the service retains its stateless and context-less properties.</p>
+<p>Services are invoked by a generic name, via a <strong>MapLoader</strong> object acting as a service locator. The service classes must
+inherit the <strong>Injectable</strong> mixin. </p>
+<h2 id="data-layer">Data layer</h2>
+<p>The data layer provides basic data operations; this is often achieved by using <a href="https://oddbit-project.github.io/rick_db/repository/">RickDb's Repository</a>
+pattern, and DTO classes and objects. Due to the nature of the DTO objects (data-only objects with no business logic or internal state),
+these can be passed upwards into the presentation layer.</p>
+<p>Repositories can either be short-lived or long-lived, depending how they are use inside services; the most common approach
+is to have long-lived repositories defined as properties within the service.</p>
+<p>The instantiation of a repository is direct, but other mechanisms can be used if a greater degree of decoupling is required.</p>
 
               
             </article>
@@ -353,26 +395,6 @@
       </main>
       
         <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-      
-        
-        <a href="tutorial/tutorial/" class="md-footer__link md-footer__link--next" aria-label="Next: Tutorial" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Tutorial
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -394,10 +416,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.0bbba5b5.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.0bbba5b5.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.649a939e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.649a939e.min.js"></script>
       
     
   </body>

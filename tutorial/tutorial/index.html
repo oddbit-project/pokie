@@ -261,47 +261,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    Architecture
-  </a>
-  
-    <nav class="md-nav" aria-label="Architecture">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#presentation-layer" class="md-nav__link">
-    Presentation layer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#service-layer" class="md-nav__link">
-    Service layer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-layer" class="md-nav__link">
-    Data layer
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#application-scaffolding" class="md-nav__link">
-    Application Scaffolding
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#initializing-the-application" class="md-nav__link">
     Initializing the application
   </a>
@@ -370,6 +329,68 @@
   
 
     
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Views
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Views" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Views
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../views/" class="md-nav__link">
+        Pokie Views
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../views/rest/" class="md-nav__link">
+        REST Views
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -399,47 +420,6 @@
         <li class="md-nav__item">
   <a href="#foreword" class="md-nav__link">
     Foreword
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    Architecture
-  </a>
-  
-    <nav class="md-nav" aria-label="Architecture">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#presentation-layer" class="md-nav__link">
-    Presentation layer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#service-layer" class="md-nav__link">
-    Service layer
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-layer" class="md-nav__link">
-    Data layer
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#application-scaffolding" class="md-nav__link">
-    Application Scaffolding
   </a>
   
 </li>
@@ -532,47 +512,11 @@ load time or in runtime.</p>
 <p>Pokie also makes heavy use of classes and namespaces, and often each class will reside in its own file; this requires more
 discipline when scaffolding an application, and (sometimes) writing classes is more verbose than using more traditional
 approaches. This is a calculated tradeoff by design, and not just a mere consequence of heavy pattern usage.</p>
-<h2 id="architecture">Architecture</h2>
-<p>Pokie promotes both <strong>two-tier</strong> and <strong>three-tier</strong> designs with heavy decoupling, in line with both 
-<strong>clean architecture</strong> principles and <strong>onion architecture</strong> principles. The goal is to have only pure object records being carried
-through the layers, such as <a href="https://oddbit-project.github.io/rick_db/object_mapper/">RickDB's DTO Objects</a>. Communication
-is performed strictly top-down: each layer can only interect with the one immediately below,</p>
-<p>A typical three-tier design has the following layers:</p>
-<h3 id="presentation-layer">Presentation layer</h3>
-<p>This is the level where Flask views are implemented, using class-based definitions; It is responsible for receiving requests, invoking dependencies, and
-assembling responses; No specific business-related logic should reside here, adhering to the philosophy of "thin controllers".</p>
-<p>As a default, these classes are instantiated as short-lived objects, and often only exist during the execution of a request, being 
-destroyed afterwards. As such, all required initialization boilerplate must be as lightweight as possible. </p>
-<p>To override this behaviour and allow for long-lived view objects, please refer to the Flask documentation.  </p>
-<h3 id="service-layer">Service layer</h3>
-<p>The service layer provides internal complex functionality to the presentation layer or for internal operation of the
-application. Services are long-lived (by default atmost one instance created per service), but lazy-loaded - they are
-only created if invoked for.</p>
-<p>Services <strong>cannot interact</strong> with the Presentation layer; they are invoked (via service locator) from the Presentation layer; 
-the service method signature may or may not be part of a formal interface, depending on design requirements.</p>
-<p>Services <strong>can interact</strong> with other services, as well as with the data layer, immediately below. Also, it is quite common
-to implement caching at the service level.</p>
-<p>Keep in mind, services are - from a caller's perspective - stateless; they have no context of the application 
-(eg. if its http or console, what is the current user session, etc), and all operations are - from a caller's perspective -
-atomic. As such, if cache is implemented, it is up to the internal implementation of the service to ensure cache consistency
-in such a way the service retains its stateless and context-less properties.</p>
-<p>Services are invoked by a generic name, via a <strong>MapLoader</strong> object acting as a service locator. The service classes must
-inherit the <strong>Injectable</strong> mixin. </p>
-<h3 id="data-layer">Data layer</h3>
-<p>The data layer provides basic data operations; this is often achieved by using <a href="https://oddbit-project.github.io/rick_db/repository/">RickDb's Repository</a>
-pattern, and DTO classes and objects. Due to the nature of the DTO objects (data-only objects with no business logic or internal state),
-these can be passed upwards into the presentation layer.</p>
-<p>Repositories can either be short-lived or long-lived, depending how they are use inside services; the most common approach
-is to have long-lived repositories defined as properties within the service.</p>
-<p>The instantiation of a repository is direct, but other mechanisms can be used if a greater degree of decoupling is required.</p>
-<h2 id="application-scaffolding">Application Scaffolding</h2>
-<p>Pokie applications are organized in modules - contained in folders, and a startup script usually called main.py:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>my_project/
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    project_module/
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>        __init__.py
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        module.py  &lt;- the module initialization class
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    main.py        &lt;- the startup script
-</code></pre></div>
+<p><strong>Contents</strong>:</p>
+<ul>
+<li><a href="../architecture/">Architecture</a></li>
+<li><a href="../scaffolding/">Scaffolding</a></li>
+</ul>
 <h2 id="initializing-the-application">Initializing the application</h2>
 <p>To fully bootstrap the application, three components are required: the configuration container
 (a <em>ShallowContainer</em> instance), the module list to be instantiated, and the factory list to be initialized.</p>
@@ -601,34 +545,34 @@ via environment variables) that starts with <em>/</em> or <em>./</em> will be tr
 originally as uppercase. This allows the configuration class to have internal static configuration attributes that are
 not injectable from environment variables.</p>
 <p>Minimal Pokie environment-based configuration example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># minimal Pokie environment-based configuration</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Pokie&#39;s defaults come from BaseConfigTemplate</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">):</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">pass</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># load configuration and return a ShallowContainer</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># minimal Pokie environment-based configuration</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Pokie&#39;s defaults come from BaseConfigTemplate</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">):</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">pass</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># load configuration and return a ShallowContainer</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </code></pre></div>
 <h4 id="file-based-configuration">File-based configuration</h4>
 <p>File-based configuration is comparatively simpler, as all values are read from the specified file. However, default values
 for settings need also to exist on the file, resulting in more complex files.</p>
 <p>Minimal Pokie file-based configuration example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">json_file</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># load configuration from file and return a ShallowContainer</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">json_file</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">json_file</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># load configuration from file and return a ShallowContainer</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">json_file</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p>config.json contents:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;modules&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;use_auth&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;auth_plugins&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pokie.contrib.auth.plugin.DbAuthPlugin&quot;</span><span class="p">],</span><span class="w"></span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">&quot;auth_secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;very_secret_key&quot;</span><span class="p">,</span><span class="w"></span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="nt">&quot;db_cache_metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span><span class="w"></span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;modules&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w"></span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;use_auth&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;auth_plugins&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pokie.contrib.auth.plugin.DbAuthPlugin&quot;</span><span class="p">],</span><span class="w"></span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">&quot;auth_secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;very_secret_key&quot;</span><span class="p">,</span><span class="w"></span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">&quot;db_cache_metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span><span class="w"></span>
 </code></pre></div></p>
 <h3 id="module-initialization">Module initialization</h3>
 <p>Bootstrapping a Pokie application requires a list of modules to be initialized; Each element of the list is a string with
@@ -642,52 +586,55 @@ database connections or cache connections. The factory list is a list of direct 
 <p>The main.py script is usually a simple file, containing the previously mentioned components. In addition, it should
 also provide the cli wrapper, to automatically also be able to execute cli operations. To enable this feature, just add
 this to the bottom of the file:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
 </code></pre></div>
 <p>A minimal  but complete main.py example:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">from</span> <span class="nn">pokie.core</span> <span class="kn">import</span> <span class="n">FlaskApplication</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kn">from</span> <span class="nn">pokie.core.factories.pgsql</span> <span class="kn">import</span> <span class="n">PgSqlFactory</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># base configuration</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span><span class="p">):</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="k">pass</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># load configuration from ENV</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="c1"># modules to load &amp; initialize:</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1"># the internal auth module, and a custom-defined local module called &#39;my_module&#39;</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pokie.contrib.auth&#39;</span><span class="p">,</span> <span class="s1">&#39;my_module&#39;</span><span class="p">]</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="c1"># factories to run</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># the postgresql initializer, and the flask-login initializer</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="n">factories</span> <span class="o">=</span> <span class="p">[</span><span class="n">PgSqlFactory</span><span class="p">,</span> <span class="n">FlaskLogin</span><span class="p">,</span> <span class="p">]</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="c1"># build Pokie application</span>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="n">main</span> <span class="o">=</span> <span class="n">FlaskApplication</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="c1"># bootstrap Pokie application</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="c1"># the returned object is a Flask application</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="n">app</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">modules</span><span class="p">,</span> <span class="n">factories</span><span class="p">)</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="c1"># if it is a cli invocation</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>    <span class="c1"># run the cli wrapper</span>
-<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>    <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span> <span class="nn">pokie.core</span> <span class="kn">import</span> <span class="n">FlaskApplication</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kn">from</span> <span class="nn">pokie.core.factories.pgsql</span> <span class="kn">import</span> <span class="n">PgSqlFactory</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># base configuration</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span><span class="p">):</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="k">pass</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="c1"># load configuration from ENV</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c1"># modules to load &amp; initialize:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="c1"># the internal auth module, and a custom-defined local module called &#39;my_module&#39;</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pokie.contrib.auth&#39;</span><span class="p">,</span> <span class="s1">&#39;my_module&#39;</span><span class="p">]</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="c1"># factories to run</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="c1"># the postgresql initializer, and the flask-login initializer</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="n">factories</span> <span class="o">=</span> <span class="p">[</span><span class="n">PgSqlFactory</span><span class="p">,</span> <span class="n">FlaskLogin</span><span class="p">,</span> <span class="p">]</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="c1"># build Pokie application</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="n">main</span> <span class="o">=</span> <span class="n">FlaskApplication</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="c1"># bootstrap Pokie application</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="c1"># the returned object is a Flask application</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="n">app</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">modules</span><span class="p">,</span> <span class="n">factories</span><span class="p">)</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="c1"># if it is a cli invocation</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>    <span class="c1"># run the cli wrapper</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>    <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
 </code></pre></div></p>
 <p>For development purposes, the application can be run directly:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$ python3 main.py runserver
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a> * Serving Flask app <span class="s1">&#39;FlaskApplication&#39;</span> <span class="o">(</span>lazy loading<span class="o">)</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a> * Environment: production
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   WARNING: This is a development server. Do not use it <span class="k">in</span> a production deployment.
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>   Use a production WSGI server instead.
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a> * Debug mode: off
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>INFO:werkzeug: * Running on http://127.0.0.1:5000 <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$ python3 main.py runserver -d -r
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a> * Serving Flask app <span class="s1">&#39;FlaskApplication&#39;</span> <span class="o">(</span>lazy loading<span class="o">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a> * Environment: production
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>   WARNING: This is a development server. Do not use it <span class="k">in</span> a production deployment.
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>   Use a production WSGI server instead.
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a> * Debug mode: on
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>INFO:werkzeug: * Running on http://127.0.0.1:5000 <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>INFO:werkzeug: * Restarting with watchdog <span class="o">(</span>inotify<span class="o">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>WARNING:werkzeug: * Debugger is active!
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>INFO:werkzeug: * Debugger PIN: <span class="m">354</span>-883-950
 </code></pre></div></p>
 
               
@@ -716,6 +663,21 @@ this to the bottom of the file:</p>
           </div>
         </a>
       
+      
+        
+        <a href="../../views/" class="md-footer__link md-footer__link--next" aria-label="Next: Pokie Views" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Pokie Views
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
       
     </nav>
   
