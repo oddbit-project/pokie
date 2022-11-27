@@ -1,11 +1,17 @@
+import signal
 from argparse import ArgumentParser
 from typing import List
 
 from rick.mixin import Injectable, Runnable
 from rick.util.loader import load_class
 
-from pokie.constants import DI_APP
+from pokie.constants import DI_APP, DI_SIGNAL, DI_TTY
 from pokie.contrib.base.cli.base import BaseCommand
+
+
+def abort_jobs(di, signal_no, stack_trace):
+    di.get(DI_TTY).write("\nCtrl+C pressed, exiting...")
+    exit(0)
 
 
 class JobBaseCmd(BaseCommand):
@@ -50,7 +56,12 @@ class JobRunCmd(JobBaseCmd):
                 joblist.append(job(di))
 
         # run job list
+        joblist.reverse()
         self.tty.write("\nRunning jobs, press CTRL+C to abort...")
+
+        # register clean shutdown
+        di.get(DI_SIGNAL).add_handler(signal.SIGINT, abort_jobs)
+
         while True:
             for job in joblist:
                 job.run(di)

@@ -9,6 +9,12 @@ from pokie.constants import DI_DB
 
 class AclService(Injectable):
 
+    def get_user_acl_info(self, id_user:int) -> dict:
+        return {
+            'roles': self.list_user_role_id(id_user),
+            'resources': self.list_user_resource_id(id_user)
+        }
+
     def get_user_roles(self, id_user: int) -> List[AclRole]:
         return self.role_repository.find_user_roles(id_user)
 

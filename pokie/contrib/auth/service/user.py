@@ -6,7 +6,7 @@ from rick.mixin import Injectable
 
 from pokie.contrib.auth.constants import SVC_ACL
 from pokie.contrib.auth.repository.user import UserRepository
-from pokie.constants import DI_SERVICE_MANAGER, DI_DB
+from pokie.constants import DI_SERVICES, DI_DB
 from rick.util.datetime import iso8601_now
 from pokie.contrib.auth.dto import UserRecord
 
@@ -20,7 +20,7 @@ class AuthUser(UserMixin):
     def __init__(self, usr: UserRecord, _di: Di):
         self.record = usr
         self.id = usr.id
-        svc_acl = _di.get(DI_SERVICE_MANAGER).get(SVC_ACL)
+        svc_acl = _di.get(DI_SERVICES).get(SVC_ACL)
         self.resources = svc_acl.list_user_resource_id(usr.id)
         self.roles = svc_acl.list_user_role_id(usr.id)
 

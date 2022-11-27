@@ -3,7 +3,7 @@ import getpass
 from rick.form import RequestRecord, field
 
 from pokie.contrib.auth.constants import SVC_USER, SVC_AUTH
-from pokie.constants import DI_SERVICE_MANAGER
+from pokie.constants import DI_SERVICES
 from pokie.contrib.auth.dto import UserRecord
 from pokie.contrib.auth.service import UserService, AuthService
 from pokie.core import CliCommand
@@ -28,7 +28,7 @@ class UserCommand(CliCommand):
 
     @property
     def svc_user(self) -> UserService:
-        return self.get_di().get(DI_SERVICE_MANAGER).get(SVC_USER)
+        return self.get_di().get(DI_SERVICES).get(SVC_USER)
 
 
 class UserCreateCmd(UserCommand):
@@ -206,7 +206,7 @@ class UserModCmd(UserCommand):
 
     @property
     def svc_auth(self) -> AuthService:
-        return self.get_di().get(DI_SERVICE_MANAGER).get(SVC_AUTH)
+        return self.get_di().get(DI_SERVICES).get(SVC_AUTH)
 
 
 class UserListCmd(UserCommand):

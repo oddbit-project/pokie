@@ -4,7 +4,7 @@ from rick.form import RequestRecord
 from flask import request
 from .helpers import ParseListError, parse_list_parameters
 from pokie.rest import RestService, RestServiceMixin
-from pokie.constants import DI_SERVICE_MANAGER
+from pokie.constants import DI_SERVICES
 from inspect import isclass
 
 
@@ -89,7 +89,7 @@ class RestMixin:
 
     @property
     def svc(self) -> RestService:
-        mgr = self.di.get(DI_SERVICE_MANAGER)
+        mgr = self.di.get(DI_SERVICES)
         if self.service_name is None:
             svc_name = "svc.rest.{}.{}".format(self.__module__,
                                                str(self.record_class.__name__).replace('Record', '', 1))

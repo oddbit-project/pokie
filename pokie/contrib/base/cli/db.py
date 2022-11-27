@@ -17,7 +17,7 @@ class DbCliCommand(CliCommand):
 
     # common error messages
     error_nodb = "error: no database connection found in the application"
-    error_noinit = "error: migration manager not installed; run 'dbinit' command first"
+    error_noinit = "error: migration manager not installed; run 'db:init' command first"
 
     def get_db(self) -> Optional[Connection]:
         di = self.get_di()
@@ -107,6 +107,7 @@ class DbCheckCmd(DbCliCommand):
                     self.tty.error("Error : " + str(e))
                     return False
         return True
+
 
 class DbUpdateCmd(DbCliCommand):
     description = "apply pending migrations"

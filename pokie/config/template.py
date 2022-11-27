@@ -36,3 +36,19 @@ class RedisConfigTemplate:
     REDIS_PASSWORD = StrOrFile('')
     REDIS_DB = 0
     REDIS_SSL = '1'
+
+
+class MailConfigTemplate:
+    # Message channel configuration
+    channels = {'0': 'SMTP'}
+    SMTP_HOST = 'localhost'
+    SMTP_PORT = 25
+    SMTP_USE_TLS = False
+    SMTP_USE_SSL = False
+    SMTP_DEBUG = False
+    SMTP_USERNAME = StrOrFile('username')
+    SMTP_PASSWORD = StrOrFile('password')
+    SMTP_DEFAULT_SENDER = None
+    SMTP_TIMEOUT = None
+    SMTP_SSL_KEYFILE = None
+    SMTP_SSL_CERTFILE = None

@@ -7,3 +7,9 @@ class SettingsRecord:
     module = 'module'
     key = 'key'
     value = 'value'
+
+@fieldmapper(tablename='_fixture', pk='id_fixture')
+class FixtureRecord:
+    id = 'id_fixture'
+    applied = 'applied'
+    name = 'name'

@@ -9,7 +9,7 @@ from rick.serializer.json import ExtendedJsonEncoder
 from rick.form import RequestRecord
 
 from .response import JsonRequestError, JsonStatus
-from pokie.constants import HTTP_OK, HTTP_BADREQ, HTTP_INTERNAL_ERROR, HTTP_NOAUTH, HTTP_FORBIDDEN, DI_SERVICE_MANAGER
+from pokie.constants import HTTP_OK, HTTP_BADREQ, HTTP_INTERNAL_ERROR, HTTP_NOAUTH, HTTP_FORBIDDEN, DI_SERVICES
 
 
 class PokieView(MethodView):
@@ -223,7 +223,7 @@ class PokieView(MethodView):
         return self.error("access denied", code=HTTP_NOAUTH)
 
     def get_service(self, service_name):
-        return self.di.get(DI_SERVICE_MANAGER).get(service_name)
+        return self.di.get(DI_SERVICES).get(service_name)
 
 
 class PokieAuthView(PokieView):

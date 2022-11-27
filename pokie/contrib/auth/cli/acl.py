@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from rick.form import RequestRecord, field
 
 from pokie.contrib.auth.constants import SVC_USER, SVC_ACL
-from pokie.constants import DI_SERVICE_MANAGER
+from pokie.constants import DI_SERVICES
 from pokie.contrib.auth.service import UserService, AclService
 from pokie.core import CliCommand
 
@@ -38,11 +38,11 @@ class AclCommand(CliCommand):
 
     @property
     def svc_user(self) -> UserService:
-        return self.get_di().get(DI_SERVICE_MANAGER).get(SVC_USER)
+        return self.get_di().get(DI_SERVICES).get(SVC_USER)
 
     @property
     def svc_acl(self) -> AclService:
-        return self.get_di().get(DI_SERVICE_MANAGER).get(SVC_ACL)
+        return self.get_di().get(DI_SERVICES).get(SVC_ACL)
 
 
 class AclRoleListCmd(AclCommand):
