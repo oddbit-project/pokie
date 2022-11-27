@@ -10,10 +10,11 @@ from rick.event import EventManager
 from rick.util.loader import load_class
 from rick.resource.console import ConsoleWriter
 
-from pokie.constants import DI_CONFIG, DI_SERVICE_MANAGER, DI_FLASK, DI_APP, DI_EVENT, DI_TTY
+from pokie.constants import DI_CONFIG, DI_SERVICES, DI_FLASK, DI_APP, DI_EVENTS, DI_TTY, DI_SIGNAL
 from .module import BaseModule
 from .command import CliCommand
-from ..util.cli_args import ArgParser
+from pokie.util.cli_args import ArgParser
+from .signal import SignalManager
 
 
 class FlaskApplication:
@@ -50,6 +51,12 @@ class FlaskApplication:
         self.app.di = self.di
         self.di.add(DI_FLASK, self.app)
 
+        # initialize signal manager
+        self.di.add(DI_SIGNAL, SignalManager(self.di))
+
+        # initialize TTY
+        self.di.add(DI_TTY, ConsoleWriter())
+
         # load modules
         self.modules = {}
         module_list = [*self.system_modules, *module_list]
@@ -73,7 +80,7 @@ class FlaskApplication:
                 raise RuntimeError(
                     "build(): cannot load service map from module '{}'; attribute must be of type dict".format(name))
         # register service mapper
-        self.di.add(DI_SERVICE_MANAGER, MapLoader(self.di, svc_map))
+        self.di.add(DI_SERVICES, MapLoader(self.di, svc_map))
 
         # run factories
         for factory in factories:
@@ -95,10 +102,7 @@ class FlaskApplication:
                         for handler in handlers:
                             evt_mgr.add_handler(evt_name, handler, int(priority))
 
-        self.di.add(DI_EVENT, evt_mgr)
-
-        # initialize TTY
-        self.di.add(DI_TTY, ConsoleWriter())
+        self.di.add(DI_EVENTS, evt_mgr)
 
         # initialize modules
         for _, module in self.modules.items():

@@ -19,11 +19,12 @@ DI_CONFIG = 'config'
 DI_FLASK = 'app'
 DI_APP = 'main'
 DI_MODULES = 'modules'
-DI_SERVICE_MANAGER = 'svc_manager'
+DI_SERVICES = 'svc_manager'
 DI_DB = 'db'
 DI_REDIS = 'redis'
-DI_EVENT = 'event_manager'
+DI_EVENTS = 'event_manager'
 DI_TTY = 'tty'
+DI_SIGNAL = 'signal'
 
 # DB Configuration
 CFG_DB_NAME = 'db_name'
@@ -42,3 +43,17 @@ CFG_REDIS_SSL = 'redis_ssl'
 
 # Auth Configuration
 CFG_AUTH_SECRET = 'auth_secret'
+
+
+# SMTP Configuration
+CFG_SMTP_HOST = 'smtp_host'
+CFG_SMTP_PORT = 'smtp_port'
+CFG_SMTP_USE_TLS = 'smtp_use_tls'
+CFG_SMTP_USE_SSL = 'smtp_use_ssl'
+CFG_SMTP_DEBUG = 'smtp_debug'
+CFG_SMTP_USERNAME = 'smtp_username'
+CFG_SMTP_PASSWORD = 'smtp_password'
+CFG_SMTP_DEFAULT_SENDER = 'smtp_default_sender'
+CFG_SMTP_TIMEOUT = 'smtp_timeout'
+CFG_SMTP_SSL_KEYFILE = 'smtp_ssl_keyfile'
+CFG_SMTP_SSL_CERTFILE = 'smtp_ssl_certfile'
