@@ -4,7 +4,6 @@ from rick.base import Di
 
 
 class SignalManager(Injectable):
-
     def __init__(self, di: Di):
         super().__init__(di)
         self.handlers = {}
@@ -20,7 +19,6 @@ class SignalManager(Injectable):
             self._register_handler(signalnum)
 
     def _register_handler(self, signalnum: int):
-
         def wrap_signal(signal_no, stack_frame):
             for handler in self.handlers[signal_no]:
                 handler(self.get_di(), signal_no, stack_frame)

@@ -10,9 +10,9 @@ from rick.form import field, RequestRecord
 
 class LoginRequest(RequestRecord):
     fields = {
-        'username': field(validators="required"),
-        'password': field(validators="required"),
-        'remember': field(validators="bool"),
+        "username": field(validators="required"),
+        "password": field(validators="required"),
+        "remember": field(validators="bool"),
     }
 
 
@@ -20,20 +20,20 @@ class LoginView(PokieView):
     request_class = LoginRequest
 
     def post(self):
-        username = self.request.get('username')
-        pwd = self.request.get('password')
-        remember = bool(self.request.get('remember'))
+        username = self.request.get("username")
+        pwd = self.request.get("password")
+        remember = bool(self.request.get("remember"))
 
         user = self.svc_auth().authenticate(username, pwd)
         if user is None:
-            return self.error('invalid credentials')
+            return self.error("invalid credentials")
 
         user.password = None
 
         result = self.svc_acl().get_user_acl_info(user.id)
-        result['user'] = user.asdict()
+        result["user"] = user.asdict()
 
-        self.mgr_event().dispatch(self.di, 'afterLogin', result)
+        self.mgr_event().dispatch(self.di, "afterLogin", result)
 
         # flask-login
         login_user(user, bool(remember))
@@ -54,7 +54,6 @@ class LoginView(PokieView):
 
 
 class LogoutView(PokieAuthView):
-
     def get(self):
         logout_user()
         return self.success()

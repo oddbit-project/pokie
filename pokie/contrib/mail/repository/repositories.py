@@ -7,15 +7,16 @@ from rick.util.datetime import iso8601_now
 
 
 class MessageQueueRepository(Repository):
-
     def __init__(self, db):
         super().__init__(db, MessageQueueRecord)
 
     def find_by_status(self, channel, status, limit=1000) -> List[MessageQueueRecord]:
-        sql, values = self.select() \
-            .where(MessageQueueRecord.status, '=', status) \
-            .where(MessageQueueRecord.channel, '=', channel) \
+        sql, values = (
+            self.select()
+            .where(MessageQueueRecord.status, "=", status)
+            .where(MessageQueueRecord.channel, "=", channel)
             .limit(limit)
+        )
 
         with self._db.cursor() as c:
             return c.fetchall(sql, values, self._record)
@@ -24,29 +25,35 @@ class MessageQueueRepository(Repository):
         record = self.fetch_pk(id)
         if record is not None:
             record.status = status
-            if status == 'S':
+            if status == "S":
                 record.sent = iso8601_now()
             self.update(record)
 
-    def find_first_and_lock(self, channel: int, status: str = 'Q') -> Optional[MessageQueueRecord]:
+    def find_first_and_lock(
+        self, channel: int, status: str = "Q"
+    ) -> Optional[MessageQueueRecord]:
         """
         Locks a queued message and returns the record
         :param status: previous status of record to be locked
         :return:
         """
 
-        qry = self.select(cols=[MessageQueueRecord.id]) \
-            .where(MessageQueueRecord.status, '=', status) \
-            .where(MessageQueueRecord.channel, '=', channel) \
-            .limit(1) \
+        qry = (
+            self.select(cols=[MessageQueueRecord.id])
+            .where(MessageQueueRecord.status, "=", status)
+            .where(MessageQueueRecord.channel, "=", channel)
+            .limit(1)
             .for_update()
+        )
 
-        sql, values = Update(self._dialect) \
-            .table(self._tablename, self._schema) \
-            .values({MessageQueueRecord.status: 'L'}) \
-            .where(MessageQueueRecord.id, '=', qry) \
-            .returning() \
+        sql, values = (
+            Update(self._dialect)
+            .table(self._tablename, self._schema)
+            .values({MessageQueueRecord.status: "L"})
+            .where(MessageQueueRecord.id, "=", qry)
+            .returning()
             .assemble()
+        )
 
         with self._db.cursor() as c:
             result = c.fetchall(sql, values, self._record)
@@ -56,17 +63,20 @@ class MessageQueueRepository(Repository):
 
 
 class MessageTemplateRepository(Repository):
-
     def __init__(self, db):
         super().__init__(db, MessageTemplateRecord)
 
-    def find_template(self, template: str, language: str, channel:int) -> Optional[MessageTemplateRecord]:
-        sql, values = self.select() \
-            .where(MessageTemplateRecord.template, '=', template) \
-            .where(MessageTemplateRecord.language, '=', language) \
-            .where(MessageTemplateRecord.channel, '=', channel) \
-            .limit(1)\
+    def find_template(
+        self, template: str, language: str, channel: int
+    ) -> Optional[MessageTemplateRecord]:
+        sql, values = (
+            self.select()
+            .where(MessageTemplateRecord.template, "=", template)
+            .where(MessageTemplateRecord.language, "=", language)
+            .where(MessageTemplateRecord.channel, "=", channel)
+            .limit(1)
             .assemble()
+        )
 
         with self._db.cursor() as c:
             return c.fetchone(sql, values, self._record)

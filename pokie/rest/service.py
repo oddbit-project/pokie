@@ -5,6 +5,7 @@ from rick.mixin import Injectable
 from rick_db import DbGrid, Repository
 from .mixin import RestServiceMixin
 
+
 class RestService(Injectable, RestServiceMixin):
     record_class = None  # record class
     repository_class = None  # optional custom repository class
@@ -37,11 +38,24 @@ class RestService(Injectable, RestServiceMixin):
     def exists(self, id_record):
         return self.repository.valid_pk(id_record)
 
-    def list(self, search_fields: list, search_text: str = None, match_fields: dict = None, limit: int = None,
-             offset: int = None, sort_fields: dict = None):
+    def list(
+        self,
+        search_fields: list,
+        search_text: str = None,
+        match_fields: dict = None,
+        limit: int = None,
+        offset: int = None,
+        sort_fields: dict = None,
+    ):
         grid = DbGrid(self.repository, search_fields, DbGrid.SEARCH_ANY)
-        return grid.run(None, search_text=search_text, match_fields=match_fields, limit=limit, offset=offset,
-                        sort_fields=sort_fields)
+        return grid.run(
+            None,
+            search_text=search_text,
+            match_fields=match_fields,
+            limit=limit,
+            offset=offset,
+            sort_fields=sort_fields,
+        )
 
     @property
     def repository(self) -> Repository:

@@ -14,7 +14,6 @@ from pokie.core import CliCommand
 
 
 class CodeGenCommand(CliCommand):
-
     def get_db(self) -> Optional[Connection]:
         result = None
         di = self.get_di()
@@ -30,7 +29,7 @@ class CodeGenCommand(CliCommand):
     def parse_table_list(self, mgr: PgInfo, table_expr) -> [List, str]:
         schema = mgr.SCHEMA_DEFAULT
         table_list = []
-        table_expr = table_expr.split('.', 1)
+        table_expr = table_expr.split(".", 1)
         table = table_expr[0]
         if len(table_expr) > 1:
             schema = table_expr[0]
@@ -40,11 +39,15 @@ class CodeGenCommand(CliCommand):
         for tbl in mgr.list_database_tables(schema):
             all_tables.append(tbl.name)
 
-        if table == '*':
+        if table == "*":
             table_list = all_tables
         else:
             if table not in all_tables:
-                self.tty.error("table with name '{}' not found in schema '{}'".format(table, schema))
+                self.tty.error(
+                    "table with name '{}' not found in schema '{}'".format(
+                        table, schema
+                    )
+                )
                 return []
             table_list.append(table)
 
@@ -61,7 +64,11 @@ class CodeGenCommand(CliCommand):
         first = True
         result = []
         for name in table_list:
-            self.tty.write(self.tty.colorizer.white("generating dto for {}.{}...".format(schema, name), attr='bold'))
+            self.tty.write(
+                self.tty.colorizer.white(
+                    "generating dto for {}.{}...".format(schema, name), attr="bold"
+                )
+            )
             spec = pg.table_spec(name, schema)
             result.append(gen.gen_source(spec, camelcase=camel_case, imports=first))
             first = False
@@ -69,14 +76,18 @@ class CodeGenCommand(CliCommand):
         if dest_file is None:
             self.tty.write("\n".join(result))
         else:
-            self.tty.write(self.tty.colorizer.white("writing to file '{}'...".format(dest_file)))
-            with open(dest_file, 'w') as f:
+            self.tty.write(
+                self.tty.colorizer.white("writing to file '{}'...".format(dest_file))
+            )
+            with open(dest_file, "w") as f:
                 f.write("\n".join(result))
 
             self.tty.write(self.tty.colorizer.green("success!"))
         return True
 
-    def pg_gen_request(self, db, table_expr, dest_file, camelcase_id=False, camelcase_cols=False) -> bool:
+    def pg_gen_request(
+        self, db, table_expr, dest_file, camelcase_id=False, camelcase_cols=False
+    ) -> bool:
 
         pg = PgTableSpec(db)
         table_list, schema = self.parse_table_list(pg.manager(), table_expr)
@@ -87,17 +98,30 @@ class CodeGenCommand(CliCommand):
         first = True
         result = []
         for name in table_list:
-            self.tty.write(self.tty.colorizer.white("generating RequestRecord class for {}.{}...".format(schema, name),
-                                                    attr='bold'))
+            self.tty.write(
+                self.tty.colorizer.white(
+                    "generating RequestRecord class for {}.{}...".format(schema, name),
+                    attr="bold",
+                )
+            )
             spec = pg.table_spec(name, schema)
-            result.append(gen.gen_source(spec, camelcase=camelcase_id,db_camelcase=camelcase_cols, imports=first))
+            result.append(
+                gen.gen_source(
+                    spec,
+                    camelcase=camelcase_id,
+                    db_camelcase=camelcase_cols,
+                    imports=first,
+                )
+            )
             first = False
 
         if dest_file is None:
             self.tty.write("\n".join(result))
         else:
-            self.tty.write(self.tty.colorizer.white("writing to file '{}'...".format(dest_file)))
-            with open(dest_file, 'w') as f:
+            self.tty.write(
+                self.tty.colorizer.white("writing to file '{}'...".format(dest_file))
+            )
+            with open(dest_file, "w") as f:
                 f.write("\n".join(result))
 
             self.tty.write(self.tty.colorizer.green("success!"))
@@ -108,9 +132,17 @@ class GenDtoCmd(CodeGenCommand):
     description = "generate dto class from database table"
 
     def arguments(self, parser: ArgumentParser):
-        parser.add_argument('table', type=str, help="source table or view for dto generation")
-        parser.add_argument('-f', dest='file', type=str, help="destination file")
-        parser.add_argument('-c', '--camelcase', action="store_true", default=False, help="camelCase attributes")
+        parser.add_argument(
+            "table", type=str, help="source table or view for dto generation"
+        )
+        parser.add_argument("-f", dest="file", type=str, help="destination file")
+        parser.add_argument(
+            "-c",
+            "--camelcase",
+            action="store_true",
+            default=False,
+            help="camelCase attributes",
+        )
 
     def run(self, args) -> bool:
         db = self.get_db()
@@ -131,10 +163,24 @@ class GenRequestRecordCmd(CodeGenCommand):
     description = "generate RequestRecord class from database table"
 
     def arguments(self, parser: ArgumentParser):
-        parser.add_argument('table', type=str, help="source table or view for request record generation")
-        parser.add_argument('-f', dest='file', type=str, help="destination file")
-        parser.add_argument('-c', '--camelcase-names', action="store_true", default=False, help="camelCase field names")
-        parser.add_argument('-C', '--camelcase-cols', action="store_true", default=False, help="camelCase bind columns")
+        parser.add_argument(
+            "table", type=str, help="source table or view for request record generation"
+        )
+        parser.add_argument("-f", dest="file", type=str, help="destination file")
+        parser.add_argument(
+            "-c",
+            "--camelcase-names",
+            action="store_true",
+            default=False,
+            help="camelCase field names",
+        )
+        parser.add_argument(
+            "-C",
+            "--camelcase-cols",
+            action="store_true",
+            default=False,
+            help="camelCase bind columns",
+        )
 
     def run(self, args) -> bool:
         db = self.get_db()
@@ -148,4 +194,6 @@ class GenRequestRecordCmd(CodeGenCommand):
                 self.tty.error("destination file already exists")
                 return False
 
-        return self.pg_gen_request(db, args.table, args.file, args.camelcase_names, args.camelcase_cols)
+        return self.pg_gen_request(
+            db, args.table, args.file, args.camelcase_names, args.camelcase_cols
+        )

@@ -8,11 +8,10 @@ from pokie.constants import DI_DB
 
 
 class AclService(Injectable):
-
-    def get_user_acl_info(self, id_user:int) -> dict:
+    def get_user_acl_info(self, id_user: int) -> dict:
         return {
-            'roles': self.list_user_role_id(id_user),
-            'resources': self.list_user_resource_id(id_user)
+            "roles": self.list_user_role_id(id_user),
+            "resources": self.list_user_resource_id(id_user),
         }
 
     def get_user_roles(self, id_user: int) -> List[AclRole]:
@@ -49,7 +48,9 @@ class AclService(Injectable):
         return self.role_repository.insert_pk(AclRole(description=description))
 
     def add_resource(self, id_resource: str, description: str) -> int:
-        return self.resource_repository.insert_pk(AclResource(id=id_resource, description=description))
+        return self.resource_repository.insert_pk(
+            AclResource(id=id_resource, description=description)
+        )
 
     def add_role_resource(self, id_role: int, id_resource: int):
         return self.role_repository.add_role_resource(id_role, id_resource)

@@ -8,17 +8,18 @@ from pokie.constants import DI_CONFIG, DI_DB
 
 
 class ValidatorService(Injectable):
-
     def __init__(self, di: Di):
         super().__init__(di)
         cfg = di.get(DI_CONFIG)
         self.db = di.get(DI_DB)
 
         self._cache = None
-        if cfg.get('db_cache_metadata', False):
+        if cfg.get("db_cache_metadata", False):
             self._cache = {}
 
-    def id_exists(self, pk_name:str, pk_value, table_name: str, schema: str = None) -> bool:
+    def id_exists(
+        self, pk_name: str, pk_value, table_name: str, schema: str = None
+    ) -> bool:
         """
         Check if pk_value exists on the specified table as primary key value
 

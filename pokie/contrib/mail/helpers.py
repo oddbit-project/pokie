@@ -6,14 +6,12 @@ from pokie.contrib.mail.service import MessageQueueService
 
 
 class MessageBuilder:
-
     def __init__(self, template: MessageTemplateRecord):
         self.template = template
 
     def assemble(self, msg_from, msg_to, data: dict):
         message = MessageQueueRecord(
-            channel=self.template.channel,
-            status=MessageQueueService.STATUS_QUEUED
+            channel=self.template.channel, status=MessageQueueService.STATUS_QUEUED
         )
         if len(self.template.placeholders) > 0:
             tmp = json.loads(self.template.placeholders)
@@ -28,10 +26,18 @@ class MessageBuilder:
         message.msg_from = msg_from
         message.msg_to = msg_to
         message.title = self._replace(data, self.template.subject)
-        message.content = self._replace(data, self.template.body) if len(self.template.body) > 0 else ''
-        message.html = self._replace(data, self.template.html) if len(self.template.html) > 0 else None
+        message.content = (
+            self._replace(data, self.template.body)
+            if len(self.template.body) > 0
+            else ""
+        )
+        message.html = (
+            self._replace(data, self.template.html)
+            if len(self.template.html) > 0
+            else None
+        )
         return message
 
     def _replace(self, replace_map: dict, src) -> str:
-        regexp = re.compile('|'.join(map(re.escape, replace_map)))
+        regexp = re.compile("|".join(map(re.escape, replace_map)))
         return regexp.sub(lambda match: replace_map[match.group(0)], src)

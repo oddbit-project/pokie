@@ -47,7 +47,6 @@ class AuthUser(UserMixin):
 
 
 class UserService(Injectable):
-
     def get_by_id(self, id_user: int) -> Optional[UserRecord]:
         """
         Find user by id

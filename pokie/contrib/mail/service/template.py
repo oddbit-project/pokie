@@ -9,11 +9,14 @@ from pokie.contrib.mail.repository import MessageTemplateRepository
 
 
 class MessageTemplateService(Injectable):
-
-    def get_template(self, template: str, locale: str, channel: int) -> Optional[MessageTemplateRecord]:
+    def get_template(
+        self, template: str, locale: str, channel: int
+    ) -> Optional[MessageTemplateRecord]:
         return self.repo_template.find_template(template, locale, channel)
 
-    def get_builder(self, template: str, locale: str, channel: int) -> Optional[MessageBuilder]:
+    def get_builder(
+        self, template: str, locale: str, channel: int
+    ) -> Optional[MessageBuilder]:
         template = self.repo_template.find_template(template, locale, channel)
         if template is None:
             return None

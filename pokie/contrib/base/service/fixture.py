@@ -14,7 +14,6 @@ class FixtureError(Exception):
 
 
 class FixtureService(Injectable):
-
     def __init__(self, di: Di):
         super().__init__(di)
         self.db = di.get(DI_DB)
@@ -33,10 +32,14 @@ class FixtureService(Injectable):
         result = []
         app = self.get_di().get(DI_APP)
         for name, module in app.modules.items():
-            fixtures = getattr(module, 'fixtures', None)
+            fixtures = getattr(module, "fixtures", None)
             if fixtures:
                 if not isinstance(fixtures, (list, tuple)):
-                    raise TypeError("FixtureManager: invalid data type for fixture list in module '{}'".format(name))
+                    raise TypeError(
+                        "FixtureManager: invalid data type for fixture list in module '{}'".format(
+                            name
+                        )
+                    )
                 result.extend(fixtures)
         return result
 
@@ -48,11 +51,16 @@ class FixtureService(Injectable):
         """
         cls = load_class(fixture_name)
         if cls is None:
-            raise FixtureError("FixtureManager: cannot locate fixture class '{}'".format(fixture_name))
+            raise FixtureError(
+                "FixtureManager: cannot locate fixture class '{}'".format(fixture_name)
+            )
 
         if not issubclass(cls, (Injectable, Runnable)):
             raise FixtureError(
-                "FixtureManager: class '{}' must implement Injectable, Runnable mixins".format(fixture_name))
+                "FixtureManager: class '{}' must implement Injectable, Runnable mixins".format(
+                    fixture_name
+                )
+            )
 
         di = self.get_di()
         fixture = cls(di)

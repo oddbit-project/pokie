@@ -11,7 +11,6 @@ from pokie.contrib.mail.service import MessageQueueService
 
 
 class MailJob(Injectable, Runnable):
-
     def __init__(self, di: Di):
         super().__init__(di)
         self.tty = di.get(DI_TTY) if di.has(DI_TTY) else ConsoleWriter()
@@ -28,24 +27,33 @@ class MailQueueJob(MailJob):
         total = 0
         mailer = self.get_smtp_mailer()
         while total < self.MAILS_PER_RUN:
-            record = self.svc_queue.fetch_for_processing(MessageQueueService.CHANNEL_SMTP)
+            record = self.svc_queue.fetch_for_processing(
+                MessageQueueService.CHANNEL_SMTP
+            )
             if record is None:
                 # no more messages, exit
                 return True
 
             try:
-                if mailer.send_mail(
+                if (
+                    mailer.send_mail(
                         record.title,
                         record.content,
                         record.msg_from,
-                        record.msg_to.split(','),
-                        html_message=record.html
-                ) > 0:
-                    self.svc_queue.update_status(record.id, MessageQueueService.STATUS_SENT)
+                        record.msg_to.split(","),
+                        html_message=record.html,
+                    )
+                    > 0
+                ):
+                    self.svc_queue.update_status(
+                        record.id, MessageQueueService.STATUS_SENT
+                    )
             except Exception as e:
                 raise e
                 self.tty.error(str(e))
-                self.svc_queue.update_status(record.id, MessageQueueService.STATUS_FAILED)
+                self.svc_queue.update_status(
+                    record.id, MessageQueueService.STATUS_FAILED
+                )
                 return False
         return True
 

@@ -10,7 +10,15 @@ from rick.event import EventManager
 from rick.util.loader import load_class
 from rick.resource.console import ConsoleWriter
 
-from pokie.constants import DI_CONFIG, DI_SERVICES, DI_FLASK, DI_APP, DI_EVENTS, DI_TTY, DI_SIGNAL
+from pokie.constants import (
+    DI_CONFIG,
+    DI_SERVICES,
+    DI_FLASK,
+    DI_APP,
+    DI_EVENTS,
+    DI_TTY,
+    DI_SIGNAL,
+)
 from .module import BaseModule
 from .command import CliCommand
 from pokie.util.cli_args import ArgParser
@@ -18,10 +26,12 @@ from .signal import SignalManager
 
 
 class FlaskApplication:
-    module_file_name = 'module'  # module class file name
-    module_class_name = 'Module'  # default module class name
+    module_file_name = "module"  # module class file name
+    module_class_name = "Module"  # default module class name
 
-    system_modules = ['pokie.contrib.base', ]  # system modules to always be included
+    system_modules = [
+        "pokie.contrib.base",
+    ]  # system modules to always be included
 
     def __init__(self, cfg: Container):
         self.di = Di()
@@ -61,24 +71,37 @@ class FlaskApplication:
         self.modules = {}
         module_list = [*self.system_modules, *module_list]
         for name in module_list:
-            cls = load_class("{}.{}.{}".format(name, self.module_file_name, self.module_class_name))
+            cls = load_class(
+                "{}.{}.{}".format(name, self.module_file_name, self.module_class_name)
+            )
             if cls is None:
-                raise RuntimeError("build(): cannot load module '{}' - Module() class not found".format(name))
+                raise RuntimeError(
+                    "build(): cannot load module '{}' - Module() class not found".format(
+                        name
+                    )
+                )
             if not issubclass(cls, BaseModule):
-                raise RuntimeError("build(): Class Module on '{}' must extend BaseModule".format(name))
+                raise RuntimeError(
+                    "build(): Class Module on '{}' must extend BaseModule".format(name)
+                )
             if name in self.modules.keys():
-                raise ValueError("build(): Module named '{}' already exists".format(name))
+                raise ValueError(
+                    "build(): Module named '{}' already exists".format(name)
+                )
             self.modules[name] = cls(self.di)
 
         # build service map
         svc_map = {}
         for name, m in self.modules.items():
-            services = getattr(m, 'services', {})
+            services = getattr(m, "services", {})
             if type(services) is dict:
                 svc_map.update(services)
             else:
                 raise RuntimeError(
-                    "build(): cannot load service map from module '{}'; attribute must be of type dict".format(name))
+                    "build(): cannot load service map from module '{}'; attribute must be of type dict".format(
+                        name
+                    )
+                )
         # register service mapper
         self.di.add(DI_SERVICES, MapLoader(self.di, svc_map))
 
@@ -95,7 +118,7 @@ class FlaskApplication:
         # parse events from modules
         evt_mgr = EventManager()
         for _, module in self.modules.items():
-            module_events = getattr(module, 'events', None)
+            module_events = getattr(module, "events", None)
             if isinstance(module_events, dict):
                 for evt_name, evt_details in module_events.items():
                     for priority, handlers in evt_details.items():
@@ -119,21 +142,23 @@ class FlaskApplication:
         :param kwargs: optional parameters for ArgumentParse
         :return:
         """
-        if 'writer' in kwargs.keys():
-            tty = kwargs['writer']
+        if "writer" in kwargs.keys():
+            tty = kwargs["writer"]
         else:
             tty = ConsoleWriter()
 
         # default command when no args detected
-        command = 'list'
+        command = "list"
         # extract command if specified
         if len(sys.argv) > 1:
             command = str(sys.argv[1])
 
-        if 'add_help' not in kwargs.keys():
-            kwargs['add_help'] = False
-        if 'usage' not in kwargs.keys():
-            kwargs['usage'] = "{} {} [OPTIONS...]".format(os.path.basename(sys.argv[0]), command)
+        if "add_help" not in kwargs.keys():
+            kwargs["add_help"] = False
+        if "usage" not in kwargs.keys():
+            kwargs["usage"] = "{} {} [OPTIONS...]".format(
+                os.path.basename(sys.argv[0]), command
+            )
 
         parser = ArgParser(**kwargs)
 
@@ -142,9 +167,15 @@ class FlaskApplication:
             if command in module.cmd.keys():
                 handler = load_class(module.cmd[command])
                 if not handler:
-                    raise RuntimeError("cli(): handler class '{}' not found".format(module.cmd[command]))
+                    raise RuntimeError(
+                        "cli(): handler class '{}' not found".format(
+                            module.cmd[command]
+                        )
+                    )
                 if not issubclass(handler, CliCommand):
-                    raise RuntimeError("cli(): command handler does not extend CliCommand")
+                    raise RuntimeError(
+                        "cli(): command handler does not extend CliCommand"
+                    )
                 handler = handler(self.di, writer=tty)  # type: CliCommand
                 handler.arguments(parser)
                 args = parser.parse_args(sys.argv[2:])

@@ -10,6 +10,7 @@ from pokie.contrib.auth.constants import SVC_USER
 from pokie.contrib.auth.service import UserService
 import jwt
 
+
 class JwtAuthPlugin(AuthPluginInterface):
     capabilities = [AuthPluginInterface.UPDATE_PASSWORD]
 

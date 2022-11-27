@@ -35,7 +35,9 @@ class RestMixin:
         :return:
         """
         search_fields = self.search_fields if self.search_fields is not None else []
-        text, match, limit, offset, sort = parse_list_parameters(request.args, self.record_class)
+        text, match, limit, offset, sort = parse_list_parameters(
+            request.args, self.record_class
+        )
 
         # automatically cap records
         if offset is None and limit is None and self.list_limit > 0:
@@ -48,11 +50,9 @@ class RestMixin:
                 match_fields=match,
                 limit=limit,
                 offset=offset,
-                sort_fields=sort)
-            result = {
-                'total': count,
-                'rows': data
-            }
+                sort_fields=sort,
+            )
+            result = {"total": count, "rows": data}
             return self.success(result)
         except ParseListError as e:
             return self.error(str(e))
@@ -91,13 +91,15 @@ class RestMixin:
     def svc(self) -> RestService:
         mgr = self.di.get(DI_SERVICES)
         if self.service_name is None:
-            svc_name = "svc.rest.{}.{}".format(self.__module__,
-                                               str(self.record_class.__name__).replace('Record', '', 1))
+            svc_name = "svc.rest.{}.{}".format(
+                self.__module__,
+                str(self.record_class.__name__).replace("Record", "", 1),
+            )
             if mgr.contains(svc_name):
                 return mgr.get(svc_name)
 
             # register new service that relies on a RestService instance
-            mgr.add(svc_name, 'pokie.rest.RestService')
+            mgr.add(svc_name, "pokie.rest.RestService")
             # get new service to patch it
             svc = mgr.get(svc_name)
             # patch it

@@ -9,7 +9,6 @@ from pokie.contrib.base.repository.settings import SettingsRepository
 
 
 class SettingsService(Injectable):
-
     def __init__(self, di: Di):
         super().__init__(di)
         self.db = di.get(DI_DB)

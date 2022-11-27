@@ -8,18 +8,18 @@ class Module(BaseModule):
     description = "Mail template module"
 
     services = {
-        SVC_MESSAGE_TEMPLATE: 'pokie.contrib.mail.service.MessageTemplateService',
-        SVC_MESSAGE_QUEUE: 'pokie.contrib.mail.service.MessageQueueService',
+        SVC_MESSAGE_TEMPLATE: "pokie.contrib.mail.service.MessageTemplateService",
+        SVC_MESSAGE_QUEUE: "pokie.contrib.mail.service.MessageQueueService",
     }
 
     cmd = {
-        #msg:queued
-        #msg:sent
-        #msg:error
-        #msg:purge
-        #msg:read
+        # msg:queued
+        # msg:sent
+        # msg:error
+        # msg:purge
+        # msg:read
     }
 
     jobs = [
-        'pokie.contrib.mail.job.MailQueueJob',
+        "pokie.contrib.mail.job.MailQueueJob",
     ]

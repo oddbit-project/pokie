@@ -15,11 +15,10 @@ def abort_jobs(di, signal_no, stack_trace):
 
 
 class JobBaseCmd(BaseCommand):
-
     def get_jobs(self) -> dict:
         result = {}
         for module_name, module in self.get_di().get(DI_APP).modules.items():
-            jobs = getattr(module, 'jobs', [])
+            jobs = getattr(module, "jobs", [])
             if len(jobs) > 0:
                 result[module_name] = jobs
         return result
@@ -32,7 +31,9 @@ class JobListCmd(JobBaseCmd):
         for name, jobs in self.get_jobs().items():
             self.tty.write("Worker Jobs for module {}:".format(name))
             for job in jobs:
-                self.tty.write(self.tty.colorizer.white("   {}".format(job), attr='bold'))
+                self.tty.write(
+                    self.tty.colorizer.white("   {}".format(job), attr="bold")
+                )
 
         return True
 
@@ -50,9 +51,15 @@ class JobRunCmd(JobBaseCmd):
                 self.tty.write("Preparing job  '{}'...".format(job_name))
                 job = load_class(job_name)
                 if job is None:
-                    raise ValueError("Non-existing job class '{}' in module {}".format(job_name, module_name))
+                    raise ValueError(
+                        "Non-existing job class '{}' in module {}".format(
+                            job_name, module_name
+                        )
+                    )
                 if not issubclass(job, (Injectable, Runnable)):
-                    raise RuntimeError("Class '{}' must implement Injectable, Runnable interfaces")
+                    raise RuntimeError(
+                        "Class '{}' must implement Injectable, Runnable interfaces"
+                    )
                 joblist.append(job(di))
 
         # run job list

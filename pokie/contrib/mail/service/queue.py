@@ -7,10 +7,10 @@ from rick.mixin import Injectable
 
 
 class MessageQueueService(Injectable):
-    STATUS_QUEUED = 'Q'
-    STATUS_LOCKED = 'L'
-    STATUS_FAILED = 'F'
-    STATUS_SENT = 'S'
+    STATUS_QUEUED = "Q"
+    STATUS_LOCKED = "L"
+    STATUS_FAILED = "F"
+    STATUS_SENT = "S"
 
     # communication channels
     CHANNEL_SMTP = 0
@@ -18,7 +18,9 @@ class MessageQueueService(Injectable):
     def queue(self, record: MessageQueueRecord) -> str:
         return self.repo_queue.insert(record, cols=[MessageQueueRecord.id])
 
-    def list_by_status(self, channel: int, status: str, limit: int = 1000) -> List[MessageQueueRecord]:
+    def list_by_status(
+        self, channel: int, status: str, limit: int = 1000
+    ) -> List[MessageQueueRecord]:
         return self.repo_queue.find_by_status(channel, status, limit)
 
     def update_status(self, id, status):

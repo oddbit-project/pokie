@@ -9,7 +9,6 @@ from pokie.plugins.auth import AuthPluginInterface
 
 
 class AuthService(Injectable):
-
     def authenticate(self, username: str, password: str) -> Optional[AuthUser]:
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
             if plugin.valid_username(username):
@@ -20,7 +19,9 @@ class AuthService(Injectable):
 
     def update_password(self, username: str, password: str) -> bool:
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
-            if plugin.valid_username(username) and plugin.has_capability(AuthPluginInterface.UPDATE_PASSWORD):
+            if plugin.valid_username(username) and plugin.has_capability(
+                AuthPluginInterface.UPDATE_PASSWORD
+            ):
                 return plugin.update_password(username, password)
         return False
 
@@ -43,14 +44,22 @@ class AuthService(Injectable):
         di = self.get_di()
         cfg = di.get(DI_CONFIG)
         plugins = []
-        auth_plugins = cfg.get('auth_plugins', [])
+        auth_plugins = cfg.get("auth_plugins", [])
         if len(auth_plugins) == 0:
-            raise RuntimeError("AuthService: authentication plugins missing from configuration")
+            raise RuntimeError(
+                "AuthService: authentication plugins missing from configuration"
+            )
         for name in auth_plugins:
             plugin = load_class(name)
             if plugin is None:
-                raise RuntimeError("AuthService: auth plugin '{}' not found".format(name))
+                raise RuntimeError(
+                    "AuthService: auth plugin '{}' not found".format(name)
+                )
             if not issubclass(plugin, AuthPluginInterface):
-                raise RuntimeError("AuthService: auth plugin '{}' must implement AuthPlugin interface".format(name))
+                raise RuntimeError(
+                    "AuthService: auth plugin '{}' must implement AuthPlugin interface".format(
+                        name
+                    )
+                )
             plugins.append(plugin(di))
         return plugins

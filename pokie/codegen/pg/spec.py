@@ -8,7 +8,6 @@ from pokie.codegen.spec import TableSpec, FieldSpec
 
 
 class PgTableSpec:
-
     def __init__(self, conn: Connection):
         self.db = conn
         self.mgr = PgInfo(conn)
@@ -44,22 +43,18 @@ class PgTableSpec:
 
     def spec_bpchar(self, f: ColumnRecord) -> dict:
         if f.maxlen is not None:
-            return {
-                'maxlen': f.maxlen
-            }
+            return {"maxlen": f.maxlen}
         return {}
 
     def spec_varchar(self, f: ColumnRecord) -> dict:
         if f.maxlen is not None:
-            return {
-                'maxlen': f.maxlen
-            }
+            return {"maxlen": f.maxlen}
         return {}
 
     def spec_numeric(self, f: ColumnRecord) -> dict:
         return {
-            'precision': f.numeric_precision,
-            'cardinal': f.numeric_precision_cardinal
+            "precision": f.numeric_precision,
+            "cardinal": f.numeric_precision_cardinal,
         }
 
     def table_spec(self, table, schema: str = None) -> TableSpec:
@@ -79,7 +74,7 @@ class PgTableSpec:
         pk_auto = False
 
         for name, f in fields.items():
-            if f.is_identity == 'YES':
+            if f.is_identity == "YES":
                 identity = name
                 break
 
@@ -92,7 +87,10 @@ class PgTableSpec:
         if pk is not None:
             if pk not in fields.keys():
                 raise RuntimeError(
-                    "Primary key '{}' does not exist in table field list for table {}.{}".format(pk, schema, table))
+                    "Primary key '{}' does not exist in table field list for table {}.{}".format(
+                        pk, schema, table
+                    )
+                )
 
             if not pk_auto:
                 # pk_auto is true if pk is serial or if pk is an identity column
@@ -103,7 +101,7 @@ class PgTableSpec:
             is_pk = pk == f.column
             auto = is_pk and pk_auto
 
-            spec_formatter = getattr(self, 'spec_' + f.udt_name, None)
+            spec_formatter = getattr(self, "spec_" + f.udt_name, None)
             type_spec = {}
             if callable(spec_formatter):
                 type_spec = spec_formatter(f)
@@ -112,13 +110,14 @@ class PgTableSpec:
                 name=f.column,
                 pk=is_pk,
                 auto=auto,
-                nullable=f.is_nullable == 'YES',
+                nullable=f.is_nullable == "YES",
                 fk=False,
                 fk_table=None,
                 fk_schema=None,
                 fk_column=None,
                 dtype=f.udt_name,
-                dtype_spec=type_spec)
+                dtype_spec=type_spec,
+            )
 
             if f.column in fks.keys():
                 field.fk = True
