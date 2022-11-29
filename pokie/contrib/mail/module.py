@@ -13,11 +13,8 @@ class Module(BaseModule):
     }
 
     cmd = {
-        # msg:queued
-        # msg:sent
-        # msg:error
-        # msg:purge
-        # msg:read
+        'mail:purge': 'pokie.contrib.mail.cli.PurgeQueueCmd',
+        'mail:run': 'pokie.contrib.mail.cli.RunQueueCmd',
     }
 
     jobs = [
