@@ -33,6 +33,14 @@ class MessageQueueService(Injectable):
         """
         return self.repo_queue.find_first_and_lock(channel, self.STATUS_QUEUED)
 
+    def purge(self):
+        """
+        Removes all queued records
+        :return:
+        """
+        return self.repo_queue.truncate()
+
     @property
     def repo_queue(self) -> MessageQueueRepository:
         return MessageQueueRepository(self.get_di().get(DI_DB))
+
