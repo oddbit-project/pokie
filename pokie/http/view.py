@@ -2,7 +2,8 @@ import json
 import logging
 from typing import Any, Optional, Callable
 from flask import request
-from flask.views import MethodView, ResponseReturnValue
+from flask.views import MethodView
+from flask.typing import ResponseReturnValue
 from flask import current_app, jsonify
 from flask_login import current_user
 from rick.serializer.json import ExtendedJsonEncoder
@@ -28,7 +29,7 @@ class PokieView(MethodView):
     request_class = None  # type: RequestRecord
 
     def __init__(self, *args, **kwargs):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.di = current_app.di
 
         # methods where automatic body deserialization is attempted
