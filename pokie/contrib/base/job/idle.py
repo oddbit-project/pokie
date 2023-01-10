@@ -12,7 +12,7 @@ class IdleJob(Injectable, Runnable):
     def __init__(self, di: Di):
         super().__init__(di)
         cfg = di.get(DI_CONFIG)
-        self.interval = int(cfg.get('job_idle_interval', self.DEFAULT_IDLE_INTERVAL))
+        self.interval = int(cfg.get("job_idle_interval", self.DEFAULT_IDLE_INTERVAL))
 
     def run(self, di: Di):
         sleep(self.interval)

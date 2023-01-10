@@ -6,8 +6,9 @@ from pokie.codegen.textfile import TextBuffer
 
 
 class RecordGenerator:
-
-    def gen_source(self, spec: TableSpec, camelcase=False, gen: TextBuffer = None, imports=True):
+    def gen_source(
+        self, spec: TableSpec, camelcase=False, gen: TextBuffer = None, imports=True
+    ):
         """
         Generate a RickDB Record class source definition
 
@@ -23,15 +24,21 @@ class RecordGenerator:
         if imports is True:
             gen.writeln("from rick_db import fieldmapper", newlines=3)
 
-        gen.writeln("@fieldmapper(tablename='{}', pk='{}', schema='{}')".format(spec.table, spec.pk, spec.schema))
+        gen.writeln(
+            "@fieldmapper(tablename='{}', pk='{}', schema='{}')".format(
+                spec.table, spec.pk, spec.schema
+            )
+        )
         gen.writeln("class {}Record:".format(snake_to_pascal(spec.table)))
         for field in spec.fields:
             if field.pk is False:
                 attr = field.name if camelcase is False else snake_to_camel(field.name)
             else:
-                attr = 'id'
+                attr = "id"
 
-            gen.writeln("{name} = '{field}'".format(name=attr, field=field.name), level=1)
+            gen.writeln(
+                "{name} = '{field}'".format(name=attr, field=field.name), level=1
+            )
         gen.writeln(gen.newline())
         return gen.read()
 
@@ -50,7 +57,7 @@ class RecordGenerator:
             if field.pk is False:
                 attr = field.name if camelcase is False else snake_to_camel(field.name)
             else:
-                attr = 'id'
+                attr = "id"
 
             setattr(clsRecord, attr, field.name)
 

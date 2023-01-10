@@ -1,1 +1,1 @@
-from .settings import SettingsRecord
+from .records import SettingsRecord, FixtureRecord

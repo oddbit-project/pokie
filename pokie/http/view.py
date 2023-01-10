@@ -2,32 +2,40 @@ import json
 import logging
 from typing import Any, Optional, Callable
 from flask import request
-from flask.views import MethodView, ResponseReturnValue
+from flask.views import MethodView
+from flask.typing import ResponseReturnValue
 from flask import current_app, jsonify
 from flask_login import current_user
 from rick.serializer.json import ExtendedJsonEncoder
 from rick.form import RequestRecord
 
 from .response import JsonRequestError, JsonStatus
-from pokie.constants import HTTP_OK, HTTP_BADREQ, HTTP_INTERNAL_ERROR, HTTP_NOAUTH, HTTP_FORBIDDEN, DI_SERVICE_MANAGER
+from pokie.constants import (
+    HTTP_OK,
+    HTTP_BADREQ,
+    HTTP_INTERNAL_ERROR,
+    HTTP_NOAUTH,
+    HTTP_FORBIDDEN,
+    DI_SERVICES,
+)
 
 
 class PokieView(MethodView):
     # allowed HTTP methods
-    allow_methods = ['get', 'post', 'put', 'patch', 'delete', 'head']
+    allow_methods = ["get", "post", "put", "patch", "delete", "head"]
 
     # optional RequestRecord class for request body unmarshall
     # see self.request below
-    request_class = None # type: RequestRecord
+    request_class = None  # type: RequestRecord
 
     def __init__(self, *args, **kwargs):
-        super().__init__()
+        super().__init__(*args, **kwargs)
         self.di = current_app.di
 
         # methods where automatic body deserialization is attempted
         #
         # names must be lowercase
-        self.methods_unmarshall_request = ['post', 'put', 'patch']
+        self.methods_unmarshall_request = ["post", "put", "patch"]
 
         # automatic request de-serialization
         #
@@ -40,7 +48,9 @@ class PokieView(MethodView):
         # (method:str, *args: t.Any, **kwargs: t.Any) -> Optional[ResponseReturnValue]
         # if they generate a response other than None, dispatch is aborted and that response is used
         # Note: they are not chained - eg. the first one to return something aborts dispatching
-        self.dispatch_hooks = ['_hook_request', ]
+        self.dispatch_hooks = [
+            "_hook_request",
+        ]
 
         # optional override of internal options
         for name, value in kwargs.items():
@@ -48,7 +58,9 @@ class PokieView(MethodView):
             if attr is not None and not callable(attr):
                 setattr(self, name, value)
 
-    def _hook_request(self, method: str, *args: Any, **kwargs: Any) -> Optional[ResponseReturnValue]:
+    def _hook_request(
+        self, method: str, *args: Any, **kwargs: Any
+    ) -> Optional[ResponseReturnValue]:
         """
         Dispatch hook: de-serialize request
         If body is not json, will use flask form data
@@ -74,12 +86,14 @@ class PokieView(MethodView):
             data = request.form.items()
 
         if data is None or len(data) == 0:
-            return self.error('empty body')
+            return self.error("empty body")
 
         # validate request body
         self.request = self.request_class()
         if not isinstance(self.request, RequestRecord):
-            raise ValueError("_pre_request(): invalid request class; class must extend RequestRecord")
+            raise ValueError(
+                "_pre_request(): invalid request class; class must extend RequestRecord"
+            )
         if self.request.is_valid(data):
             return None
         return self.request_error(self.request)
@@ -105,9 +119,9 @@ class PokieView(MethodView):
         if handler is None and method == "head":
             handler = getattr(self, "get", None)
         # support for named views
-        if '_action_method_' in kwargs.keys():
-            handler = getattr(self, kwargs['_action_method_'], None)
-            del kwargs['_action_method_']
+        if "_action_method_" in kwargs.keys():
+            handler = getattr(self, kwargs["_action_method_"], None)
+            del kwargs["_action_method_"]
 
         assert handler is not None, "Cannot resolve handler method for dispatch"
 
@@ -126,7 +140,7 @@ class PokieView(MethodView):
 
     @classmethod
     def view_method(
-            cls, action_method: str, name=None, *class_args: Any, **class_kwargs: Any
+        cls, action_method: str, name=None, *class_args: Any, **class_kwargs: Any
     ) -> Callable:
         """
         Variant of Flask's as_view that supports custom handlers for actions
@@ -135,15 +149,17 @@ class PokieView(MethodView):
         :param class_args: 
         :param class_kwargs: 
         :return: Callable
-        """"""
+        """ """
         """
         if name is None:
-            name = ".".join([cls.__module__, cls.__name__, action_method]).replace('.', '_')
+            name = ".".join([cls.__module__, cls.__name__, action_method]).replace(
+                ".", "_"
+            )
 
         def view(*args: Any, **kwargs: Any) -> ResponseReturnValue:
             self = view.view_class(*class_args, **class_kwargs)  # type: ignore
             # add the action method to the dispatch arguments
-            kwargs['_action_method_'] = action_method
+            kwargs["_action_method_"] = action_method
             return current_app.ensure_sync(self.dispatch_request)(*args, **kwargs)
 
         if cls.decorators:
@@ -174,9 +190,13 @@ class PokieView(MethodView):
         if e is not None:
             logging.error(e)
         if request.is_json:
-            return self.error('bad request')
-        return "<!doctype html>\n<html lang=en>\n<title>{code} {err}</title>\n<h1>{err}</h1>\n".format(code=HTTP_BADREQ,
-                                                                                                       err="Bad Request"), HTTP_BADREQ
+            return self.error("bad request")
+        return (
+            "<!doctype html>\n<html lang=en>\n<title>{code} {err}</title>\n<h1>{err}</h1>\n".format(
+                code=HTTP_BADREQ, err="Bad Request"
+            ),
+            HTTP_BADREQ,
+        )
 
     def json(self, data, code=HTTP_OK):
         """
@@ -192,26 +212,34 @@ class PokieView(MethodView):
             indent = 2
             separators = (", ", ": ")
 
-        data = json.dumps(data, indent=indent, separators=separators, cls=ExtendedJsonEncoder)
-        return current_app.response_class(data, status=code, mimetype=current_app.config["JSONIFY_MIMETYPE"])
+        data = json.dumps(
+            data, indent=indent, separators=separators, cls=ExtendedJsonEncoder
+        )
+        return current_app.response_class(
+            data, status=code, mimetype=current_app.config["JSONIFY_MIMETYPE"]
+        )
 
     def error(self, message=None, code=HTTP_BADREQ):
-        data = JsonStatus(success=False, message=message if message else "operation failed")
+        data = JsonStatus(
+            success=False, message=message if message else "operation failed"
+        )
         return self.json(data, code)
 
     def request_error(self, req: RequestRecord, code=HTTP_BADREQ):
-        return self.json(JsonRequestError(success=False, formError=req.get_errors()), code)
+        return self.json(
+            JsonRequestError(success=False, formError=req.get_errors()), code
+        )
 
-    def success_message(self, message=''):
+    def success_message(self, message=""):
         return self.json(JsonStatus(success=True, message=message))
 
     def success(self, data=None, code=HTTP_OK):
         if data is None:
-            return self.json(JsonStatus(success=True, message=''), code=code)
+            return self.json(JsonStatus(success=True, message=""), code=code)
         return self.json(data, code)
 
     def empty_body(self):
-        return self.error('empty body', code=HTTP_BADREQ)
+        return self.error("empty body", code=HTTP_BADREQ)
 
     def not_found(self):
         return self.error("record not found", code=HTTP_BADREQ)
@@ -223,7 +251,7 @@ class PokieView(MethodView):
         return self.error("access denied", code=HTTP_NOAUTH)
 
     def get_service(self, service_name):
-        return self.di.get(DI_SERVICE_MANAGER).get(service_name)
+        return self.di.get(DI_SERVICES).get(service_name)
 
 
 class PokieAuthView(PokieView):
@@ -235,10 +263,12 @@ class PokieAuthView(PokieView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # auth first
-        self.dispatch_hooks = ['_hook_auth'] + self.dispatch_hooks
+        self.dispatch_hooks = ["_hook_auth"] + self.dispatch_hooks
         self.user = current_user
 
-    def _hook_auth(self, method: str, *args: Any, **kwargs: Any) -> Optional[ResponseReturnValue]:
+    def _hook_auth(
+        self, method: str, *args: Any, **kwargs: Any
+    ) -> Optional[ResponseReturnValue]:
         if not current_user.is_authenticated:
             return self.denied()
 

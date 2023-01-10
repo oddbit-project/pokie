@@ -4,7 +4,7 @@ pytest-cov==3.0.0
 coverage==6.4.4
 flake8==5.0.4
 tox==3.26.0
-setuptools~=60.7.0
+setuptools>=60.0.0
 mkdocs~=1.2.3
 mkdocs-material==8.1.2
 mkdocs-material-extensions==1.0.3

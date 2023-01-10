@@ -5,7 +5,6 @@ from pokie.contrib.base.dto import SettingsRecord
 
 
 class SettingsRepository(Repository):
-
     def __init__(self, db):
         super().__init__(db, SettingsRecord)
 
@@ -15,10 +14,12 @@ class SettingsRepository(Repository):
         :param module: module name
         :return:
         """
-        qry = self._cache_get('fetch_by_module')
+        qry = self._cache_get("fetch_by_module")
         if qry is None:
-            qry, values = self.select().where(SettingsRecord.module, '=', module).assemble()
-            self._cache_set('fetch_by_module', qry)
+            qry, values = (
+                self.select().where(SettingsRecord.module, "=", module).assemble()
+            )
+            self._cache_set("fetch_by_module", qry)
         else:
             values = [module]
         with self._db.cursor() as c:
@@ -31,13 +32,15 @@ class SettingsRepository(Repository):
         :param key: key name
         :return:
         """
-        qry = self._cache_get('fetch_by_key')
+        qry = self._cache_get("fetch_by_key")
         if qry is None:
-            qry, values = self.select() \
-                .where(SettingsRecord.module, '=', module) \
-                .where(SettingsRecord.key, '=', key) \
+            qry, values = (
+                self.select()
+                .where(SettingsRecord.module, "=", module)
+                .where(SettingsRecord.key, "=", key)
                 .assemble()
-            self._cache_set('fetch_by_key', qry)
+            )
+            self._cache_set("fetch_by_key", qry)
         else:
             values = [module, key]
         with self._db.cursor() as c:

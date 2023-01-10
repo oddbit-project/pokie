@@ -3,7 +3,7 @@ import uuid
 from flask_login import LoginManager
 from rick.base import Di
 
-from pokie.constants import DI_CONFIG, DI_SERVICE_MANAGER, CFG_AUTH_SECRET, DI_FLASK
+from pokie.constants import DI_CONFIG, DI_SERVICES, CFG_AUTH_SECRET, DI_FLASK
 from pokie.contrib.auth.constants import SVC_AUTH
 
 
@@ -22,4 +22,4 @@ def FlaskLogin(_di: Di):
     @login_manager.user_loader
     def load_user(user_id):
         # restores user profile from auth service
-        return _di.get(DI_SERVICE_MANAGER).get(SVC_AUTH).load_id(user_id)
+        return _di.get(DI_SERVICES).get(SVC_AUTH).load_id(user_id)

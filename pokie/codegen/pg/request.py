@@ -7,14 +7,14 @@ from pokie.codegen.textfile import TextBuffer
 class RequestGenerator:
     # default validators for misc data types
     validators = {
-        'int2': ['numeric'],
-        'int4': ['numeric'],
-        'int8': ['numeric'],
-        'numeric': ['decimal'],
-        'bool': ['bool'],
-        'timestamptz': ['iso8601'],
-        'timestamp': ['iso8601'],
-        'date': ['iso8601'],
+        "int2": ["numeric"],
+        "int4": ["numeric"],
+        "int8": ["numeric"],
+        "numeric": ["decimal"],
+        "bool": ["bool"],
+        "timestamptz": ["iso8601"],
+        "timestamp": ["iso8601"],
+        "date": ["iso8601"],
     }
 
     def _field(self, f: FieldSpec, camelcase=False, db_camelcase=False) -> tuple:
@@ -31,14 +31,14 @@ class RequestGenerator:
             target = f.name if db_camelcase is False else snake_to_camel(f.name)
 
             if not f.nullable:
-                validators.append('required')
+                validators.append("required")
         else:
             # primary key name is always id
             # if it is an auto number, validate as id
-            name = 'id'
-            target = 'id'
+            name = "id"
+            target = "id"
             if f.auto:
-                validators.append('id')
+                validators.append("id")
 
         # add predefined validators for data types
         if f.dtype in self.validators.keys():
@@ -46,12 +46,14 @@ class RequestGenerator:
                 validators.append(v)
 
         # add maxlen if defined in spec
-        if 'maxlen' in f.dtype_spec.keys():
-            validators.append('maxlen:{}'.format(str(f.dtype_spec['maxlen'])))
+        if "maxlen" in f.dtype_spec.keys():
+            validators.append("maxlen:{}".format(str(f.dtype_spec["maxlen"])))
 
         # add foreign key lookup
         if f.fk:
-            validators.append('pk:{}.{},{}'.format(f.fk_schema, f.fk_table, f.fk_column))
+            validators.append(
+                "pk:{}.{},{}".format(f.fk_schema, f.fk_table, f.fk_column)
+            )
 
         return name, validators, target
 
@@ -65,10 +67,18 @@ class RequestGenerator:
         """
         name, validators, target = self._field(f, camelcase, db_camelcase)
         validators = "|".join(validators)
-        return "'{name}': field(validators='{validators}', bind='{bind}')," \
-            .format(name=name, validators=validators, bind=target)
+        return "'{name}': field(validators='{validators}', bind='{bind}'),".format(
+            name=name, validators=validators, bind=target
+        )
 
-    def gen_source(self, spec: TableSpec, camelcase=False, db_camelcase=False, gen: TextBuffer = None, imports=True):
+    def gen_source(
+        self,
+        spec: TableSpec,
+        camelcase=False,
+        db_camelcase=False,
+        gen: TextBuffer = None,
+        imports=True,
+    ):
         """
         Generate a Rick RequestRecord source file
 
@@ -85,7 +95,9 @@ class RequestGenerator:
         if imports is True:
             gen.writeln("from rick.form import RequestRecord, field", newlines=2)
 
-        gen.writeln("class {}Request(RequestRecord):".format(snake_to_pascal(spec.table)))
+        gen.writeln(
+            "class {}Request(RequestRecord):".format(snake_to_pascal(spec.table))
+        )
         gen.writeln("fields = {", level=1)
         for f in spec.fields:
             gen.writeln(self._gen_field_src(f, camelcase, db_camelcase), level=2)
@@ -93,7 +105,9 @@ class RequestGenerator:
         gen.writeln(gen.newline())
         return gen.read()
 
-    def gen_class(self, spec: TableSpec, camelcase=False, db_camelcase=False) -> RequestRecord:
+    def gen_class(
+        self, spec: TableSpec, camelcase=False, db_camelcase=False
+    ) -> RequestRecord:
         """
         Generate a Rick RequestRecord class from a spec
         :param spec:
@@ -110,6 +124,6 @@ class RequestGenerator:
             name, validators, target = self._field(f, camelcase, db_camelcase)
             fields[name] = field(validators="|".join(validators), bind=target)
 
-        setattr(reqRecord, 'fields', fields)
+        setattr(reqRecord, "fields", fields)
 
         return reqRecord

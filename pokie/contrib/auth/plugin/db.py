@@ -3,7 +3,7 @@ from typing import Optional
 from rick.crypto.hasher import HasherInterface
 from rick.crypto.hasher.bcrypt import BcryptHasher
 
-from pokie.constants import DI_SERVICE_MANAGER
+from pokie.constants import DI_SERVICES
 from pokie.contrib.auth.service.user import AuthUser
 from pokie.plugins.auth import AuthPluginInterface
 from pokie.contrib.auth.constants import SVC_USER
@@ -84,7 +84,7 @@ class DbAuthPlugin(AuthPluginInterface):
 
     @property
     def svc_user(self) -> UserService:
-        return self.get_di().get(DI_SERVICE_MANAGER).get(SVC_USER)
+        return self.get_di().get(DI_SERVICES).get(SVC_USER)
 
     @property
     def hasher(self) -> HasherInterface:

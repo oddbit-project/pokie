@@ -1,1 +1,1 @@
-from .auth import DbAuthPlugin
+from .db import DbAuthPlugin

@@ -3,7 +3,7 @@ from rick.mixin import Translator
 from rick.validator import registry
 from rick.validator import Rule
 
-from pokie.constants import DI_SERVICE_MANAGER
+from pokie.constants import DI_SERVICES
 from pokie.contrib.base.constants import SVC_VALIDATOR
 
 # dependency injector
@@ -15,11 +15,13 @@ def init_validators(di: Di):
     _di = di
 
 
-@registry.register_cls(name='pk')
+@registry.register_cls(name="pk")
 class DbPrimaryKey(Rule):
     MSG_ERROR = "Invalid primary key value"
 
-    def validate(self, value, options: list = None, error_msg=None, translator: Translator = None):
+    def validate(
+        self, value, options: list = None, error_msg=None, translator: Translator = None
+    ):
         if len(options) == 0:
             raise RuntimeError("DbPrimaryKey(): missing table name")
 
@@ -27,19 +29,21 @@ class DbPrimaryKey(Rule):
             raise RuntimeError("DbPrimaryKey(): di not initialized")
 
         table_name = str(options[0])
-        tokens = table_name.split('.')
+        tokens = table_name.split(".")
         if len(tokens) > 2 or len(tokens) == 0:
-            raise ValueError("DbPrimaryKey(): invalid table name '{}'".format(table_name))
+            raise ValueError(
+                "DbPrimaryKey(): invalid table name '{}'".format(table_name)
+            )
         schema = None
         table_name = tokens[0]
         if len(tokens) == 2:
             schema = tokens[1]
 
-        pk_name = ''
+        pk_name = ""
         if len(options) > 1:
             pk_name = str(options[1])
 
-        svc = _di.get(DI_SERVICE_MANAGER).get(SVC_VALIDATOR)
+        svc = _di.get(DI_SERVICES).get(SVC_VALIDATOR)
         try:
             if svc.id_exists(pk_name, value, table_name, schema):
                 return True, ""

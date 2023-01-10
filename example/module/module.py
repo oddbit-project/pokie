@@ -76,6 +76,15 @@ class Module(BaseModule):
         # 'full.path.to.job.class'
     ]
 
+    # fixture class list
+    #
+    # fixtures are objects that are run only once; They can be used to load initial/default values or to perform non-trivial
+    # database operations, such as data migrations
+    #
+    fixtures = [
+        # 'full.path.to.fixture.class
+    ]
+
     def build(self, parent=None):
         # This method is called when modules are initialized; At this point, all other dependencies have already been
         # initialized, including the Service Manager, Event Manager and even registered factories

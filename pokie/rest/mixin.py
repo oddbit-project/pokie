@@ -1,5 +1,4 @@
 class RestServiceMixin:
-
     def get(self, id_record):
         return self.repository.fetch_pk(id_record)
 
@@ -15,6 +14,13 @@ class RestServiceMixin:
     def exists(self, id_record):
         pass
 
-    def list(self, search_fields: list, search_text: str = None, match_fields: dict = None, limit: int = None,
-             offset: int = None, sort_fields: dict = None):
+    def list(
+        self,
+        search_fields: list,
+        search_text: str = None,
+        match_fields: dict = None,
+        limit: int = None,
+        offset: int = None,
+        sort_fields: dict = None,
+    ):
         pass
