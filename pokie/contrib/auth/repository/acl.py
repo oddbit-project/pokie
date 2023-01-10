@@ -235,7 +235,7 @@ class AclResourceRepository(Repository):
             self._cache_set(key, sql)
 
         with self._db.cursor() as c:
-            return c.fetchall(sql, [id_user], cls=AclRole)
+            return c.fetchall(sql, [id_user], cls=AclResource)
 
     def find_by_role(self, id_role: int) -> List[AclResource]:
         """
@@ -284,16 +284,3 @@ class AclResourceRepository(Repository):
         with self._db.cursor() as c:
             result = c.fetchone(sql, values)
             return result["total"] == 0
-
-    def truncate(self, id_resource: int):
-        # delete role resources
-        sql, values = (
-            Delete(self._dialect)
-            .from_(AclRoleResource)
-            .where(AclRoleResource.id_resource, "=", id_resource)
-            .assemble()
-        )
-        self.exec(sql, values)
-
-        # finally, delete resource
-        self.delete_pk(id_resource)
