@@ -23,6 +23,7 @@ class Module(BaseModule):
         # code generation
         "codegen:dto": "pokie.contrib.base.cli.GenDtoCmd",
         "codegen:request": "pokie.contrib.base.cli.GenRequestRecordCmd",
+        "codegen:module": "pokie.contrib.base.cli.ModuleGenCmd",
         # fixtures
         "fixture:run": "pokie.contrib.base.cli.RunFixtureCmd",
         "fixture:check": "pokie.contrib.base.cli.CheckFixtureCmd",
