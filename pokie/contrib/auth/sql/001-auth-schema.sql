@@ -9,6 +9,7 @@ CREATE TABLE "user"(
     password TEXT NOT NULL,
     creation_date timestamp with time zone default NOW(),
     last_login TIMESTAMP WITH TIME ZONE default NULL,
+    external BOOL DEFAULT False,
     attributes JSONB DEFAULT '{}'
 );
 

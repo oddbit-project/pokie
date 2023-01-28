@@ -13,4 +13,5 @@ class UserRecord:
     creation_date = "creation_date"
     last_login = "last_login"
     password = "password"
+    external = "external"
     attributes = "attributes"

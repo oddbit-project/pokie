@@ -19,7 +19,7 @@ class TemplateProcessor:
                         return item
         return None
 
-    def process(self, src_path: Path, dest_path: Path, vars: dict):
+    def process(self, src_path: Path, dest_path: Path, vars: dict, tty=None):
         if not src_path.exists():
             raise ValueError("TemplateProcessor::process() invalid source directory '{}'".format(str(src_path)))
         if not src_path.is_dir():
@@ -29,21 +29,28 @@ class TemplateProcessor:
 
         if not dest_path.exists():
             dest_path.mkdir()
-        self._process_dir(src_path, dest_path, vars)
+        self._process_dir(src_path, dest_path, vars, tty)
 
-    def _process_dir(self, src: Path, dest: Path, vars: dict):
+    def _process_dir(self, src: Path, dest: Path, vars: dict, tty=None):
         for f in src.iterdir():
             if f.is_file():
                 contents = self.read_tpl(f)
                 for var, replacement in vars.items():
                     contents = contents.replace(var, replacement)
                 fname = f.name.replace('.tpl', '')
-                with open(dest / Path(fname), 'w') as f:
-                    f.write(contents)
+                dest_file = dest / Path(fname)
+                with open(dest_file, 'w') as outfile:
+                    outfile.write(contents)
+                if tty:
+                    tty.write("created '{}' file".format(str(dest_file)))
             elif f.is_dir():
                 new_dest = dest / Path(f.name)
                 new_dest.mkdir()
-                self._process_dir(f, new_dest, vars)
+                if tty:
+                    tty.write("created '{}' directory".format(str(new_dest)))
+                self._process_dir(f, new_dest, vars, tty)
+            else:
+                raise RuntimeError("something went wrong processing path '{}'".format(f))
 
     def read_tpl(self, src_file: Path) -> str:
         with open(src_file, 'r') as f:

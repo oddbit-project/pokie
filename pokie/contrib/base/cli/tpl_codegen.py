@@ -28,7 +28,7 @@ class TplGenCommand(CliCommand):
 
         self.tty.write(self.tty.colorizer.white("generating structure..."))
         processor = TemplateProcessor([tpl_path])
-        processor.process(tpl_path, dest_path, vars)
+        processor.process(tpl_path, dest_path, vars, self.tty)
         self.tty.write(self.tty.colorizer.green("template processed sucessfully!"))
         return True
 
