@@ -1,9 +1,9 @@
 site_name: Pokie
 site_description: Flask boilerplate
 strict: true
-site_url: https://github.com/oddbit-project/pokie/
-repo_name: oddbit-project/pokie
-repo_url: https://github.com/oddbit-project/pokie/
+site_url: https://git.oddbit.org/OddBit/pokie/
+repo_name: OddBit/pokie
+repo_url: https://git.oddbit.org/OddBit/pokie
 
 theme:
   name: material
