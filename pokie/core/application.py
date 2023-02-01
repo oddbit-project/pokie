@@ -177,13 +177,18 @@ class FlaskApplication:
                         "cli(): command handler does not extend CliCommand"
                     )
                 handler = handler(self.di, writer=tty)  # type: CliCommand
-                handler.arguments(parser)
-                args = parser.parse_args(sys.argv[2:])
-                if parser.failed:
-                    # invalid/insufficient args
-                    tty.error(parser.error_message)
-                    parser.print_help(tty.stderr)
-                    exit(1)
+                if not handler.skipargs: # skipargs controls usage of argparser
+                    handler.arguments(parser)
+                    args = parser.parse_args(sys.argv[2:])
+                    if parser.failed:
+                        # invalid/insufficient args
+                        tty.error(parser.error_message)
+                        parser.print_help(tty.stderr)
+                        exit(1)
+                else:
+                    # skipargs is true, all argparsing is ignored
+                    # this allow for custom cli arg handling
+                    args = None
 
                 if not handler.run(args):
                     exit(1)

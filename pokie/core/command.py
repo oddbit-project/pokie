@@ -10,6 +10,7 @@ from pokie.constants import DI_TTY
 
 class CliCommand(ABC, Injectable):
     description = "command description"
+    skipargs = False
 
     def __init__(self, di: Di, writer=None):
         self.set_di(di)

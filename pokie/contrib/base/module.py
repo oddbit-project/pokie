@@ -27,6 +27,8 @@ class Module(BaseModule):
         # fixtures
         "fixture:run": "pokie.contrib.base.cli.RunFixtureCmd",
         "fixture:check": "pokie.contrib.base.cli.CheckFixtureCmd",
+        # tests
+        "pytest": "pokie.contrib.base.cli.PyTestCmd",
     }
 
     services = {
