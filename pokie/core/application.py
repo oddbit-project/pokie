@@ -26,6 +26,10 @@ from .signal import SignalManager
 
 
 class FlaskApplication:
+    CLI_CMD_SUCCESS = 0
+    CLI_CMD_FAILED = 1
+    CLI_CMD_NOT_FOUND = 2
+
     module_file_name = "module"  # module class file name
     module_class_name = "Module"  # default module class name
 
@@ -136,31 +140,18 @@ class FlaskApplication:
     def http(self, **kwargs):
         self.app.run(**kwargs)
 
-    def cli(self, **kwargs):
-        """
-        Execute CLI commands
-        :param kwargs: optional parameters for ArgumentParse
-        :return:
-        """
+    def cli_runner(self, command: str, args: list = None, **kwargs) -> int:
+        # either console or inline commands
+        if args is None:
+            args = []
+
+        # parameter parser
+        parser = ArgParser(**kwargs)
+
         if "writer" in kwargs.keys():
             tty = kwargs["writer"]
         else:
             tty = ConsoleWriter()
-
-        # default command when no args detected
-        command = "list"
-        # extract command if specified
-        if len(sys.argv) > 1:
-            command = str(sys.argv[1])
-
-        if "add_help" not in kwargs.keys():
-            kwargs["add_help"] = False
-        if "usage" not in kwargs.keys():
-            kwargs["usage"] = "{} {} [OPTIONS...]".format(
-                os.path.basename(sys.argv[0]), command
-            )
-
-        parser = ArgParser(**kwargs)
 
         # lookup handler
         for _, module in self.modules.items():
@@ -177,23 +168,45 @@ class FlaskApplication:
                         "cli(): command handler does not extend CliCommand"
                     )
                 handler = handler(self.di, writer=tty)  # type: CliCommand
-                if not handler.skipargs: # skipargs controls usage of argparser
+                if not handler.skipargs:  # skipargs controls usage of argparser
                     handler.arguments(parser)
-                    args = parser.parse_args(sys.argv[2:])
+                    args = parser.parse_args(args)
                     if parser.failed:
                         # invalid/insufficient args
                         tty.error(parser.error_message)
                         parser.print_help(tty.stderr)
-                        exit(1)
+                        return self.CLI_CMD_FAILED
                 else:
                     # skipargs is true, all argparsing is ignored
                     # this allow for custom cli arg handling
                     args = None
 
-                if not handler.run(args):
-                    exit(1)
-                exit(0)
+                if handler.run(args):
+                    return self.CLI_CMD_SUCCESS
+                return self.CLI_CMD_FAILED
 
         # command not found
         tty.error("error executing '{}': command not found".format(command))
-        exit(2)
+        return self.CLI_CMD_NOT_FOUND
+
+    def cli(self, **kwargs):
+        """
+        Execute CLI commands
+        :param kwargs: optional parameters for ArgumentParse
+        :return:
+        """
+        # default command when no args detected
+        command = "list"
+        # extract command if specified
+        if len(sys.argv) > 1:
+            command = str(sys.argv[1])
+
+        if "add_help" not in kwargs.keys():
+            kwargs["add_help"] = False
+        if "usage" not in kwargs.keys():
+            kwargs["usage"] = "{} {} [OPTIONS...]".format(
+                os.path.basename(sys.argv[0]), command
+            )
+
+        # exit code directly maps return codes
+        exit(self.cli_runner(command, sys.argv[2:], **kwargs))

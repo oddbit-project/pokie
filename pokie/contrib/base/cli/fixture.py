@@ -63,6 +63,17 @@ class CheckFixtureCmd(FixtureCmd):
 
         existing = []
         all = self.svc_fixture.scan()
+        if len(all) != len(set(all)):
+            # @todo: use rick.util.misc.list_duplicates()
+            duplicates = []
+            seen = set()
+            for item in all:
+                if item in seen:
+                    duplicates.append(item)
+                else:
+                    seen.add(item)
+            self.tty.error("Duplicated fixture(s) found: {}".format(','.join(duplicates)))
+            return False
 
         for r in self.svc_fixture.list():
             existing.append(r.name)
