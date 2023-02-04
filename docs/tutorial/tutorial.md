@@ -1,4 +1,4 @@
-# Pokie Tutorial
+`# Pokie Tutorial
 
 ## Foreword
 
@@ -22,6 +22,10 @@ approaches. This is a calculated tradeoff by design, and not just a mere consequ
 
 To fully bootstrap the application, three components are required: the configuration container
 (a *ShallowContainer* instance), the module list to be instantiated, and the factory list to be initialized.
+
+It is recommended the bootstrap itself is built inside a factory function with the name *build_pokie()*; by encapsulating 
+all the initialization within a single identified function, we can provide a clean application context to run unit 
+tests.
 
 The typical sequence of operations (both explicit and implicit) of a Pokie application is:
 
@@ -107,6 +111,16 @@ Factories are assorted initializers for several purposes. One of them is to prov
 database connections or cache connections. The factory list is a list of direct classes (python classes, not strings).
 
 
+## Application factory: build_pokie()
+
+Usage of the main application factory is not mandatory, but essential if unit tests are required. Unit testing often
+requires the opposite strategy of a production application, in the sense that reusage and caching of objects should be
+avoided completely. To ensure this, the factory encapsulates the complete bootstrap of the application, in such a way 
+that can be called once per single test, ensuring that available internal resources are *not* reused. 
+
+**build_pokie() -> Tuple[FlaskApplication, Flask]** 
+Factory to build a pokie application and returns both the Pokie FlaskApplication object and the Flask object.
+
 ## Minimal main.py example
 
 The main.py script is usually a simple file, containing the previously mentioned components. In addition, it should
@@ -131,23 +145,28 @@ from pokie.core.factories.pgsql import PgSqlFactory
 class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
     pass
 
-
-# load configuration from ENV
-cfg = Config().build()
-
-# modules to load & initialize:
-# the internal auth module, and a custom-defined local module called 'my_module'
-modules = ['pokie.contrib.auth', 'my_module']
-
-# factories to run
-# the postgresql initializer, and the flask-login initializer
-factories = [PgSqlFactory, FlaskLogin, ]
-
-# build Pokie application
-main = FlaskApplication(cfg)
-# bootstrap Pokie application
-# the returned object is a Flask application
-app = main.build(modules, factories)
+def build_pokie():
+    # load configuration from ENV
+    cfg = Config().build()
+    
+    # modules to load & initialize:
+    # the internal auth module, and a custom-defined local module called 'my_module'
+    modules = ['pokie.contrib.auth', 'my_module']
+    
+    # factories to run
+    # the postgresql initializer, and the flask-login initializer
+    factories = [PgSqlFactory, FlaskLogin, ]
+    
+    # build Pokie application
+    pokie_app = FlaskApplication(cfg)
+    # bootstrap Pokie application
+    # the returned object is a Flask application
+    flask_app = main.build(modules, factories)
+    return pokie_app, flask_app
+    
+# main is reused for the cli wrapper
+# app is often reused as the WSGI Flask object 
+main, app = build_pokie()
 
 # if it is a cli invocation
 if __name__ == '__main__':
