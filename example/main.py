@@ -9,19 +9,22 @@ from pokie.core.factories.pgsql import PgSqlFactory
 class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
     pass
 
+def build_pokie():
+    # load configuration from ENV
+    cfg = Config().build()
 
-# load configuration from ENV
-cfg = Config().build()
+    # modules to load & initialize
+    modules = ['pokie.contrib.auth', 'module']
 
-# modules to load & initialize
-modules = ['pokie.contrib.auth', 'module']
+    # factories to run
+    factories = [PgSqlFactory, ]
 
-# factories to run
-factories = [PgSqlFactory, ]
+    # build app
+    pokie_app = FlaskApplication(cfg)
+    flask_app = main.build(modules, factories)
+    return pokie_app, flask_app
 
-# build app
-main = FlaskApplication(cfg)
-app = main.build(modules, factories)
+main, app = build_pokie()
 
 if __name__ == '__main__':
     main.cli()
