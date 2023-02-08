@@ -52,3 +52,18 @@ class MailConfigTemplate:
     SMTP_TIMEOUT = None
     SMTP_SSL_KEYFILE = None
     SMTP_SSL_CERTFILE = None
+
+
+class TestConfigTemplate:
+    TEST_DB_NAME = 'pokie_test'         # test database parameters
+    TEST_DB_HOST = "localhost"
+    TEST_DB_PORT = 5432
+    TEST_DB_USER = StrOrFile("postgres")
+    TEST_DB_PASSWORD = StrOrFile("")
+    TEST_DB_SSL = False
+
+    TEST_MANAGE_DB = False              # if false, unit testing does not manage db creation/migration
+    TEST_SHARE_CTX = False              # if false, each test has a separate context
+    TEST_DB_REUSE = False               # if true, database is not dropped/recreated
+    TEST_SKIP_MIGRATIONS = False        # if true, migrations are not run when recreating db
+    TEST_SKIP_FIXTURES = False          # if true, fixtures are not run when recreating db
