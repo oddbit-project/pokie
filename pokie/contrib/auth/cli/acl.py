@@ -342,7 +342,6 @@ class AclUserRoleCmd(AclCommand):
         parser.add_argument("username", type=str, help="Existing username")
 
     def run(self, args) -> bool:
-
         user = self.svc_user.get_by_username(args.username)
         if user is None:
             self.tty.write(

@@ -13,5 +13,8 @@ class PyTestCmd(CliCommand):
         args = []
         if len(sys.argv) > 2:
             args = sys.argv[2:]
-        self.tty.write(self.tty.colorizer.white("[Pokie]", attr="bold")+" Running pytest with: {}".format(str(args)))
-        sys.exit(pytest.main(args, plugins=['pytest_pokie']))
+        self.tty.write(
+            self.tty.colorizer.white("[Pokie]", attr="bold")
+            + " Running pytest with: {}".format(str(args))
+        )
+        sys.exit(pytest.main(args, plugins=["pytest_pokie"]))

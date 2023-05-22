@@ -6,7 +6,6 @@ from pokie.core import CliCommand
 
 
 class TplGenCommand(CliCommand):
-
     def arguments(self, parser: ArgumentParser):
         parser.add_argument("name", type=str, help="new module name")
         parser.add_argument("path", type=str, help="where to create the module")
@@ -20,7 +19,9 @@ class TplGenCommand(CliCommand):
     def run(self, args) -> bool:
         dest_path = Path(args.path) / Path(args.name)
         if dest_path.exists():
-            self.tty.error("error: directory '{}' already exists".format(str(dest_path)))
+            self.tty.error(
+                "error: directory '{}' already exists".format(str(dest_path))
+            )
             return False
 
         tpl_path = self.get_template_path(args)
@@ -37,10 +38,12 @@ class ModuleGenCmd(TplGenCommand):
     description = "create module structure"
 
     def get_template_path(self, args) -> Path:
-        return Path(os.path.dirname(__file__)) / Path('..') / Path('template') / Path('module')
+        return (
+            Path(os.path.dirname(__file__))
+            / Path("..")
+            / Path("template")
+            / Path("module")
+        )
 
     def get_vars(self, args):
-        return {
-            '{module_name}': args.name,
-            '{ModuleName}': args.name.capitalize()
-        }
+        return {"{module_name}": args.name, "{ModuleName}": args.name.capitalize()}

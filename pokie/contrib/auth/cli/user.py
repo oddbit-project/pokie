@@ -59,7 +59,6 @@ class UserCreateCmd(UserCommand):
         )
 
     def run(self, args) -> bool:
-
         req = UserCreateRequest()
         if not req.is_valid({"username": args.username, "email": args.email}):
             for k, v in req.get_errors().items():
@@ -111,7 +110,6 @@ class UserInfoCmd(UserCommand):
         parser.add_argument("username", help="User name to search")
 
     def run(self, args) -> bool:
-
         req = UserInfoRequest()
         if not req.is_valid({"username": args.username}):
             for k, v in req.get_errors().items():
@@ -152,7 +150,6 @@ class UserModCmd(UserCommand):
         parser.add_argument("-e", "--enabled", action="store_true", help="Enable user")
 
     def run(self, args) -> bool:
-
         req = UserInfoRequest()
         if not req.is_valid({"username": args.username}):
             for k, v in req.get_errors().items():
@@ -283,7 +280,6 @@ class UserListCmd(UserCommand):
         )
 
     def run(self, args) -> bool:
-
         if args.offset < 0:
             self.tty.write(self.tty.colorizer.red("Error: offset cannot be negative"))
             return False

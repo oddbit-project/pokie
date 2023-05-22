@@ -39,14 +39,14 @@ class RestService(Injectable, RestServiceMixin):
         return self.repository.valid_pk(id_record)
 
     def list(
-            self,
-            search_fields: list,
-            search_text: str = None,
-            match_fields: dict = None,
-            limit: int = None,
-            offset: int = None,
-            sort_fields: dict = None,
-            search_filter: list = None
+        self,
+        search_fields: list,
+        search_text: str = None,
+        match_fields: dict = None,
+        limit: int = None,
+        offset: int = None,
+        sort_fields: dict = None,
+        search_filter: list = None,
     ):
         grid = DbGrid(self.repository, search_fields, DbGrid.SEARCH_ANY)
         return grid.run(
@@ -56,7 +56,7 @@ class RestService(Injectable, RestServiceMixin):
             limit=limit,
             offset=offset,
             sort_fields=sort_fields,
-            search_fields=search_filter
+            search_fields=search_filter,
         )
 
     @property

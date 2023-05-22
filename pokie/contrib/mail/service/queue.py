@@ -43,4 +43,3 @@ class MessageQueueService(Injectable):
     @property
     def repo_queue(self) -> MessageQueueRepository:
         return MessageQueueRepository(self.get_di().get(DI_DB))
-

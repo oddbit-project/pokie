@@ -23,7 +23,6 @@ class RunFixtureCmd(FixtureCmd):
         return name.find(".") > -1
 
     def run(self, args) -> bool:
-
         existing = []
         all = self.svc_fixture.scan() if len(args.name) == 0 else args.name
 
@@ -60,7 +59,6 @@ class CheckFixtureCmd(FixtureCmd):
     description = "show existing fixture status"
 
     def run(self, args) -> bool:
-
         existing = []
         all = self.svc_fixture.scan()
         if len(all) != len(set(all)):
@@ -72,7 +70,9 @@ class CheckFixtureCmd(FixtureCmd):
                     duplicates.append(item)
                 else:
                     seen.add(item)
-            self.tty.error("Duplicated fixture(s) found: {}".format(','.join(duplicates)))
+            self.tty.error(
+                "Duplicated fixture(s) found: {}".format(",".join(duplicates))
+            )
             return False
 
         for r in self.svc_fixture.list():

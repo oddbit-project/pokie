@@ -54,7 +54,6 @@ class DbCodeGenCommand(CliCommand):
         return table_list, schema
 
     def pg_gen_dto(self, db, table_expr, dest_file, camel_case=False) -> bool:
-
         pg = PgTableSpec(db)
         table_list, schema = self.parse_table_list(pg.manager(), table_expr)
         if len(table_list) == 0:
@@ -88,7 +87,6 @@ class DbCodeGenCommand(CliCommand):
     def pg_gen_request(
         self, db, table_expr, dest_file, camelcase_id=False, camelcase_cols=False
     ) -> bool:
-
         pg = PgTableSpec(db)
         table_list, schema = self.parse_table_list(pg.manager(), table_expr)
         if len(table_list) == 0:

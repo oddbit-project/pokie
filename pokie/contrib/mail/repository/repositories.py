@@ -30,7 +30,7 @@ class MessageQueueRepository(Repository):
             self.update(record)
 
     def find_first_and_lock(
-            self, channel: int, status: str = "Q"
+        self, channel: int, status: str = "Q"
     ) -> Optional[MessageQueueRecord]:
         """
         Locks a queued message and returns the record
@@ -62,7 +62,9 @@ class MessageQueueRepository(Repository):
             return None
 
     def truncate(self):
-        sql = "TRUNCATE TABLE {}".format(self.dialect().table(self._tablename, schema=self._schema))
+        sql = "TRUNCATE TABLE {}".format(
+            self.dialect().table(self._tablename, schema=self._schema)
+        )
         with self._db.cursor() as c:
             c.exec(sql)
 
@@ -72,7 +74,7 @@ class MessageTemplateRepository(Repository):
         super().__init__(db, MessageTemplateRecord)
 
     def find_template(
-            self, template: str, language: str, channel: int
+        self, template: str, language: str, channel: int
     ) -> Optional[MessageTemplateRecord]:
         sql, values = (
             self.select()
