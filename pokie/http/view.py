@@ -8,6 +8,7 @@ from flask import current_app, jsonify
 from flask_login import current_user
 from rick.serializer.json import ExtendedJsonEncoder
 from rick.form import RequestRecord
+from rick.util.misc import optional
 
 from .response import JsonRequestError, JsonStatus
 from pokie.constants import (
@@ -208,7 +209,8 @@ class PokieView(MethodView):
         indent = None
         separators = (",", ":")
 
-        if current_app.config["JSONIFY_PRETTYPRINT_REGULAR"] or current_app.debug:
+        pretty_print = optional('JSONIFY_PRETTYPRINT_REGULAR', current_app.config, False)
+        if pretty_print or current_app.debug:
             indent = 2
             separators = (", ", ": ")
 
