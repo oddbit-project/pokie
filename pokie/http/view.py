@@ -4,11 +4,10 @@ from typing import Any, Optional, Callable
 from flask import request
 from flask.views import MethodView
 from flask.typing import ResponseReturnValue
-from flask import current_app, jsonify
+from flask import current_app
 from flask_login import current_user
 from rick.serializer.json import ExtendedJsonEncoder
 from rick.form import RequestRecord
-from rick.util.misc import optional
 
 from .response import JsonRequestError, JsonStatus
 from pokie.constants import (
@@ -60,7 +59,7 @@ class PokieView(MethodView):
                 setattr(self, name, value)
 
     def _hook_request(
-        self, method: str, *args: Any, **kwargs: Any
+            self, method: str, *args: Any, **kwargs: Any
     ) -> Optional[ResponseReturnValue]:
         """
         Dispatch hook: de-serialize request
@@ -141,7 +140,7 @@ class PokieView(MethodView):
 
     @classmethod
     def view_method(
-        cls, action_method: str, name=None, *class_args: Any, **class_kwargs: Any
+            cls, action_method: str, name=None, *class_args: Any, **class_kwargs: Any
     ) -> Callable:
         """
         Variant of Flask's as_view that supports custom handlers for actions
@@ -209,8 +208,7 @@ class PokieView(MethodView):
         indent = None
         separators = (",", ":")
 
-        pretty_print = optional('JSONIFY_PRETTYPRINT_REGULAR', current_app.config, False)
-        if pretty_print or current_app.debug:
+        if current_app.json.compact or current_app.debug:
             indent = 2
             separators = (", ", ": ")
 
@@ -218,7 +216,7 @@ class PokieView(MethodView):
             data, indent=indent, separators=separators, cls=ExtendedJsonEncoder
         )
         return current_app.response_class(
-            data, status=code, mimetype=current_app.config["JSONIFY_MIMETYPE"]
+            data, status=code, mimetype=current_app.json.mimetype
         )
 
     def error(self, message=None, code=HTTP_BADREQ):
@@ -269,7 +267,7 @@ class PokieAuthView(PokieView):
         self.user = current_user
 
     def _hook_auth(
-        self, method: str, *args: Any, **kwargs: Any
+            self, method: str, *args: Any, **kwargs: Any
     ) -> Optional[ResponseReturnValue]:
         if not current_user.is_authenticated:
             return self.denied()
