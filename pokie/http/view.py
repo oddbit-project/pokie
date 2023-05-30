@@ -188,7 +188,7 @@ class PokieView(MethodView):
         :return:
         """
         if e is not None:
-            logging.error(e)
+            logging.exception(e)
         if request.is_json:
             return self.error("bad request")
         return (
