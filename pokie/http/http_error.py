@@ -24,11 +24,11 @@ class HttpErrorHandler(Injectable):
         _app.register_error_handler(500, wrapper_500)
 
     def error_404(self, _app, e):
-        r = self.response(error={"message": self.ERROR_404}, code=HTTP_NOT_FOUND)
+        r = self.response(error={"message": self.ERROR_404}, success=False, code=HTTP_NOT_FOUND)
         return r.assemble(_app)
 
     def error_500(self, _app, e):
-        r = self.response(error={"message": self.ERROR_500}, code=HTTP_INTERNAL_ERROR)
+        r = self.response(error={"message": self.ERROR_500}, success=False, code=HTTP_INTERNAL_ERROR)
         return r.assemble(_app)
 
     def response(self, **kwargs):
