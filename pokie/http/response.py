@@ -5,7 +5,23 @@ from collections.abc import Mapping
 from pokie.constants import HTTP_OK
 
 
-class JsonResponse:
+class ResponseRendererInterface:
+    def __init__(
+        self,
+        data: dict = None,
+        success: bool = True,
+        error: dict = None,
+        code: int = HTTP_OK,
+        mime_type: str = None,
+        headers: list = None,
+    ):
+        pass
+
+    def assemble(self, _app, **kwargs):
+        pass
+
+
+class JsonResponse(ResponseRenderer):
     """
     Default JSON response formatter
 
@@ -26,17 +42,20 @@ class JsonResponse:
         }
     }
     """
+
+    # mime type
+    mime_type = "application/json"
     # default error message
     msg_default_error = "an error has occurred"
 
     def __init__(
-            self,
-            data: dict = None,
-            success: bool = True,
-            error: dict = None,
-            code: int = HTTP_OK,
-            mime_type: str = "application/json",
-            headers: list = None,
+        self,
+        data: dict = None,
+        success: bool = True,
+        error: dict = None,
+        code: int = HTTP_OK,
+        mime_type: str = None,
+        headers: list = None,
     ):
         """
         Constructor for standardized json response
@@ -47,10 +66,14 @@ class JsonResponse:
         :param mime_type:
         :param headers:
         """
-        self.mime_type = mime_type
         self.headers = headers
         self.code = code
         self.response = {"success": success}
+
+        # override default mime type
+        if mime_type is not None:
+            self.mime_type = mime_type
+
         # success always has 'data' object
         if success and data is None:
             data = {}
