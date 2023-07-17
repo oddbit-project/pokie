@@ -6,10 +6,9 @@ from flask.views import MethodView
 from flask.typing import ResponseReturnValue
 from flask import current_app
 from flask_login import current_user
-from rick.serializer.json import ExtendedJsonEncoder
 from rick.form import RequestRecord
 
-from .response import JsonRequestError, JsonStatus
+from .response import JsonResponse
 from pokie.constants import (
     HTTP_OK,
     HTTP_BADREQ,
@@ -28,9 +27,16 @@ class PokieView(MethodView):
     # see self.request below
     request_class = None  # type: RequestRecord
 
+    # default response class
+    response_class = JsonResponse
+
+    # default error message
+    msg_error_default = "request failed"
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.di = current_app.di
+        self.logger = current_app.logger
 
         # methods where automatic body deserialization is attempted
         #
@@ -59,7 +65,7 @@ class PokieView(MethodView):
                 setattr(self, name, value)
 
     def _hook_request(
-            self, method: str, *args: Any, **kwargs: Any
+        self, method: str, *args: Any, **kwargs: Any
     ) -> Optional[ResponseReturnValue]:
         """
         Dispatch hook: de-serialize request
@@ -140,7 +146,7 @@ class PokieView(MethodView):
 
     @classmethod
     def view_method(
-            cls, action_method: str, name=None, *class_args: Any, **class_kwargs: Any
+        cls, action_method: str, name=None, *class_args: Any, **class_kwargs: Any
     ) -> Callable:
         """
         Variant of Flask's as_view that supports custom handlers for actions
@@ -198,56 +204,80 @@ class PokieView(MethodView):
             HTTP_BADREQ,
         )
 
-    def json(self, data, code=HTTP_OK):
+    def success(self, data=None, code: int = HTTP_OK):
         """
-        Adaptation of flask's jsonify using Rick's ExtendedJsonEncoder
-        :param data:
-        :param code:
-        :return:
+        Returns a success response with optional data payload
+        :param data: optional response data
+        :param code: int
+        :return: Response
         """
-        indent = None
-        separators = (",", ":")
+        cls = self.response_class(data=data, success=True, code=code)
+        return cls.assemble(current_app)
 
-        if current_app.json.compact or current_app.debug:
-            indent = 2
-            separators = (", ", ": ")
-
-        data = json.dumps(
-            data, indent=indent, separators=separators, cls=ExtendedJsonEncoder
-        )
-        return current_app.response_class(
-            data, status=code, mimetype=current_app.json.mimetype
-        )
+    def success_message(self, message: str):
+        """
+        Returns a success response with a string message
+        :param message: str
+        :return: Response
+        """
+        return self.success({"message": message})
 
     def error(self, message=None, code=HTTP_BADREQ):
-        data = JsonStatus(
-            success=False, message=message if message else "operation failed"
-        )
-        return self.json(data, code)
+        """
+        Returns an error response with an optional string message
+        if no message is provided, defaults to PokieView.msg_error_default
+        :param message: str
+        :param code: int
+        :return: Response
+        """
 
-    def request_error(self, req: RequestRecord, code=HTTP_BADREQ):
-        return self.json(
-            JsonRequestError(success=False, formError=req.get_errors()), code
-        )
+        if message is None:
+            message = self.msg_error_default
 
-    def success_message(self, message=""):
-        return self.json(JsonStatus(success=True, message=message))
+        cls = self.response_class(error={"message": message}, success=False, code=code)
+        return cls.assemble(current_app)
 
-    def success(self, data=None, code=HTTP_OK):
-        if data is None:
-            return self.json(JsonStatus(success=True, message=""), code=code)
-        return self.json(data, code)
+    def request_error(self, request_object: RequestRecord, code=HTTP_BADREQ):
+        """
+        Returns a RequestRecord error response
+
+        :param request_object: RequestRecord
+        :param code: int
+        :return: Response
+        """
+        error = {
+            "message": self.msg_error_default,
+            "formError": request_object.get_errors(),
+        }
+        cls = self.response_class(error=error, success=False, code=code)
+        return cls.assemble(current_app)
 
     def empty_body(self):
+        """
+        Error: empty body
+        :return: Request
+        """
         return self.error("empty body", code=HTTP_BADREQ)
 
     def not_found(self):
+        """
+        Error: not found
+        :return: Request
+        """
         return self.error("record not found", code=HTTP_BADREQ)
 
     def forbidden(self):
+        """
+        Error: access denied
+        :return: Request
+        """
         return self.error("access denied", code=HTTP_FORBIDDEN)
 
     def denied(self):
+        """
+        Error: access denied
+        :return: Request
+        """
         return self.error("access denied", code=HTTP_NOAUTH)
 
     def get_service(self, service_name):
@@ -267,7 +297,7 @@ class PokieAuthView(PokieView):
         self.user = current_user
 
     def _hook_auth(
-            self, method: str, *args: Any, **kwargs: Any
+        self, method: str, *args: Any, **kwargs: Any
     ) -> Optional[ResponseReturnValue]:
         if not current_user.is_authenticated:
             return self.denied()
