@@ -194,15 +194,8 @@ class PokieView(MethodView):
         :return:
         """
         if e is not None:
-            logging.exception(e)
-        if request.is_json:
-            return self.error("bad request")
-        return (
-            "<!doctype html>\n<html lang=en>\n<title>{code} {err}</title>\n<h1>{err}</h1>\n".format(
-                code=HTTP_BADREQ, err="Bad Request"
-            ),
-            HTTP_BADREQ,
-        )
+            self.logger.exception(e)
+        return self.error("bad request")
 
     def success(self, data=None, code: int = HTTP_OK):
         """

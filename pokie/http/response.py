@@ -1,5 +1,6 @@
 import json
 import rick.serializer.json
+from collections.abc import Mapping
 
 from pokie.constants import HTTP_OK
 
@@ -25,15 +26,17 @@ class JsonResponse:
         }
     }
     """
+    # default error message
+    msg_default_error = "an error has occurred"
 
     def __init__(
-        self,
-        data: dict = None,
-        success: bool = True,
-        error: dict = None,
-        code: int = HTTP_OK,
-        mime_type: str = "application/json",
-        headers: list = None,
+            self,
+            data: dict = None,
+            success: bool = True,
+            error: dict = None,
+            code: int = HTTP_OK,
+            mime_type: str = "application/json",
+            headers: list = None,
     ):
         """
         Constructor for standardized json response
@@ -54,10 +57,15 @@ class JsonResponse:
 
         # error always has 'error' object
         if not success and error is None:
-            error = {"message": "an error has occurred"}
+            error = {"message": self.msg_default_error}
+        else:
+            if isinstance(error, Mapping):
+                if "message" not in error.keys():
+                    error["message"] = self.msg_default_error
 
         if data is not None:
             self.response["data"] = data
+
         if error is not None:
             self.response["error"] = error
 
