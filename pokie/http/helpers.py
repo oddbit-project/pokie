@@ -1,16 +1,13 @@
-from rick.util.misc import optional
-
-
 class ParseListError(Exception):
     pass
 
 
 def parse_list_parameters(args, record):
-    search_text = optional("search", args, None)
-    match_fields = optional("match", args, None)
-    offset = optional("offset", args, None)
-    limit = optional("limit", args, None)
-    sort = optional("sort", args, None)
+    search_text = args.get("search")
+    match_fields = args.get("match")
+    offset = args.get("offset")
+    limit = args.get("limit")
+    sort = args.get("sort")
 
     # match fields
     if match_fields is not None:

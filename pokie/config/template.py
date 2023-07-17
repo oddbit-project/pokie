@@ -4,6 +4,9 @@ from rick.resource.config import StrOrFile
 
 
 class BaseConfigTemplate:
+    # default HTTP Exception Handler - 404 and 500 exceptions
+    HTTP_ERROR_HANDLER = 'pokie.http.HttpErrorHandler'
+
     # list of enabled module names
     MODULES = []
     # if true, all endpoints are authenticated by default

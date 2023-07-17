@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "4", "2"]
+POKIE_VERSION = ["0", "4", "4"]
 
 
 def get_version():
@@ -15,16 +15,20 @@ HTTP_NOT_FOUND = 404
 HTTP_INTERNAL_ERROR = 500
 
 # DI Keys
-DI_CONFIG = "config"
-DI_FLASK = "app"
-DI_APP = "main"
-DI_MODULES = "modules"
-DI_SERVICES = "svc_manager"
-DI_DB = "db"
-DI_REDIS = "redis"
-DI_EVENTS = "event_manager"
-DI_TTY = "tty"
-DI_SIGNAL = "signal"
+DI_CONFIG = "config"  # config object
+DI_FLASK = "app"  # flask application
+DI_APP = "main"  # pokie application
+DI_MODULES = "modules"  # module list
+DI_SERVICES = "svc_manager"  # service manager
+DI_DB = "db"  # database client
+DI_REDIS = "redis"  # redis client
+DI_EVENTS = "event_manager"  # event manager
+DI_TTY = "tty"  # console writer
+DI_SIGNAL = "signal"  # signal manager
+DI_HTTP_ERROR_HANDLER = "http_error_handler"  # http exception manager
+
+# Error Handler configuration
+CFG_HTTP_ERROR_HANLDER = "http_error_handler"
 
 # DB Configuration
 CFG_DB_NAME = "db_name"
@@ -43,7 +47,6 @@ CFG_REDIS_SSL = "redis_ssl"
 
 # Auth Configuration
 CFG_AUTH_SECRET = "auth_secret"
-
 
 # SMTP Configuration
 CFG_SMTP_HOST = "smtp_host"
