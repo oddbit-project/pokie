@@ -21,7 +21,7 @@ class ResponseRendererInterface:
         pass
 
 
-class JsonResponse(ResponseRenderer):
+class JsonResponse(ResponseRendererInterface):
     """
     Default JSON response formatter
 
