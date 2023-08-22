@@ -9,23 +9,23 @@ from pokie.plugins.auth import AuthPluginInterface
 
 
 class AuthService(Injectable):
-    def authenticate(self, username: str, password: str) -> Optional[AuthUser]:
+    def authenticate(self, username: str, password: str, **kwargs) -> Optional[AuthUser]:
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
-            if plugin.valid_username(username):
-                result = plugin.autenticate(username, password)
+            if plugin.valid_username(username, **kwargs):
+                result = plugin.autenticate(username, password, **kwargs)
                 if result is not None:
                     return result
         return None
 
-    def update_password(self, username: str, password: str) -> bool:
+    def update_password(self, username: str, password: str, **kwargs) -> bool:
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
             if plugin.valid_username(username) and plugin.has_capability(
-                AuthPluginInterface.UPDATE_PASSWORD
+                    AuthPluginInterface.UPDATE_PASSWORD
             ):
-                return plugin.update_password(username, password)
+                return plugin.update_password(username, password, **kwargs)
         return False
 
-    def load_id(self, id_user, plugin_cls=None) -> Optional[AuthUser]:
+    def load_id(self, id_user, plugin_cls=None, **kwargs) -> Optional[AuthUser]:
         """
         Attempts to find a user profile by id, using the registed plugins
         :param id_user: unique user identifier
@@ -34,7 +34,7 @@ class AuthService(Injectable):
         """
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
             if plugin_cls is None or isinstance(plugin, plugin_cls):
-                result = plugin.load_id(id_user)
+                result = plugin.load_id(id_user, **kwargs)
                 if result is not None:
                     return result
         return None

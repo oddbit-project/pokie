@@ -9,15 +9,15 @@ class AuthPluginInterface(Injectable, abc.ABC):
     UPDATE_PASSWORD = 1
 
     @abc.abstractmethod
-    def autenticate(self, username: str, password: str) -> Optional[UserMixin]:
+    def autenticate(self, username: str, password: str, **kwargs) -> Optional[UserMixin]:
         pass
 
     @abc.abstractmethod
-    def valid_username(self, username: str) -> bool:
+    def valid_username(self, username: str, **kwargs) -> bool:
         pass
 
     @abc.abstractmethod
-    def update_password(self, username: str, password: str) -> bool:
+    def update_password(self, username: str, password: str, **kwargs) -> bool:
         pass
 
     @abc.abstractmethod
@@ -25,9 +25,9 @@ class AuthPluginInterface(Injectable, abc.ABC):
         pass
 
     @abc.abstractmethod
-    def has_capability(self, capability: int) -> bool:
+    def has_capability(self, capability: int, **kwargs) -> bool:
         pass
 
     @abc.abstractmethod
-    def load_id(self, id_user):
+    def load_id(self, id_user, **kwargs):
         pass

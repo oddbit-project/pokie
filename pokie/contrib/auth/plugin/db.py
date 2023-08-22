@@ -13,7 +13,7 @@ from pokie.contrib.auth.service import UserService
 class DbAuthPlugin(AuthPluginInterface):
     capabilities = [AuthPluginInterface.UPDATE_PASSWORD]
 
-    def autenticate(self, username: str, password: str):
+    def autenticate(self, username: str, password: str, **kwargs):
         record = self.svc_user.get_by_username(username)
         if record is None:
             return None
@@ -30,7 +30,7 @@ class DbAuthPlugin(AuthPluginInterface):
             self.svc_user.update_lastlogin(record.id)
             return AuthUser(record, self.get_di())
 
-    def load_id(self, id_user) -> Optional[AuthUser]:
+    def load_id(self, id_user, **kwargs) -> Optional[AuthUser]:
         """
         Loads a user record by id
         :param id_user:
@@ -45,7 +45,7 @@ class DbAuthPlugin(AuthPluginInterface):
 
         return AuthUser(record, self.get_di())
 
-    def valid_username(self, username: str) -> bool:
+    def valid_username(self, username: str, **kwargs) -> bool:
         """
         Checks if the given username is valid (exists and account is enabled)
         :param username:
@@ -56,7 +56,7 @@ class DbAuthPlugin(AuthPluginInterface):
             return False
         return record.active
 
-    def update_password(self, username: str, password: str) -> bool:
+    def update_password(self, username: str, password: str, **kwargs) -> bool:
         """
         Updates a user password
         :param username:
@@ -79,7 +79,7 @@ class DbAuthPlugin(AuthPluginInterface):
         """
         return True
 
-    def has_capability(self, capability: int) -> bool:
+    def has_capability(self, capability: int, **kwargs) -> bool:
         return capability in self.capabilities
 
     @property
