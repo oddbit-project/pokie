@@ -29,11 +29,9 @@ class JobListCmd(JobBaseCmd):
 
     def run(self, args) -> bool:
         for name, jobs in self.get_jobs().items():
-            self.tty.write("Worker Jobs for module {}:".format(name))
+            self.tty.write(f"Worker Jobs for module {name}:")
             for job in jobs:
-                self.tty.write(
-                    self.tty.colorizer.white("   {}".format(job), attr="bold")
-                )
+                self.tty.write(self.tty.colorizer.white(f"   {job}", attr="bold"))
 
         return True
 
@@ -48,13 +46,11 @@ class JobRunCmd(JobBaseCmd):
         # prepare job list
         for module_name, jobs in self.get_jobs().items():
             for job_name in jobs:
-                self.tty.write("Preparing job  '{}'...".format(job_name))
+                self.tty.write(f"Preparing job  '{job_name}'...")
                 job = load_class(job_name)
                 if job is None:
                     raise ValueError(
-                        "Non-existing job class '{}' in module {}".format(
-                            job_name, module_name
-                        )
+                        f"Non-existing job class '{job_name}' in module {module_name}"
                     )
                 if not issubclass(job, (Injectable, Runnable)):
                     raise RuntimeError(

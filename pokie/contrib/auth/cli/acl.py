@@ -79,9 +79,7 @@ class AclRoleCreateCmd(AclCommand):
         req = DescriptionRequest()
         if not req.is_valid({"description": args.description}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         lower = args.description.lower()
@@ -96,7 +94,7 @@ class AclRoleCreateCmd(AclCommand):
 
         id = self.svc_acl.add_role(args.description)
         self.tty.write(
-            "Created role #{} with description '{}'".format(str(id), args.description)
+            f"Created role #{str(id)} with description '{args.description}'"
         )
 
         return True
@@ -120,7 +118,7 @@ class AclRoleRemoveCmd(AclCommand):
         if record is None:
             self.tty.write(
                 self.tty.colorizer.red(
-                    "Error: role id #{} not found".format(str(args.id_role))
+                    f"Error: role id #{str(args.id_role)} not found"
                 )
             )
             return False
@@ -134,7 +132,7 @@ class AclRoleRemoveCmd(AclCommand):
             return False
 
         self.svc_acl.truncate_role(id)
-        self.tty.write("Role #{} removed successfully".format(id))
+        self.tty.write(f"Role #{id} removed successfully")
         return True
 
 
@@ -150,7 +148,7 @@ class AclRoleInfoCmd(AclCommand):
         if record is None:
             self.tty.write(
                 self.tty.colorizer.red(
-                    "Error: role id #{} not found".format(str(args.id_role))
+                    f"Error: role id #{str(args.id_role)} not found"
                 )
             )
             return False
@@ -180,9 +178,7 @@ class AclResourceCreateCmd(AclCommand):
         req = IdDescriptionRequest()
         if not req.is_valid({"id": args.id, "description": args.description}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         id_lower = args.id.lower()
@@ -205,9 +201,7 @@ class AclResourceCreateCmd(AclCommand):
 
         id = self.svc_acl.add_resource(args.id, args.description)
         self.tty.write(
-            "Created resource '{}' with description '{}'".format(
-                str(id), args.description
-            )
+            f"Created resource '{str(id)}' with description '{args.description}'"
         )
 
         return True
@@ -224,15 +218,13 @@ class AclResourceLinkCmd(AclCommand):
         req = RoleResourceRequest()
         if not req.is_valid({"id_role": args.id_role, "id_resource": args.id_resource}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         id_role = int(args.id_role)
         self.svc_acl.add_role_resource(id_role, args.id_resource)
         self.tty.write(
-            "Associated resource '{}' with role #{}".format(args.id_resource, id_role)
+            f"Associated resource '{args.id_resource}' with role #{id_role}"
         )
 
         return True
@@ -249,17 +241,13 @@ class AclResourceUnlinkCmd(AclCommand):
         req = RoleResourceRequest()
         if not req.is_valid({"id_role": args.id_role, "id_resource": args.id_resource}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         id_role = int(args.id_role)
         self.svc_acl.remove_role_resource(id_role, args.id_resource)
         self.tty.write(
-            "Removed association of resource '{}' with role #{}".format(
-                args.id_resource, id_role
-            )
+            f"Removed association of resource '{args.id_resource}' with role #{id_role}"
         )
 
         return True
@@ -276,25 +264,21 @@ class AclRoleLinkCmd(AclCommand):
         req = UserRoleRequest()
         if not req.is_valid({"username": args.username, "id_role": args.id_role}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         user = self.svc_user.get_by_username(args.username)
         if user is None:
             self.tty.write(
                 self.tty.colorizer.red(
-                    "Error: username '{}' not found".format(args.username)
+                    f"Error: username '{args.username}' not found"
                 )
             )
             return False
 
         id_role = int(args.id_role)
         self.svc_acl.add_user_role(user.id, id_role)
-        self.tty.write(
-            "Associated user '{}' with role #{}".format(user.username, id_role)
-        )
+        self.tty.write(f"Associated user '{user.username}' with role #{id_role}")
 
         return True
 
@@ -310,16 +294,14 @@ class AclRoleUnlinkCmd(AclCommand):
         req = UserRoleRequest()
         if not req.is_valid({"username": args.username, "id_role": args.id_role}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         user = self.svc_user.get_by_username(args.username)
         if user is None:
             self.tty.write(
                 self.tty.colorizer.red(
-                    "Error: username '{}' not found".format(args.username)
+                    f"Error: username '{args.username}' not found"
                 )
             )
             return False
@@ -327,9 +309,7 @@ class AclRoleUnlinkCmd(AclCommand):
         id_role = int(args.id_role)
         self.svc_acl.remove_user_role(user.id, id_role)
         self.tty.write(
-            "Removed association of user '{}' with role #{}".format(
-                user.username, id_role
-            )
+            f"Removed association of user '{user.username}' with role #{id_role}"
         )
 
         return True
@@ -346,7 +326,7 @@ class AclUserRoleCmd(AclCommand):
         if user is None:
             self.tty.write(
                 self.tty.colorizer.red(
-                    "Error: username '{}' not found".format(args.username)
+                    f"Error: username '{args.username}' not found"
                 )
             )
             return False

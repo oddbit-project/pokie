@@ -57,9 +57,7 @@ class MessageQueueRepository(Repository):
 
         with self._db.cursor() as c:
             result = c.fetchall(sql, values, self._record)
-            if len(result) > 0:
-                return result[0]
-            return None
+            return result[0] if len(result) > 0 else None
 
     def truncate(self):
         sql = "TRUNCATE TABLE {}".format(

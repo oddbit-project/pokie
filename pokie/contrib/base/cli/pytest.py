@@ -10,11 +10,9 @@ class PyTestCmd(CliCommand):
     skipargs = True
 
     def run(self, args) -> bool:
-        args = []
-        if len(sys.argv) > 2:
-            args = sys.argv[2:]
+        args = sys.argv[2:] if len(sys.argv) > 2 else []
         self.tty.write(
             self.tty.colorizer.white("[Pokie]", attr="bold")
-            + " Running pytest with: {}".format(str(args))
+            + f" Running pytest with: {str(args)}"
         )
         sys.exit(pytest.main(args, plugins=["pytest_pokie"]))

@@ -21,9 +21,7 @@ class DbCliCommand(CliCommand):
 
     def get_db(self) -> Optional[Connection]:
         di = self.get_di()
-        if not di.has(DI_DB):
-            return None
-        return di.get(DI_DB)
+        return None if not di.has(DI_DB) else di.get(DI_DB)
 
     def load_migrations(self, module_name: str, path: Path) -> List[tuple]:
         """
@@ -40,7 +38,7 @@ class DbCliCommand(CliCommand):
 
         result = []
         for name, contents in mig_dict.items():
-            record = MigrationRecord(name="{}/{}".format(module_name, name))
+            record = MigrationRecord(name=f"{module_name}/{name}")
             result.append((record, contents))
         return result
 
@@ -62,7 +60,7 @@ class DbInitCmd(DbCliCommand):
                 self.tty.write(self.tty.colorizer.green("success"))
                 return True
             else:
-                self.tty.write(self.tty.colorizer.green("error: " + result.error))
+                self.tty.write(self.tty.colorizer.green(f"error: {result.error}"))
                 return False
 
         self.tty.write("migration manager already installed")
@@ -84,7 +82,7 @@ class DbCheckCmd(DbCliCommand):
             return False
 
         for name, module in self.get_di().get(DI_APP).modules.items():
-            self.tty.write("Checking migrations for module {}:".format(name))
+            self.tty.write(f"Checking migrations for module {name}:")
             path = (
                 Path(os.path.dirname(inspect.getfile(module.__class__))) / self.folder
             )
@@ -114,7 +112,7 @@ class DbCheckCmd(DbCliCommand):
                             )
 
                 except Exception as e:
-                    self.tty.error("Error : " + str(e))
+                    self.tty.error(f"Error : {str(e)}")
                     return False
         return True
 
@@ -142,7 +140,7 @@ class DbUpdateCmd(DbCliCommand):
             return False
 
         for module_name, module in self.get_di().get(DI_APP).modules.items():
-            self.tty.write("Checking migrations for module {}:".format(module_name))
+            self.tty.write(f"Checking migrations for module {module_name}:")
             path = (
                 Path(os.path.dirname(inspect.getfile(module.__class__))) / self.folder
             )
@@ -159,35 +157,32 @@ class DbUpdateCmd(DbCliCommand):
                                 self.tty.colorizer.white("already applied", attr="bold")
                             )
 
-                        # check if migration is obviously empty
                         elif content.strip() == "":
                             self.tty.write(
                                 self.tty.colorizer.yellow(
                                     "empty migration", attr="bold"
                                 )
                             )
+                        elif args.dry:
+                            # dry run, just assume everyting is fine
+                            self.tty.write(
+                                self.tty.colorizer.green("success", attr="bold")
+                            )
+
                         else:
-                            # apply migration
-                            if not args.dry:
-                                # try to execute migration and register on the migration manager
-                                result = mgr.execute(mig, content)
-                                if result.success:
-                                    self.tty.write(
-                                        self.tty.colorizer.green("success", attr="bold")
-                                    )
-                                else:
-                                    # in case of error, abort
-                                    self.tty.write("\n")
-                                    self.tty.error("Error: " + result.error)
-                                    return False
-                            else:
-                                # dry run, just assume everyting is fine
+                            # try to execute migration and register on the migration manager
+                            result = mgr.execute(mig, content)
+                            if result.success:
                                 self.tty.write(
                                     self.tty.colorizer.green("success", attr="bold")
                                 )
-
+                            else:
+                                # in case of error, abort
+                                self.tty.write("\n")
+                                self.tty.error(f"Error: {result.error}")
+                                return False
                 except Exception as e:
                     self.tty.write("\n")
-                    self.tty.error("Error : " + str(e))
+                    self.tty.error(f"Error : {str(e)}")
                     return False
         return True

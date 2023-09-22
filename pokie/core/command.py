@@ -15,10 +15,7 @@ class CliCommand(ABC, Injectable):
     def __init__(self, di: Di, writer=None):
         self.set_di(di)
         if not writer:
-            if di.has(DI_TTY):
-                writer = di.get(DI_TTY)
-            else:
-                writer = ConsoleWriter()
+            writer = di.get(DI_TTY) if di.has(DI_TTY) else ConsoleWriter()
         self.tty = writer
 
     def arguments(self, parser: ArgumentParser):

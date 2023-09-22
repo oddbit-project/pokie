@@ -22,7 +22,7 @@ class DbPrimaryKey(Rule):
     def validate(
         self, value, options: list = None, error_msg=None, translator: Translator = None
     ):
-        if len(options) == 0:
+        if not options:
             raise RuntimeError("DbPrimaryKey(): missing table name")
 
         if _di is None:
@@ -30,19 +30,11 @@ class DbPrimaryKey(Rule):
 
         table_name = str(options[0])
         tokens = table_name.split(".")
-        if len(tokens) > 2 or len(tokens) == 0:
-            raise ValueError(
-                "DbPrimaryKey(): invalid table name '{}'".format(table_name)
-            )
-        schema = None
+        if len(tokens) > 2 or not tokens:
+            raise ValueError(f"DbPrimaryKey(): invalid table name '{table_name}'")
         table_name = tokens[0]
-        if len(tokens) == 2:
-            schema = tokens[1]
-
-        pk_name = ""
-        if len(options) > 1:
-            pk_name = str(options[1])
-
+        schema = tokens[1] if len(tokens) == 2 else None
+        pk_name = str(options[1]) if len(options) > 1 else ""
         svc = _di.get(DI_SERVICES).get(SVC_VALIDATOR)
         try:
             if svc.id_exists(pk_name, value, table_name, schema):

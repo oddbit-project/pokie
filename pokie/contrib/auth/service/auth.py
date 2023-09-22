@@ -18,12 +18,15 @@ class AuthService(Injectable):
         return None
 
     def update_password(self, username: str, password: str, **kwargs) -> bool:
-        for plugin in self.auth_plugins:  # type: AuthPluginInterface
-            if plugin.valid_username(username) and plugin.has_capability(
-                    AuthPluginInterface.UPDATE_PASSWORD
-            ):
-                return plugin.update_password(username, password, **kwargs)
-        return False
+        return next(
+            (
+                plugin.update_password(username, password, **kwargs)
+                for plugin in self.auth_plugins
+                if plugin.valid_username(username)
+                and plugin.has_capability(AuthPluginInterface.UPDATE_PASSWORD)
+            ),
+            False,
+        )
 
     def load_id(self, id_user, plugin_cls=None, **kwargs) -> Optional[AuthUser]:
         """
@@ -52,14 +55,10 @@ class AuthService(Injectable):
         for name in auth_plugins:
             plugin = load_class(name)
             if plugin is None:
-                raise RuntimeError(
-                    "AuthService: auth plugin '{}' not found".format(name)
-                )
+                raise RuntimeError(f"AuthService: auth plugin '{name}' not found")
             if not issubclass(plugin, AuthPluginInterface):
                 raise RuntimeError(
-                    "AuthService: auth plugin '{}' must implement AuthPlugin interface".format(
-                        name
-                    )
+                    f"AuthService: auth plugin '{name}' must implement AuthPlugin interface"
                 )
             plugins.append(plugin(di))
         return plugins

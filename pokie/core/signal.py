@@ -9,7 +9,7 @@ class SignalManager(Injectable):
         self.handlers = {}
 
     def add_handler(self, signalnum: int, handler: callable):
-        assert callable(handler) is True
+        assert callable(handler)
         assert isinstance(signalnum, int)
 
         if signalnum in self.handlers.keys():

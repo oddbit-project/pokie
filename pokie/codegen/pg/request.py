@@ -42,18 +42,14 @@ class RequestGenerator:
 
         # add predefined validators for data types
         if f.dtype in self.validators.keys():
-            for v in self.validators[f.dtype]:
-                validators.append(v)
-
+            validators.extend(iter(self.validators[f.dtype]))
         # add maxlen if defined in spec
         if "maxlen" in f.dtype_spec.keys():
-            validators.append("maxlen:{}".format(str(f.dtype_spec["maxlen"])))
+            validators.append(f'maxlen:{str(f.dtype_spec["maxlen"])}')
 
         # add foreign key lookup
         if f.fk:
-            validators.append(
-                "pk:{}.{},{}".format(f.fk_schema, f.fk_table, f.fk_column)
-            )
+            validators.append(f"pk:{f.fk_schema}.{f.fk_table},{f.fk_column}")
 
         return name, validators, target
 
@@ -95,9 +91,7 @@ class RequestGenerator:
         if imports is True:
             gen.writeln("from rick.form import RequestRecord, field", newlines=2)
 
-        gen.writeln(
-            "class {}Request(RequestRecord):".format(snake_to_pascal(spec.table))
-        )
+        gen.writeln(f"class {snake_to_pascal(spec.table)}Request(RequestRecord):")
         gen.writeln("fields = {", level=1)
         for f in spec.fields:
             gen.writeln(self._gen_field_src(f, camelcase, db_camelcase), level=2)

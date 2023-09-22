@@ -50,11 +50,6 @@ class MailQueueJob(MailJob):
                     )
             except Exception as e:
                 raise e
-                self.tty.error(str(e))
-                self.svc_queue.update_status(
-                    record.id, MessageQueueService.STATUS_FAILED
-                )
-                return False
         return True
 
     def run(self, di: Di):

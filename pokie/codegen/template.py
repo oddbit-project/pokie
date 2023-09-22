@@ -21,21 +21,15 @@ class TemplateProcessor:
     def process(self, src_path: Path, dest_path: Path, vars: dict, tty=None):
         if not src_path.exists():
             raise ValueError(
-                "TemplateProcessor::process() invalid source directory '{}'".format(
-                    str(src_path)
-                )
+                f"TemplateProcessor::process() invalid source directory '{str(src_path)}'"
             )
         if not src_path.is_dir():
             raise ValueError(
-                "TemplateProcessor::process() path '{}' is not a directory".format(
-                    str(src_path)
-                )
+                f"TemplateProcessor::process() path '{str(src_path)}' is not a directory"
             )
         if dest_path.exists() and not dest_path.is_dir():
             raise ValueError(
-                "TemplateProcessor::process() path '{}' is not a directory".format(
-                    str(src_path)
-                )
+                f"TemplateProcessor::process() path '{str(src_path)}' is not a directory"
             )
 
         if not dest_path.exists():
@@ -53,17 +47,15 @@ class TemplateProcessor:
                 with open(dest_file, "w") as outfile:
                     outfile.write(contents)
                 if tty:
-                    tty.write("created '{}' file".format(str(dest_file)))
+                    tty.write(f"created '{str(dest_file)}' file")
             elif f.is_dir():
                 new_dest = dest / Path(f.name)
                 new_dest.mkdir()
                 if tty:
-                    tty.write("created '{}' directory".format(str(new_dest)))
+                    tty.write(f"created '{str(new_dest)}' directory")
                 self._process_dir(f, new_dest, vars, tty)
             else:
-                raise RuntimeError(
-                    "something went wrong processing path '{}'".format(f)
-                )
+                raise RuntimeError(f"something went wrong processing path '{f}'")
 
     def read_tpl(self, src_file: Path) -> str:
         with open(src_file, "r") as f:

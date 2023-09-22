@@ -18,16 +18,13 @@ class AclService(Injectable):
         return self.role_repository.find_user_roles(id_user)
 
     def list_user_resource_id(self, id_user: int) -> List[str]:
-        result = []
-        for record in self.resource_repository.find_user_resources(id_user):
-            result.append(record.id)
-        return result
+        return [
+            record.id
+            for record in self.resource_repository.find_user_resources(id_user)
+        ]
 
     def list_user_role_id(self, id_user: int) -> List[str]:
-        result = []
-        for record in self.role_repository.find_user_roles(id_user):
-            result.append(record.id)
-        return result
+        return [record.id for record in self.role_repository.find_user_roles(id_user)]
 
     def list_roles(self) -> List[AclRole]:
         return self.role_repository.fetch_all_ordered(AclRole.id)

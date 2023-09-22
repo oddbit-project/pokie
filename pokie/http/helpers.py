@@ -20,7 +20,7 @@ def parse_list_parameters(args, record):
                 raise ParseListError("invalid field match expression")
             name = f[0]
             if name not in record._fieldmap.keys():
-                raise ParseListError("invalid field name: {}".format(f))
+                raise ParseListError(f"invalid field name: {f}")
             result[record._fieldmap[name]] = f[1]
         # replace original dict with result
         match_fields = result
@@ -49,12 +49,12 @@ def parse_list_parameters(args, record):
         for expr in sort:
             expr = expr.split(":")
             if expr[0] not in record._fieldmap.keys():
-                raise ParseListError("invalid sort field name: {}".format(expr[0]))
+                raise ParseListError(f"invalid sort field name: {expr[0]}")
             name = record._fieldmap[expr[0]]
 
             if len(expr) > 1:
                 if expr[1].lower() not in ["asc", "desc"]:
-                    raise ParseListError("invalid sort order: {}".format(expr[1]))
+                    raise ParseListError(f"invalid sort order: {expr[1]}")
                 result[name] = expr[1]
             else:
                 result[name] = "asc"

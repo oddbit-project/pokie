@@ -25,11 +25,9 @@ class RecordGenerator:
             gen.writeln("from rick_db import fieldmapper", newlines=3)
 
         gen.writeln(
-            "@fieldmapper(tablename='{}', pk='{}', schema='{}')".format(
-                spec.table, spec.pk, spec.schema
-            )
+            f"@fieldmapper(tablename='{spec.table}', pk='{spec.pk}', schema='{spec.schema}')"
         )
-        gen.writeln("class {}Record:".format(snake_to_pascal(spec.table)))
+        gen.writeln(f"class {snake_to_pascal(spec.table)}Record:")
         for field in spec.fields:
             if field.pk is False:
                 attr = field.name if camelcase is False else snake_to_camel(field.name)

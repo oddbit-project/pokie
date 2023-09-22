@@ -56,5 +56,5 @@ def route_resource(app, slug, cls, id_type: str = "int"):
                 app.add_url_rule(
                     route.format(slug=slug, type=id_type),
                     methods=methods,
-                    view_func=cls.as_view("{}{}".format(name, suffix)),
+                    view_func=cls.as_view(f"{name}{suffix}"),
                 )

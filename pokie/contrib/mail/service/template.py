@@ -18,9 +18,7 @@ class MessageTemplateService(Injectable):
         self, template: str, locale: str, channel: int
     ) -> Optional[MessageBuilder]:
         template = self.repo_template.find_template(template, locale, channel)
-        if template is None:
-            return None
-        return MessageBuilder(template)
+        return None if template is None else MessageBuilder(template)
 
     @property
     def repo_template(self) -> MessageTemplateRepository:

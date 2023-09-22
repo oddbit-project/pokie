@@ -31,18 +31,12 @@ class BaseCommand(CliCommand):
                 cls = load_class(cmd_path)
                 if not cls:
                     raise RuntimeError(
-                        "Error: class '{}' not found while listing available CLI commands".format(
-                            cmd_path
-                        )
+                        f"Error: class '{cmd_path}' not found while listing available CLI commands"
                     )
                 if not issubclass(cls, CliCommand):
-                    raise RuntimeError(
-                        "Error: class '{}' does not extend CliCommand".format(cmd_path)
-                    )
+                    raise RuntimeError(f"Error: class '{cmd_path}' does not extend CliCommand")
                 obj = cls(di)
-                self.tty.write(
-                    "{} \t {}".format(color.green(cmd), color.white(obj.description))
-                )
+                self.tty.write(f"{color.green(cmd)} \t {color.white(obj.description)}")
 
         return True
 
@@ -64,7 +58,7 @@ class HelpCmd(BaseCommand):
     def run(self, args) -> bool:
         map = self.get_cmd_map()
         if args.command not in map.keys():
-            self.tty.error("Error: command '{}' not found".format(args.command))
+            self.tty.error(f"Error: command '{args.command}' not found")
             return False
 
         cls = load_class(map[args.command])
@@ -81,8 +75,8 @@ class HelpCmd(BaseCommand):
         """
         program = os.path.basename(sys.argv[0])
 
-        self.tty.write("{}: {}\n".format(cmd, cmd_object.description))
-        self.tty.write("usage: {} {} [OPTIONS...]\n".format(program, cmd))
+        self.tty.write(f"{cmd}: {cmd_object.description}\n")
+        self.tty.write(f"usage: {program} {cmd} [OPTIONS...]\n")
 
         parser = ArgParser(add_help=False)
         cmd_object.arguments(parser)
@@ -95,7 +89,7 @@ class ListCmd(BaseCommand):
     def run(self, args) -> bool:
         color = AnsiColor()
         self.tty.write(
-            "\nusage: {} <command> [OPTIONS...]\n".format(os.path.basename(sys.argv[0]))
+            f"\nusage: {os.path.basename(sys.argv[0])} <command> [OPTIONS...]\n"
         )
         self.tty.write("available commands:")
         for cmd, cmd_path in self.get_cmd_map().items():
@@ -103,21 +97,17 @@ class ListCmd(BaseCommand):
 
             if not cls:
                 raise RuntimeError(
-                    "Error: class '{}' not found while listing available CLI commands".format(
-                        cmd_path
-                    )
+                    f"Error: class '{cmd_path}' not found while listing available CLI commands"
                 )
 
             if not issubclass(cls, CliCommand):
-                raise RuntimeError(
-                    "Error: class '{}' does not extend CliCommand".format(cmd_path)
-                )
+                raise RuntimeError(f"Error: class '{cmd_path}' does not extend CliCommand")
 
             # show details
             self.tty.write(
-                "{} \t {}".format(
-                    color.green(cmd), color.white(cls.description)
-                ).expandtabs(32)
+                f"{color.green(cmd)} \t {color.white(cls.description)}".expandtabs(
+                    32
+                )
             )
 
         return True
@@ -167,10 +157,7 @@ class RunServerCmd(CliCommand):
         )
 
     def run(self, args) -> bool:
-        kwargs = {}
-        for a, b in self.flask_args.items():
-            kwargs[a] = getattr(args, b)
-
+        kwargs = {a: getattr(args, b) for a, b in self.flask_args.items()}
         # run flask
         self.get_di().get(DI_FLASK).run(**kwargs)
 

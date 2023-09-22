@@ -15,11 +15,8 @@ from pokie.core import CliCommand
 
 class DbCodeGenCommand(CliCommand):
     def get_db(self) -> Optional[Connection]:
-        result = None
         di = self.get_di()
-        if di.has(DI_DB):
-            result = di.get(DI_DB)
-        return result
+        return di.get(DI_DB) if di.has(DI_DB) else None
 
     def is_supported(self, db) -> bool:
         if isinstance(db, Connection):
@@ -35,19 +32,12 @@ class DbCodeGenCommand(CliCommand):
             schema = table_expr[0]
             table = table_expr[1]
 
-        all_tables = []
-        for tbl in mgr.list_database_tables(schema):
-            all_tables.append(tbl.name)
-
+        all_tables = [tbl.name for tbl in mgr.list_database_tables(schema)]
         if table == "*":
             table_list = all_tables
         else:
             if table not in all_tables:
-                self.tty.error(
-                    "table with name '{}' not found in schema '{}'".format(
-                        table, schema
-                    )
-                )
+                self.tty.error(f"table with name '{table}' not found in schema '{schema}'")
                 return []
             table_list.append(table)
 
@@ -65,7 +55,7 @@ class DbCodeGenCommand(CliCommand):
         for name in table_list:
             self.tty.write(
                 self.tty.colorizer.white(
-                    "generating dto for {}.{}...".format(schema, name), attr="bold"
+                    f"generating dto for {schema}.{name}...", attr="bold"
                 )
             )
             spec = pg.table_spec(name, schema)
@@ -75,9 +65,7 @@ class DbCodeGenCommand(CliCommand):
         if dest_file is None:
             self.tty.write("\n".join(result))
         else:
-            self.tty.write(
-                self.tty.colorizer.white("writing to file '{}'...".format(dest_file))
-            )
+            self.tty.write(self.tty.colorizer.white(f"writing to file '{dest_file}'..."))
             with open(dest_file, "w") as f:
                 f.write("\n".join(result))
 
@@ -98,7 +86,7 @@ class DbCodeGenCommand(CliCommand):
         for name in table_list:
             self.tty.write(
                 self.tty.colorizer.white(
-                    "generating RequestRecord class for {}.{}...".format(schema, name),
+                    f"generating RequestRecord class for {schema}.{name}...",
                     attr="bold",
                 )
             )
@@ -116,9 +104,7 @@ class DbCodeGenCommand(CliCommand):
         if dest_file is None:
             self.tty.write("\n".join(result))
         else:
-            self.tty.write(
-                self.tty.colorizer.white("writing to file '{}'...".format(dest_file))
-            )
+            self.tty.write(self.tty.colorizer.white(f"writing to file '{dest_file}'..."))
             with open(dest_file, "w") as f:
                 f.write("\n".join(result))
 

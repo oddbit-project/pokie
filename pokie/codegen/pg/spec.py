@@ -18,38 +18,32 @@ class PgTableSpec:
         return self.mgr
 
     def get_pk(self, table, schema) -> Optional[str]:
-        for f in self.mgr.list_table_indexes(table, schema):
-            if f.primary:
-                return f.field
-        return None
+        return next(
+            (
+                f.field
+                for f in self.mgr.list_table_indexes(table, schema)
+                if f.primary
+            ),
+            None,
+        )
 
     def get_fields(self, table, schema) -> dict:
-        result = {}
-        for c in self.mgr.list_table_columns(table, schema):
-            result[c.column] = c
-        return result
+        return {c.column: c for c in self.mgr.list_table_columns(table, schema)}
 
     def is_serial(self, table, field, schema) -> bool:
-        namespec = "{}.{}".format(schema, table)
+        namespec = f"{schema}.{table}"
         sql = "SELECT pg_get_serial_sequence(%s, %s)"
         with self.db.cursor() as c:
             return len(c.exec(sql, (namespec, field))) > 0
 
     def get_fk(self, table, schema) -> dict:
-        result = {}
-        for r in self.mgr.list_table_foreign_keys(table, schema):
-            result[r.column] = r
-        return result
+        return {r.column: r for r in self.mgr.list_table_foreign_keys(table, schema)}
 
     def spec_bpchar(self, f: ColumnRecord) -> dict:
-        if f.maxlen is not None:
-            return {"maxlen": f.maxlen}
-        return {}
+        return {"maxlen": f.maxlen} if f.maxlen is not None else {}
 
     def spec_varchar(self, f: ColumnRecord) -> dict:
-        if f.maxlen is not None:
-            return {"maxlen": f.maxlen}
-        return {}
+        return {"maxlen": f.maxlen} if f.maxlen is not None else {}
 
     def spec_numeric(self, f: ColumnRecord) -> dict:
         return {
@@ -70,14 +64,11 @@ class PgTableSpec:
         pk = self.get_pk(table, schema)
         fks = self.get_fk(table, schema)
         fields = self.get_fields(table, schema)
-        identity = None
         pk_auto = False
 
-        for name, f in fields.items():
-            if f.is_identity == "YES":
-                identity = name
-                break
-
+        identity = next(
+            (name for name, f in fields.items() if f.is_identity == "YES"), None
+        )
         # primary key may not exist as key, but table may have an identity column
         # if we find an always generated identity column, we'll use that
         if pk is None and identity is not None:
@@ -87,9 +78,7 @@ class PgTableSpec:
         if pk is not None:
             if pk not in fields.keys():
                 raise RuntimeError(
-                    "Primary key '{}' does not exist in table field list for table {}.{}".format(
-                        pk, schema, table
-                    )
+                    f"Primary key '{pk}' does not exist in table field list for table {schema}.{table}"
                 )
 
             if not pk_auto:
@@ -101,7 +90,7 @@ class PgTableSpec:
             is_pk = pk == f.column
             auto = is_pk and pk_auto
 
-            spec_formatter = getattr(self, "spec_" + f.udt_name, None)
+            spec_formatter = getattr(self, f"spec_{f.udt_name}", None)
             type_spec = {}
             if callable(spec_formatter):
                 type_spec = spec_formatter(f)

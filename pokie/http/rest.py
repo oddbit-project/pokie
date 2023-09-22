@@ -24,10 +24,7 @@ class RestMixin:
             return self.list()
 
         record = self.svc.get(id)
-        if record is None:
-            return self.not_found()
-
-        return self.success(record)
+        return self.not_found() if record is None else self.success(record)
 
     def list(self):
         """
@@ -91,10 +88,7 @@ class RestMixin:
     def svc(self) -> RestService:
         mgr = self.di.get(DI_SERVICES)
         if self.service_name is None:
-            svc_name = "svc.rest.{}.{}".format(
-                self.__module__,
-                str(self.record_class.__name__).replace("Record", "", 1),
-            )
+            svc_name = f'svc.rest.{self.__module__}.{str(self.record_class.__name__).replace("Record", "", 1)}'
             if mgr.contains(svc_name):
                 return mgr.get(svc_name)
 

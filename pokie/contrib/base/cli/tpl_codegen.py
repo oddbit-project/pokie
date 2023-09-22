@@ -19,9 +19,7 @@ class TplGenCommand(CliCommand):
     def run(self, args) -> bool:
         dest_path = Path(args.path) / Path(args.name)
         if dest_path.exists():
-            self.tty.error(
-                "error: directory '{}' already exists".format(str(dest_path))
-            )
+            self.tty.error(f"error: directory '{str(dest_path)}' already exists")
             return False
 
         tpl_path = self.get_template_path(args)

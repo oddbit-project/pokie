@@ -36,7 +36,7 @@ class LoginView(PokieView):
         self.mgr_event().dispatch(self.di, "afterLogin", result)
 
         # flask-login
-        login_user(user, bool(remember))
+        login_user(user, remember)
 
         return self.success(result)
 

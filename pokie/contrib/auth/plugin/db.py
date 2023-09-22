@@ -40,10 +40,7 @@ class DbAuthPlugin(AuthPluginInterface):
         if record is None:
             return None
 
-        if not record.active:
-            return None
-
-        return AuthUser(record, self.get_di())
+        return None if not record.active else AuthUser(record, self.get_di())
 
     def valid_username(self, username: str, **kwargs) -> bool:
         """
@@ -52,9 +49,7 @@ class DbAuthPlugin(AuthPluginInterface):
         :return: True if username exists, false otherwise
         """
         record = self.svc_user.get_by_username(username)
-        if record is None:
-            return False
-        return record.active
+        return False if record is None else record.active
 
     def update_password(self, username: str, password: str, **kwargs) -> bool:
         """
@@ -63,7 +58,7 @@ class DbAuthPlugin(AuthPluginInterface):
         :param password:
         :return:
         """
-        if len(password) == 0:
+        if not password:
             return False
         record = self.svc_user.get_by_username(username)
         if record is None:

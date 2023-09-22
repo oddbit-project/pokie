@@ -76,23 +76,15 @@ class FlaskApplication:
         self.modules = {}
         module_list = [*self.system_modules, *module_list]
         for name in module_list:
-            cls = load_class(
-                "{}.{}.{}".format(name, self.module_file_name, self.module_class_name)
-            )
+            cls = load_class(f"{name}.{self.module_file_name}.{self.module_class_name}")
             if cls is None:
                 raise RuntimeError(
-                    "build(): cannot load module '{}' - Module() class not found".format(
-                        name
-                    )
+                    f"build(): cannot load module '{name}' - Module() class not found"
                 )
             if not issubclass(cls, BaseModule):
-                raise RuntimeError(
-                    "build(): Class Module on '{}' must extend BaseModule".format(name)
-                )
-            if name in self.modules.keys():
-                raise ValueError(
-                    "build(): Module named '{}' already exists".format(name)
-                )
+                raise RuntimeError(f"build(): Class Module on '{name}' must extend BaseModule")
+            if name in self.modules:
+                raise ValueError(f"build(): Module named '{name}' already exists")
             self.modules[name] = cls(self.di)
 
         # build service map
@@ -103,9 +95,7 @@ class FlaskApplication:
                 svc_map.update(services)
             else:
                 raise RuntimeError(
-                    "build(): cannot load service map from module '{}'; attribute must be of type dict".format(
-                        name
-                    )
+                    f"build(): cannot load service map from module '{name}'; attribute must be of type dict"
                 )
         # register service mapper
         self.di.add(DI_SERVICES, MapLoader(self.di, svc_map))
@@ -122,7 +112,7 @@ class FlaskApplication:
 
         # parse events from modules
         evt_mgr = EventManager()
-        for _, module in self.modules.items():
+        for module in self.modules.values():
             module_events = getattr(module, "events", None)
             if isinstance(module_events, dict):
                 for evt_name, evt_details in module_events.items():
@@ -142,7 +132,7 @@ class FlaskApplication:
             self.di.add(DI_HTTP_ERROR_HANDLER, handler)
 
         # initialize modules
-        for _, module in self.modules.items():
+        for module in self.modules.values():
             module.build(self)
 
         return self.app
@@ -158,21 +148,13 @@ class FlaskApplication:
         # parameter parser
         parser = ArgParser(**kwargs)
 
-        if "writer" in kwargs.keys():
-            tty = kwargs["writer"]
-        else:
-            tty = ConsoleWriter()
-
+        tty = kwargs["writer"] if "writer" in kwargs else ConsoleWriter()
         # lookup handler
         for _, module in self.modules.items():
             if command in module.cmd.keys():
                 handler = load_class(module.cmd[command])
                 if not handler:
-                    raise RuntimeError(
-                        "cli(): handler class '{}' not found".format(
-                            module.cmd[command]
-                        )
-                    )
+                    raise RuntimeError(f"cli(): handler class '{module.cmd[command]}' not found")
                 if not issubclass(handler, CliCommand):
                     raise RuntimeError(
                         "cli(): command handler does not extend CliCommand"
@@ -191,12 +173,9 @@ class FlaskApplication:
                     # this allow for custom cli arg handling
                     args = None
 
-                if handler.run(args):
-                    return self.CLI_CMD_SUCCESS
-                return self.CLI_CMD_FAILED
-
+                return self.CLI_CMD_SUCCESS if handler.run(args) else self.CLI_CMD_FAILED
         # command not found
-        tty.error("error executing '{}': command not found".format(command))
+        tty.error(f"error executing '{command}': command not found")
         return self.CLI_CMD_NOT_FOUND
 
     def cli(self, **kwargs):
@@ -205,18 +184,11 @@ class FlaskApplication:
         :param kwargs: optional parameters for ArgumentParse
         :return:
         """
-        # default command when no args detected
-        command = "list"
-        # extract command if specified
-        if len(sys.argv) > 1:
-            command = str(sys.argv[1])
-
+        command = str(sys.argv[1]) if len(sys.argv) > 1 else "list"
         if "add_help" not in kwargs.keys():
             kwargs["add_help"] = False
         if "usage" not in kwargs.keys():
-            kwargs["usage"] = "{} {} [OPTIONS...]".format(
-                os.path.basename(sys.argv[0]), command
-            )
+            kwargs["usage"] = f"{os.path.basename(sys.argv[0])} {command} [OPTIONS...]"
 
         # exit code directly maps return codes
         exit(self.cli_runner(command, sys.argv[2:], **kwargs))

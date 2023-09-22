@@ -41,13 +41,13 @@ class ValidatorService(Injectable):
         :param schema:
         :return: str or None
         """
-        key = "{}.{}".format(table_name, schema)
         name = self._cache_get(table_name)
         if name is not None:
             return name
 
         record = self.db.metadata().table_pk(table_name, schema)
         if record is not None:
+            key = f"{table_name}.{schema}"
             self._cache_add(key, record.field)
             return record.field
 

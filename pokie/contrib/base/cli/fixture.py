@@ -20,18 +20,15 @@ class RunFixtureCmd(FixtureCmd):
         parser.add_argument("name", type=str, help="fixture name(s) to run", nargs="*")
 
     def valid_name(self, name: str) -> bool:
-        return name.find(".") > -1
+        return "." in name
 
     def run(self, args) -> bool:
-        existing = []
         all = self.svc_fixture.scan() if len(args.name) == 0 else args.name
 
-        for r in self.svc_fixture.list():
-            existing.append(r.name)
-
+        existing = [r.name for r in self.svc_fixture.list()]
         for name in all:
             if self.valid_name(name):
-                self.tty.write("Fixture {}: ".format(name), eol=False)
+                self.tty.write(f"Fixture {name}: ", eol=False)
                 if name in existing:
                     self.tty.write(
                         self.tty.colorizer.white(
@@ -51,7 +48,7 @@ class RunFixtureCmd(FixtureCmd):
                         self.tty.error("\nError : " + str(e))
                         return False
             else:
-                self.tty.error("Fixture '{}': invalid name, skipping".format(name))
+                self.tty.error(f"Fixture '{name}': invalid name, skipping")
         return True
 
 
@@ -59,7 +56,6 @@ class CheckFixtureCmd(FixtureCmd):
     description = "show existing fixture status"
 
     def run(self, args) -> bool:
-        existing = []
         all = self.svc_fixture.scan()
         if len(all) != len(set(all)):
             # @todo: use rick.util.misc.list_duplicates()
@@ -70,16 +66,12 @@ class CheckFixtureCmd(FixtureCmd):
                     duplicates.append(item)
                 else:
                     seen.add(item)
-            self.tty.error(
-                "Duplicated fixture(s) found: {}".format(",".join(duplicates))
-            )
+            self.tty.error(f'Duplicated fixture(s) found: {",".join(duplicates)}')
             return False
 
-        for r in self.svc_fixture.list():
-            existing.append(r.name)
-
+        existing = [r.name for r in self.svc_fixture.list()]
         for name in all:
-            self.tty.write("Fixture {}: ".format(name), eol=False)
+            self.tty.write(f"Fixture {name}: ", eol=False)
             if name in existing:
                 self.tty.write(
                     self.tty.colorizer.white("already executed, skipping", attr="bold")

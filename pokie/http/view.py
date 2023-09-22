@@ -125,7 +125,7 @@ class PokieView(MethodView):
         if handler is None and method == "head":
             handler = getattr(self, "get", None)
         # support for named views
-        if "_action_method_" in kwargs.keys():
+        if "_action_method_" in kwargs:
             handler = getattr(self, kwargs["_action_method_"], None)
             del kwargs["_action_method_"]
 
@@ -295,8 +295,11 @@ class PokieAuthView(PokieView):
         if not current_user.is_authenticated:
             return self.denied()
 
-        for acl in self.acl:
-            if not self.user.can_access(acl):
-                return self.forbidden()
-
-        return None
+        return next(
+            (
+                self.forbidden()
+                for acl in self.acl
+                if not self.user.can_access(acl)
+            ),
+            None,
+        )

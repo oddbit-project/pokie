@@ -62,9 +62,7 @@ class UserCreateCmd(UserCommand):
         req = UserCreateRequest()
         if not req.is_valid({"username": args.username, "email": args.email}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         if self.svc_user.get_by_username(args.username) is not None:
@@ -82,9 +80,7 @@ class UserCreateCmd(UserCommand):
         )
         id = self.svc_user.add_user(record)
         self.tty.write(
-            "Created user #{} with username '{}' and email '{}'".format(
-                str(id), args.username, args.email
-            )
+            f"Created user #{str(id)} with username '{args.username}' and email '{args.email}'"
         )
 
         return True
@@ -113,9 +109,7 @@ class UserInfoCmd(UserCommand):
         req = UserInfoRequest()
         if not req.is_valid({"username": args.username}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         record = self.svc_user.get_by_username(args.username)
@@ -153,9 +147,7 @@ class UserModCmd(UserCommand):
         req = UserInfoRequest()
         if not req.is_valid({"username": args.username}):
             for k, v in req.get_errors().items():
-                self.tty.write(
-                    self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
-                )
+                self.tty.write(self.tty.colorizer.red(f'Error in {k}: {v["*"]}'))
             return False
 
         if (
@@ -288,10 +280,8 @@ class UserListCmd(UserCommand):
             self.tty.write(self.tty.colorizer.red("Error: count cannot be negative"))
             return False
 
-        sort_field = None
         limit = 100
-        if not args.id:
-            sort_field = UserRecord.username
+        sort_field = UserRecord.username if not args.id else None
         if args.count != 0:
             limit = args.count
         details = self.svc_user.list_users(args.offset, limit, sort_field)
@@ -299,9 +289,7 @@ class UserListCmd(UserCommand):
         if args.count == 0:
             limit = details[0]
         self.tty.write(
-            self.tty.colorizer.green(
-                "Displaying {} of {} users:".format(limit, details[0])
-            )
+            self.tty.colorizer.green(f"Displaying {limit} of {details[0]} users:")
         )
 
         for user in details[1]:  # type: UserRecord
