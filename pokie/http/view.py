@@ -15,7 +15,7 @@ from pokie.constants import (
     HTTP_INTERNAL_ERROR,
     HTTP_NOAUTH,
     HTTP_FORBIDDEN,
-    DI_SERVICES,
+    DI_SERVICES, HTTP_NOT_FOUND,
 )
 
 
@@ -257,7 +257,7 @@ class PokieView(MethodView):
         Error: not found
         :return: Request
         """
-        return self.error("record not found", code=HTTP_BADREQ)
+        return self.error("record not found", code=HTTP_NOT_FOUND)
 
     def forbidden(self):
         """

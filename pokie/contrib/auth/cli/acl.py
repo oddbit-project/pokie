@@ -178,7 +178,7 @@ class AclResourceCreateCmd(AclCommand):
 
     def run(self, args) -> bool:
         req = IdDescriptionRequest()
-        if not req.is_valid({"id": args.id, "description": args.description}):
+        if not req.is_valid({"id_resource": args.id, "description": args.description}):
             for k, v in req.get_errors().items():
                 self.tty.write(
                     self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))

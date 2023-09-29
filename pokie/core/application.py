@@ -77,7 +77,8 @@ class FlaskApplication:
         module_list = [*self.system_modules, *module_list]
         for name in module_list:
             cls = load_class(
-                "{}.{}.{}".format(name, self.module_file_name, self.module_class_name)
+                "{}.{}.{}".format(name, self.module_file_name, self.module_class_name),
+                True
             )
             if cls is None:
                 raise RuntimeError(
@@ -114,7 +115,7 @@ class FlaskApplication:
         for factory in factories:
             if type(factory) is str:
                 # if factory is string, assume it is a path to a callable
-                factory = load_class(factory)
+                factory = load_class(factory, True)
             if not callable(factory):
                 raise RuntimeError("build(): non-callable or non-existing factory")
             else:
