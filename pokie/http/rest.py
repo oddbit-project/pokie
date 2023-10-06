@@ -75,7 +75,7 @@ class RestMixin:
         self.svc.update(id, record)
         return self.success()
 
-    def delete(self, id):
+    def delete(self, id_record):
         """
         delete Record by id
         :param id_record:
