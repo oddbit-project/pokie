@@ -50,7 +50,7 @@ class DbGridRequest(RequestRecord):
                             self.FIELD_MATCH, t.t("invalid field match expression")
                         )
                         return False
-                    name = humps.decamelize(f[0])
+                    name = self._normalize(f[0])
                     if name not in self.record._fieldmap.keys():
                         self.add_error(
                             self.FIELD_MATCH, t.t("invalid field name: {}").format(f)

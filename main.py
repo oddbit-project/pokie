@@ -14,7 +14,7 @@ def build_pokie():
 
     # modules to load & initialize
     modules = [
-        'tests.pokie_test', # default test module
+        'pokie_test', # default test module
     ]
 
     # factories to run

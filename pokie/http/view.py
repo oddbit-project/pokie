@@ -8,7 +8,7 @@ from flask import current_app
 from flask_login import current_user
 from rick.form import RequestRecord
 
-from .response import JsonResponse
+from .response import JsonResponse, CamelCaseJsonResponse
 from pokie.constants import (
     HTTP_OK,
     HTTP_BADREQ,
@@ -29,7 +29,10 @@ class PokieView(MethodView):
     request_class = None  # type: RequestRecord
 
     # default response class
-    response_class = JsonResponse
+    response_class = None # default will use JsonResponse
+
+    # if true, responses are camelCased
+    camel_case = False
 
     # default error message
     msg_error_default = "request failed"
@@ -38,6 +41,11 @@ class PokieView(MethodView):
         super().__init__(*args, **kwargs)
         self.di = current_app.di
         self.logger = current_app.logger
+
+        # if no specific response class, use generic one
+        # based on camelCase options
+        if self.response_class is None:
+            self.response_class = CamelCaseJsonResponse if self.camel_case else JsonResponse
 
         # methods where automatic body deserialization is attempted
         #

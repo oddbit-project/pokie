@@ -1,7 +1,8 @@
 import json
-import rick.serializer.json
+from typing import Type
 from collections.abc import Mapping
-
+import humps
+from rick.serializer.json.json import CamelCaseJsonEncoder, ExtendedJsonEncoder
 from pokie.constants import HTTP_OK
 
 
@@ -108,12 +109,39 @@ class JsonResponse(ResponseRendererInterface):
         data = json.dumps(
             self.response, indent=indent, separators=separators, cls=self.serializer()
         )
-        # @todo: add self.headers to response
-        return _app.response_class(data, status=self.code, mimetype=self.mime_type)
+        return _app.response_class(data, status=self.code, mimetype=self.mime_type, headers=self.headers)
 
-    def serializer(self) -> json.JSONEncoder:
+    def serializer(self) -> Type[json.JSONEncoder]:
         """
         Get JSON serializer
         :return:
         """
-        return rick.serializer.json.ExtendedJsonEncoder
+        return ExtendedJsonEncoder
+
+
+class CamelCaseJsonResponse(JsonResponse):
+
+    def assemble(self, _app, **kwargs):
+        """
+        Assemble Flask response object
+        :param _app:
+        :return: Response
+        """
+        indent = None
+        separators = (",", ":")
+
+        if _app.json.compact or _app.debug:
+            indent = 2
+            separators = (", ", ": ")
+
+        data = json.dumps(
+            humps.camelize(self.response), indent=indent, separators=separators, cls=self.serializer()
+        )
+        return _app.response_class(data, status=self.code, mimetype=self.mime_type, headers=self.headers)
+
+    def serializer(self) -> Type[json.JSONEncoder]:
+        """
+        Get JSON serializer
+        :return:
+        """
+        return CamelCaseJsonEncoder

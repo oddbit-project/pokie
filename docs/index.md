@@ -11,5 +11,10 @@ Pokie is a Flask application boilerplate, using [Rick](https://git.oddbit.org/Od
 
 Contents:
 - [Pokie Tutorial](tutorial/tutorial.md)
-- [Pokie Views](views/index.md)
-- [Pokie REST Views](views/rest.md)
+- [Pokie Views](http/index.md)
+- [Pokie REST Views](http/rest.md)
+
+
+- [Grid Requests](http/dbgridrequest.md)
+- [JSON Responses](http/json_reponse.md)
+- [Global Error Handling](http/error_handler.md)

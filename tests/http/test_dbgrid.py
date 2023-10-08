@@ -1,14 +1,19 @@
 import pytest
 
 from pokie.constants import DEFAULT_LIST_SIZE
-from pokie.contrib.base.dto import FixtureRecord
 from pokie.http import DbGridRequest
+from pokie_test.dto import CustomerRecord
 
 
 @pytest.fixture
 def dbgrid_request():
-    # use FixtureRecord as record
-    return DbGridRequest(FixtureRecord)
+    return DbGridRequest(CustomerRecord)
+
+
+@pytest.fixture
+def dbgridRequest():
+    # camel-case DbGridRequest()
+    return DbGridRequest(CustomerRecord, use_camel_case=True)
 
 
 class TestDbGrid:
@@ -81,6 +86,7 @@ class TestDbGrid:
 
         # match error - invalid clauses
         for clause in [
+            "abc",
             "abc|",
             "abc:|",
             ":|",
@@ -100,5 +106,65 @@ class TestDbGrid:
             assert "match" in dbgrid_request.errors.keys()
 
         # match success - names
-        for clause in ["id:def", "id:1|applied:true", "id:1|applied:true|name:john"]:
+        # Note that no type validation is performed
+        for clause in ["id:def", "id:1|contact_name:true", "id:1|contact_name:true|country:john"]:
             assert dbgrid_request.is_valid({"match": clause}) is True
+
+        # match fail - names are camelCased
+        for clause in ["id:1|contactName:abc|contactTitle:xyz|postalCode:4400"]:
+            assert dbgrid_request.is_valid({"match": clause}) is False
+            # @todo: fix this
+
+    def test_validate_match_fields_camelcase(self, dbgridRequest):
+        # empty request is valid
+        assert dbgridRequest.is_valid({}) is True
+
+        # match success - names
+        # Note that no type validation is performed
+        for clause in ["id:def", "id:1|contactName:abc|contactTitle:xyz|postalCode:4400"]:
+            assert dbgridRequest.is_valid({"match": clause}) is True
+
+    def test_validate_sort_fields(self, dbgrid_request):
+        assert dbgrid_request.is_valid({"sort": "|"}) is False
+        assert len(dbgrid_request.errors) == 1
+        assert "sort" in dbgrid_request.errors.keys()
+
+        assert dbgrid_request.is_valid({"osrt": ""}) is True
+
+        # sort error - invalid clauses
+        for clause in [
+            "abc,",
+            "abc:,",
+            ":,",
+            ",:",
+            ",abc:",
+            ",:def",
+            "id:3,applied,abc",
+        ]:
+            assert dbgrid_request.is_valid({"sort": clause}) is False
+            assert len(dbgrid_request.errors) == 1
+            assert "sort" in dbgrid_request.errors.keys()
+
+        # sort error - invalid names
+        for clause in ["abc", "abc:asc" "123:4", "a:1,b:2,c:3"]:
+            assert dbgrid_request.is_valid({"sort": clause}) is False
+            assert len(dbgrid_request.errors) == 1
+            assert "sort" in dbgrid_request.errors.keys()
+
+        # sort success - names
+        for clause in ["id", "id:asc,contact_name:desc", "id:asc,contact_name:desc,postal_code"]:
+            assert dbgrid_request.is_valid({"sort": clause}) is True
+
+        # sort fail - camelCase names
+        for clause in ["id:asc,contactName:desc", "id:asc,contactName:desc,postalCode"]:
+            assert dbgrid_request.is_valid({"sort": clause}) is False
+            assert len(dbgrid_request.errors) == 1
+            assert "sort" in dbgrid_request.errors.keys()
+
+    def test_validate_sort_fields_camelcase(self, dbgridRequest):
+        # empty request is valid
+        assert dbgridRequest.is_valid({}) is True
+
+        # sort success
+        for clause in ["contactName:asc,contactTitle:desc,postalCode", "contactName"]:
+            assert dbgridRequest.is_valid({"sort": clause}) is True

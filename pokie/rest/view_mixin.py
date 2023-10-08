@@ -12,6 +12,7 @@ class RestViewMixin:
     search_fields = None  # type: List
     service_name = None
     list_limit = -1
+    camel_case = False
 
     def get(self, id=None):
         """
@@ -34,9 +35,9 @@ class RestViewMixin:
         :return:
         """
         search_fields = self.search_fields if self.search_fields is not None else []
-        dbgrid_request = DbGridRequest()
+        dbgrid_request = DbGridRequest(self.record_class, self.camel_case)
 
-        if not dbgrid_request.validate(request.args, self.record_class):
+        if not dbgrid_request.validate(request.args ):
             return self.request_error(dbgrid_request)
         try:
             count, data = self.svc.list(
@@ -46,7 +47,6 @@ class RestViewMixin:
             return self.success(result)
         except Exception as e:
             # exception may happen because of mismatched data type, such as matching strings to int fields
-
             self.logger.exception(e)
             return self.error()
 
