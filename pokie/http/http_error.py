@@ -1,14 +1,21 @@
 from rick.base import Di
 from rick.mixin import Injectable
 
-from pokie.constants import HTTP_NOT_FOUND, HTTP_INTERNAL_ERROR, DI_FLASK, HTTP_NOT_ALLOWED
+from pokie.constants import (
+    HTTP_NOT_FOUND,
+    HTTP_INTERNAL_ERROR,
+    DI_FLASK,
+    HTTP_NOT_ALLOWED,
+)
 from .response import JsonResponse
 
 
 class HttpErrorHandler(Injectable):
     ERROR_400 = "400 Bad Request: The browser (or proxy) sent a request that this server could not understand."
     ERROR_404 = "404 Not Found: The requested URL was not found on the server."
-    ERROR_405 = "405 Method Not Allowed: The method is not allowed for the requested URL."
+    ERROR_405 = (
+        "405 Method Not Allowed: The method is not allowed for the requested URL."
+    )
     ERROR_500 = "500 Internal Server Error"
 
     def __init__(self, di: Di):

@@ -15,7 +15,8 @@ from pokie.constants import (
     HTTP_INTERNAL_ERROR,
     HTTP_NOAUTH,
     HTTP_FORBIDDEN,
-    DI_SERVICES, HTTP_NOT_FOUND,
+    DI_SERVICES,
+    HTTP_NOT_FOUND,
 )
 
 

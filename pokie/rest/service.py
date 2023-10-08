@@ -3,7 +3,7 @@ from rick.base import Di
 from pokie.constants import DI_DB
 from rick.mixin import Injectable
 from rick_db import DbGrid, Repository
-from .mixin import RestServiceMixin
+from .service_mixin import RestServiceMixin
 
 
 class RestService(Injectable, RestServiceMixin):
@@ -40,7 +40,7 @@ class RestService(Injectable, RestServiceMixin):
 
     def list(
         self,
-        search_fields: list,
+        search_fields: list = None,
         search_text: str = None,
         match_fields: dict = None,
         limit: int = None,

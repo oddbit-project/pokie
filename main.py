@@ -13,7 +13,9 @@ def build_pokie():
     cfg = Config().build()
 
     # modules to load & initialize
-    modules = []
+    modules = [
+        'tests.pokie_test', # default test module
+    ]
 
     # factories to run
     factories = [PgSqlFactory, ]

@@ -9,7 +9,9 @@ class AuthPluginInterface(Injectable, abc.ABC):
     UPDATE_PASSWORD = 1
 
     @abc.abstractmethod
-    def autenticate(self, username: str, password: str, **kwargs) -> Optional[UserMixin]:
+    def autenticate(
+        self, username: str, password: str, **kwargs
+    ) -> Optional[UserMixin]:
         pass
 
     @abc.abstractmethod

@@ -16,7 +16,7 @@ class RestServiceMixin:
 
     def list(
         self,
-        search_fields: list,
+        search_fields: list = None,
         search_text: str = None,
         match_fields: dict = None,
         limit: int = None,

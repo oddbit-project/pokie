@@ -1,14 +1,13 @@
 from typing import List
 
-from rick.form import RequestRecord
 from flask import request
-from .helpers import ParseListError, parse_list_parameters
+
+from pokie.http import DbGridRequest
 from pokie.rest import RestService, RestServiceMixin
 from pokie.constants import DI_SERVICES
-from inspect import isclass
 
 
-class RestMixin:
+class RestViewMixin:
     record_class = None
     search_fields = None  # type: List
     service_name = None
@@ -35,27 +34,21 @@ class RestMixin:
         :return:
         """
         search_fields = self.search_fields if self.search_fields is not None else []
-        text, match, limit, offset, sort = parse_list_parameters(
-            request.args, self.record_class
-        )
+        dbgrid_request = DbGridRequest()
 
-        # automatically cap records
-        if offset is None and limit is None and self.list_limit > 0:
-            limit = self.list_limit
-
+        if not dbgrid_request.validate(request.args, self.record_class):
+            return self.request_error(dbgrid_request)
         try:
             count, data = self.svc.list(
-                search_fields=search_fields,
-                search_text=text,
-                match_fields=match,
-                limit=limit,
-                offset=offset,
-                sort_fields=sort,
+                **dbgrid_request.dbgrid_parameters(self.list_limit, search_fields)
             )
-            result = {"total": count, "rows": data}
+            result = {"total": count, "items": data}
             return self.success(result)
-        except ParseListError as e:
-            return self.error(str(e))
+        except Exception as e:
+            # exception may happen because of mismatched data type, such as matching strings to int fields
+
+            self.logger.exception(e)
+            return self.error()
 
     def post(self):
         """

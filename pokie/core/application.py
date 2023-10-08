@@ -18,7 +18,9 @@ from pokie.constants import (
     DI_APP,
     DI_EVENTS,
     DI_TTY,
-    DI_SIGNAL, CFG_HTTP_ERROR_HANLDER, DI_HTTP_ERROR_HANDLER,
+    DI_SIGNAL,
+    CFG_HTTP_ERROR_HANLDER,
+    DI_HTTP_ERROR_HANDLER,
 )
 from .module import BaseModule
 from .command import CliCommand
@@ -78,7 +80,7 @@ class FlaskApplication:
         for name in module_list:
             cls = load_class(
                 "{}.{}.{}".format(name, self.module_file_name, self.module_class_name),
-                True
+                True,
             )
             if cls is None:
                 raise RuntimeError(
@@ -137,7 +139,9 @@ class FlaskApplication:
         if self.cfg.has(CFG_HTTP_ERROR_HANLDER):
             handler = load_class(self.cfg.get(CFG_HTTP_ERROR_HANLDER), True)
             if not issubclass(handler, Injectable):
-                raise RuntimeError("build(): HTTP_ERROR_HANDLER class does not extend Injectable")
+                raise RuntimeError(
+                    "build(): HTTP_ERROR_HANDLER class does not extend Injectable"
+                )
             # initialize & register handler
             handler = handler(self.di)
             self.di.add(DI_HTTP_ERROR_HANDLER, handler)

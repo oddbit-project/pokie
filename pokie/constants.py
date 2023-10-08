@@ -49,15 +49,6 @@ CFG_REDIS_SSL = "redis_ssl"
 # Auth Configuration
 CFG_AUTH_SECRET = "auth_secret"
 
-# SMTP Configuration
-CFG_SMTP_HOST = "smtp_host"
-CFG_SMTP_PORT = "smtp_port"
-CFG_SMTP_USE_TLS = "smtp_use_tls"
-CFG_SMTP_USE_SSL = "smtp_use_ssl"
-CFG_SMTP_DEBUG = "smtp_debug"
-CFG_SMTP_USERNAME = "smtp_username"
-CFG_SMTP_PASSWORD = "smtp_password"
-CFG_SMTP_DEFAULT_SENDER = "smtp_default_sender"
-CFG_SMTP_TIMEOUT = "smtp_timeout"
-CFG_SMTP_SSL_KEYFILE = "smtp_ssl_keyfile"
-CFG_SMTP_SSL_CERTFILE = "smtp_ssl_certfile"
+
+# default list size for DBGrid Operations
+DEFAULT_LIST_SIZE = 100
