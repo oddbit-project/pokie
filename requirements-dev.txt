@@ -1,5 +1,3 @@
-pytest-pokie>=0.2.0
-pytest==7.3.1
 pytest-cov==4.0.0
 pytest-testdox==3.0.1
 flake8==6.0.0

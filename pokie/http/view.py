@@ -283,6 +283,11 @@ class PokieView(MethodView):
         return self.error("access denied", code=HTTP_NOAUTH)
 
     def get_service(self, service_name):
+        """
+        Service helper
+        :param service_name:
+        :return:
+        """
         return self.di.get(DI_SERVICES).get(service_name)
 
 

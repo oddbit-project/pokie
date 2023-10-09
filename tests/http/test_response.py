@@ -33,7 +33,7 @@ def result_object(pokie_di):
 
 class TestResponse:
 
-    def serializer(self):
+    def test_serializer(self):
         obj = JsonResponse()
         serializer = obj.serializer()()
         assert isinstance(serializer, ExtendedJsonEncoder)

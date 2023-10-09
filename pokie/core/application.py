@@ -171,17 +171,21 @@ class FlaskApplication:
         # lookup handler
         for _, module in self.modules.items():
             if command in module.cmd.keys():
-                handler = load_class(module.cmd[command])
+                # load_class may raise ModuleNotFoundError if path not found
+                handler = load_class(module.cmd[command], raise_exception=True)
+
                 if not handler:
                     raise RuntimeError(
                         "cli(): handler class '{}' not found".format(
                             module.cmd[command]
                         )
                     )
+
                 if not issubclass(handler, CliCommand):
                     raise RuntimeError(
                         "cli(): command handler does not extend CliCommand"
                     )
+
                 handler = handler(self.di, writer=tty)  # type: CliCommand
                 if not handler.skipargs:  # skipargs controls usage of argparser
                     handler.arguments(parser)

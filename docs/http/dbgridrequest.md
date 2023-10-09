@@ -2,10 +2,10 @@
 
 The *DbGridRequest* class offers a convenient way of parsing and
 validating [DbGrid](https://oddbit-project.github.io/rick_db/grid/) parameters from a REST endpoint.
-It is the underlying mechanism used by [RestMixin](rest.md) listing functionality.
+It is the underlying mechanism used by [RestView](rest.md) listing functionality.
 
 This class extracts and validates a set of parameters from a dictionary - usually from a GET request - against the list
-of fields of the desired record type. Adittionally, it may also provide camelCase conversion functionality and sane
+of fields of the desired record type. Additionally, it may also provide camelCase conversion functionality and sane
 defaults on listing operations.
 
 Please note that *DbGridRequest* does not perform actual field type validation - eg. performing exact matching on a

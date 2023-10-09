@@ -2,28 +2,28 @@ from typing import List
 
 from flask import request
 
-from pokie.http import DbGridRequest
+from pokie.http import DbGridRequest, PokieView
 from pokie.rest import RestService, RestServiceMixin
 from pokie.constants import DI_SERVICES
 
 
-class RestViewMixin:
+class RestView(PokieView):
     record_class = None
     search_fields = None  # type: List
     service_name = None
     list_limit = -1
     camel_case = False
 
-    def get(self, id=None):
+    def get(self, id_record=None):
         """
         Read single record by id
         :param id_record:
         :return:
         """
-        if id is None:
+        if id_record is None:
             return self.list()
 
-        record = self.svc.get(id)
+        record = self.svc.get(id_record)
         if record is None:
             return self.not_found()
 
@@ -35,9 +35,9 @@ class RestViewMixin:
         :return:
         """
         search_fields = self.search_fields if self.search_fields is not None else []
-        dbgrid_request = DbGridRequest(self.record_class, self.camel_case)
+        dbgrid_request = DbGridRequest(self.record_class, use_camel_case=self.camel_case)
 
-        if not dbgrid_request.validate(request.args ):
+        if not dbgrid_request.is_valid(request.args ):
             return self.request_error(dbgrid_request)
         try:
             count, data = self.svc.list(
@@ -59,13 +59,13 @@ class RestViewMixin:
         self.svc.insert(record)
         return self.success()
 
-    def put(self, id):
+    def put(self, id_record):
         """
         Update Record
         :return:
         """
         record = self.request.bind(self.record_class)
-        self.svc.update(id, record)
+        self.svc.update(id_record, record)
         return self.success()
 
     def delete(self, id_record):

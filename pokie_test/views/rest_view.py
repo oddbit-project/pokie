@@ -1,7 +1,6 @@
 from rick.form import RequestRecord, field
 
-from build.lib.pokie.http.rest import RestMixin
-from pokie.http import PokieView
+from pokie.rest import RestView
 from pokie_test.dto import CustomerRecord
 
 
@@ -22,7 +21,7 @@ class CustomerRequest(RequestRecord):
     }
 
 
-class CountryView(PokieView, RestMixin):
+class CustomerView(RestView):
     # RequestRecord class for body operations
     request_class = CustomerRequest
 

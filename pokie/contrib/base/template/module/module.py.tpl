@@ -1,6 +1,6 @@
 from flask import Blueprint
 from pokie.core import BaseModule
-from pokie.http import route_resource, route_controller
+from pokie.http import AutoRouter
 
 class Module(BaseModule):
     # internal module name
@@ -82,5 +82,13 @@ class Module(BaseModule):
         #
         # All Flask-related routing calls should reside here
         app = parent.app
-        #app.add_url_rule('/some-path', methods=['GET', 'POST'], view_func=MyViewClass.as_view('route-name'))
+
+        # register "/slug" as resource route to be handled by SlugView class:
+        # AutoRouter.resource(app, "/slug", SlugView)
+
+        # register "/slug" as controller route to be handled by SlugView class:
+        # AutoRouter.controller(app, "/slug", SlugView):
+
+        # register custom route:
+        # app.add_url_rule('/some-path', methods=['GET', 'POST'], view_func=MyViewClass.as_view('route-name'))
 

@@ -1,6 +1,9 @@
 from flask import Blueprint
 from pokie.core import BaseModule
-from pokie.http import route_resource, route_controller
+from pokie.http import AutoRouter
+from pokie_test.constants import SVC_CUSTOMER
+from pokie_test.views import CustomerController
+from pokie_test.views.rest_view import CustomerView
 
 
 class Module(BaseModule):
@@ -20,7 +23,7 @@ class Module(BaseModule):
     #
     services = {
         # service entries are defined as {'service_name': 'path_to_class'}
-        # my_constant: 'path.to.class'
+        SVC_CUSTOMER: "pokie_test.service.CustomerService"
     }
 
     # cli command map
@@ -81,4 +84,11 @@ class Module(BaseModule):
         #
         # All Flask-related routing calls should reside here
         app = parent.app
+        AutoRouter.resource(app, 'customers', CustomerView)
+
+        app.add_url_rule(
+            "/mycustomer/<string:id_customer>",
+            methods=["GET"],
+            view_func=CustomerController.view_method('view_customer'),
+        )
         # app.add_url_rule('/some-path', methods=['GET', 'POST'], view_func=MyViewClass.as_view('route-name'))
