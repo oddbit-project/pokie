@@ -16,5 +16,5 @@ Contents:
 
 
 - [Grid Requests](http/dbgridrequest.md)
-- [JSON Responses](http/json_reponse.md)
+- [JSON Responses](http/json_response.md)
 - [Global Error Handling](http/error_handler.md)

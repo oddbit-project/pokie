@@ -2,7 +2,6 @@ import os
 import sys
 from argparse import ArgumentParser
 from typing import List
-from collections import OrderedDict
 
 from flask import Flask
 from rick.base import Di, Container, MapLoader
@@ -80,7 +79,7 @@ class FlaskApplication:
         for name in module_list:
             cls = load_class(
                 "{}.{}.{}".format(name, self.module_file_name, self.module_class_name),
-                True,
+                raise_exception=True,
             )
             if cls is None:
                 raise RuntimeError(
@@ -117,7 +116,7 @@ class FlaskApplication:
         for factory in factories:
             if type(factory) is str:
                 # if factory is string, assume it is a path to a callable
-                factory = load_class(factory, True)
+                factory = load_class(factory, raise_exception=True)
             if not callable(factory):
                 raise RuntimeError("build(): non-callable or non-existing factory")
             else:
@@ -137,7 +136,7 @@ class FlaskApplication:
 
         # register exception handler
         if self.cfg.has(CFG_HTTP_ERROR_HANLDER):
-            handler = load_class(self.cfg.get(CFG_HTTP_ERROR_HANLDER), True)
+            handler = load_class(self.cfg.get(CFG_HTTP_ERROR_HANLDER), raise_exception=True)
             if not issubclass(handler, Injectable):
                 raise RuntimeError(
                     "build(): HTTP_ERROR_HANDLER class does not extend Injectable"

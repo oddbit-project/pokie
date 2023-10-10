@@ -1,6 +1,6 @@
 # Pokie Views
 
-Pokie extends on the class-based views on Flask, and offers additional features such asautomatic request body unmarshall,
+Pokie extends on the class-based views on Flask, and offers additional features such as automatic request body unmarshall,
 custom-named view methods (a-la Controllers), response helpers and authentication.
 
 Using Pokie views is not mandatory; however, they are quite handy to implement REST-based APIs, and they provide extra

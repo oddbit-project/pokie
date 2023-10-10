@@ -1,6 +1,6 @@
 # REST Views
 
-Pokie provide several helpers to implement REST endpoints; one of them is the *RestView* class. This class
+Pokie provides several helpers to implement REST endpoints; one of them is the *RestView* class. This class
 implements all the basic REST operations for CRUD operations on a given Record/Service. Service can either be the
 generic *pokie.rest.RestService*,
 or a custom service that implements *pokie.rest.RestServiceInterface*.
@@ -63,9 +63,8 @@ class CountryView(RestView):
 
 ### Using RestView grid capabilities
 
-By leveraging [DbGrid](https://oddbit-project.github.io/rick_db/grid/) capabilities, the RestView offers a set of
-relevant
-features for advanced scenarios, such as server-side pagination, sorting and search.
+By leveraging [DbGrid](https://oddbit-project.github.io/rick_db/grid/) capabilities through a [DbGridRequest](dbgridrequest.md) object, the RestView offers a set of
+relevant features for advanced scenarios, such as server-side pagination, sorting and search.
 
 the following url variables are available:
 

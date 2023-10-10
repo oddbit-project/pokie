@@ -1,5 +1,5 @@
 site_name: Pokie
-site_description: Flask boilerplate
+site_description: REST Web Framework based on Flask
 strict: true
 site_url: https://git.oddbit.org/OddBit/pokie/
 repo_name: OddBit/pokie
@@ -7,7 +7,13 @@ repo_url: https://git.oddbit.org/OddBit/pokie
 
 theme:
   name: material
-
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.path
+    - navigation.footer
+    - 
 nav:
 - Overview: index.md
 - Introduction:
@@ -15,15 +21,47 @@ nav:
     - Scaffolding: tutorial/scaffolding.md
     - Tutorial: tutorial/tutorial.md
 - Views:
-    - Pokie Views: views/index.md
-    - REST Views: views/rest.md
-    - Controllers: views/controllers.md
+    - Pokie Views: http/index.md
+    - REST Views: http/rest.md
+    - Error Handlers: http/error_handler.md
+
+- Fixtures:
+     - Adding fixtures: fixtures.md
+
+- Classes:
+    - DbGridRequest: http/dbgridrequest.md
+    - JSONResponse: http/json_response.md
+
+
 plugins:
 - search
 
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight
   - pymdownx.inlinehilite
-  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
