@@ -13,7 +13,7 @@ theme:
     - navigation.sections
     - navigation.path
     - navigation.footer
-    - 
+    -
 nav:
 - Overview: index.md
 - Introduction:

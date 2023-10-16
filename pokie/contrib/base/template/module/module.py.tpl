@@ -84,10 +84,10 @@ class Module(BaseModule):
         app = parent.app
 
         # register "/slug" as resource route to be handled by SlugView class:
-        # AutoRouter.resource(app, "/slug", SlugView)
+        # AutoRouter.resource(app, "slug", SlugView)
 
         # register "/slug" as controller route to be handled by SlugView class:
-        # AutoRouter.controller(app, "/slug", SlugView):
+        # AutoRouter.controller(app, "slug", SlugView):
 
         # register custom route:
         # app.add_url_rule('/some-path', methods=['GET', 'POST'], view_func=MyViewClass.as_view('route-name'))
