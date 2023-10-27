@@ -2,7 +2,7 @@ rick-db>=1.1.2
 rick>=0.6.0
 rick-mailer>=1.0.1
 Flask==2.3.3
-Werkzeug==2.3.7
+Werkzeug==3.0.1
 Flask-Login>=0.6.2
 iso8601>=0.1.16
 setuptools>=60.0.0
