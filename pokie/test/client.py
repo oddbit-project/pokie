@@ -1,8 +1,9 @@
 import json
+from flask import Response
 
 
-class RestResponse:
-    def __init__(self, response):
+class PokieResponse:
+    def __init__(self, response: Response):
         self.success = True
         self.error = None
         self.data = None
@@ -30,40 +31,58 @@ class RestResponse:
                     self.form_error = self.error["formError"]
 
 
-class RestClient:
-    def __init__(self, client, base_url="/v1"):
+class AuthInterface:
+    def authenticate(self, client) -> bool:
+        raise NotImplementedError
+
+
+class PokieClient:
+    def __init__(self, client, base_url="", auth: AuthInterface = None):
         self.client = client
         self.base_url = base_url
         self.headers = {"Content-type": "application/json"}
+        self.auth = None
+        if auth is not None:
+            self.auth = auth
+            self.auth.authenticate(self)
 
-    def post(self, url: str, data=None) -> RestResponse:
-        return RestResponse(
+    def post(self, url: str, data=None) -> PokieResponse:
+        return PokieResponse(
             self.client.post(
                 "{}{}".format(self.base_url, url), json=data, headers=self.headers
             )
         )
 
-    def post_formdata(self, url: str, data=None, files=None) -> RestResponse:
-        return RestResponse(
-            self.client.post("{}{}".format(self.base_url, url), data=data, files=files)
+    def raw_get(self, url: str, data=None) -> Response:
+        return self.client.get(
+            "{}{}".format(self.base_url, url), json=data, headers=self.headers
         )
 
-    def get(self, url: str, data=None) -> RestResponse:
-        return RestResponse(
+    def post_formdata(self, url: str, data=None) -> PokieResponse:
+        return PokieResponse(
+            self.client.post(
+                "{}{}".format(self.base_url, url),
+                data=data,
+                content_type="multipart/form-data",
+            )
+        )
+
+    def get(self, url: str, data=None) -> PokieResponse:
+        return PokieResponse(
             self.client.get(
                 "{}{}".format(self.base_url, url), json=data, headers=self.headers
             )
         )
 
-    def put(self, url: str, data=None) -> RestResponse:
-        return RestResponse(
+    def put(self, url: str, data=None) -> PokieResponse:
+        return PokieResponse(
             self.client.put(
                 "{}{}".format(self.base_url, url), json=data, headers=self.headers
             )
         )
 
-    def delete(self, url: str, data=None) -> RestResponse:
-        return RestResponse(
+    def delete(self, url: str, data=None) -> PokieResponse:
+        return PokieResponse(
             self.client.delete(
                 "{}{}".format(self.base_url, url), json=data, headers=self.headers
             )

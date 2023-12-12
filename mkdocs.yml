@@ -1,19 +1,35 @@
 site_name: Pokie
 site_description: REST Web Framework based on Flask
 strict: true
-site_url: https://git.oddbit.org/OddBit/pokie/
+site_url: https://github.com/oddbit-project/pokie
 repo_name: OddBit/pokie
-repo_url: https://git.oddbit.org/OddBit/pokie
+repo_url: https://github.com/oddbit-project/pokie
 
 theme:
   name: material
+  palette:
+  - scheme: slate
+    primary: deep purple
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to light mode
+  - scheme: default
+    primary: deep purple
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
-    - navigation.path
-    - navigation.footer
-    -
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github-alt
+  logo: img/logo.png
+  favicon: img/favicon.png
+  language: en
+
 nav:
 - Overview: index.md
 - Introduction:
@@ -32,36 +48,28 @@ nav:
     - DbGridRequest: http/dbgridrequest.md
     - JSONResponse: http/json_response.md
 
+- Writing Tests:
+    - Using pytest: test/pytest.md
 
-plugins:
-- search
 
 markdown_extensions:
-  # Python Markdown
-  - abbr
-  - admonition
-  - attr_list
-  - def_list
-  - footnotes
-  - md_in_html
-  - toc:
-      permalink: true
+- toc:
+    permalink: true
+- markdown.extensions.codehilite:
+    guess_lang: false
+- admonition
+- codehilite
+- extra
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format ''
+- pymdownx.tabbed:
+    alternate_style: true
+- mdx_include
 
-  # Python Markdown Extensions
-  - pymdownx.arithmatex:
-      generic: true
-  - pymdownx.betterem:
-      smart_enable: all
-  - pymdownx.caret
-  - pymdownx.details
-  - pymdownx.highlight
-  - pymdownx.inlinehilite
-  - pymdownx.keys
-  - pymdownx.mark
-  - pymdownx.smartsymbols
-  - pymdownx.superfences
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - pymdownx.tilde
+extra:
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/oddbit/pokie

@@ -18,7 +18,7 @@ dependency injection, service location, factories and object composition. It als
 - CLI command support;
 - Jobs (objects invoked periodically to perform a task);
 - Fixtures;
-- Unit testing with pytest;
+- Unit testing support with pytest;
 - Code generation;
 - REST-oriented service design; 
 - Compatibility with Flask;
@@ -89,3 +89,17 @@ $ python3 main.py codegen:module my_module_name .
 
 4. Implement the desired logic in the module
 
+
+
+# Running tests with tox
+
+1. Install tox & tox-docker:
+```shell
+$ pip install -r requirements-test.txt
+```
+
+2. Run tests:
+```shell
+$ tox [-e py<XX>]
+```
+ 
