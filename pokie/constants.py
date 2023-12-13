@@ -29,7 +29,7 @@ DI_SIGNAL = "signal"  # signal manager
 DI_HTTP_ERROR_HANDLER = "http_error_handler"  # http exception manager
 
 # Flask error Handler configuration
-CFG_HTTP_ERROR_HANLDER = "http_error_handler_class"
+CFG_HTTP_ERROR_HANDLER = "http_error_handler"
 
 # DB Configuration
 CFG_DB_NAME = "db_name"

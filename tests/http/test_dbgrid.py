@@ -107,7 +107,11 @@ class TestDbGrid:
 
         # match success - names
         # Note that no type validation is performed
-        for clause in ["id:def", "id:1|contact_name:true", "id:1|contact_name:true|country:john"]:
+        for clause in [
+            "id:def",
+            "id:1|contact_name:true",
+            "id:1|contact_name:true|country:john",
+        ]:
             assert dbgrid_request.is_valid({"match": clause}) is True
 
         # match fail - names are camelCased
@@ -121,7 +125,10 @@ class TestDbGrid:
 
         # match success - names
         # Note that no type validation is performed
-        for clause in ["id:def", "id:1|contactName:abc|contactTitle:xyz|postalCode:4400"]:
+        for clause in [
+            "id:def",
+            "id:1|contactName:abc|contactTitle:xyz|postalCode:4400",
+        ]:
             assert dbgridRequest.is_valid({"match": clause}) is True
 
     def test_validate_sort_fields(self, dbgrid_request):
@@ -152,7 +159,11 @@ class TestDbGrid:
             assert "sort" in dbgrid_request.errors.keys()
 
         # sort success - names
-        for clause in ["id", "id:asc,contact_name:desc", "id:asc,contact_name:desc,postal_code"]:
+        for clause in [
+            "id",
+            "id:asc,contact_name:desc",
+            "id:asc,contact_name:desc,postal_code",
+        ]:
             assert dbgrid_request.is_valid({"sort": clause}) is True
 
         # sort fail - camelCase names

@@ -10,7 +10,9 @@ class PyTestCmd(CliCommand):
 
     def run(self, args) -> bool:
         if importlib.util.find_spec("pytest") is None:
-            self.tty.error("Pytest package not found; to use this command please install pytest")
+            self.tty.error(
+                "Pytest package not found; to use this command please install pytest"
+            )
             return False
 
         args = []
@@ -21,4 +23,5 @@ class PyTestCmd(CliCommand):
             + " Running pytest with: {}".format(str(args))
         )
         import pytest
+
         sys.exit(pytest.main(args, plugins=["pokie.test"]))

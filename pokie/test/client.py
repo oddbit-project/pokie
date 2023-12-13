@@ -53,6 +53,13 @@ class PokieClient:
             )
         )
 
+    def patch(self, url: str, data=None) -> PokieResponse:
+        return PokieResponse(
+            self.client.patch(
+                "{}{}".format(self.base_url, url), json=data, headers=self.headers
+            )
+        )
+
     def raw_get(self, url: str, data=None) -> Response:
         return self.client.get(
             "{}{}".format(self.base_url, url), json=data, headers=self.headers

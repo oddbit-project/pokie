@@ -3,6 +3,9 @@
 Pokie includes a set of plugins to aid unit testing of applications with [pytest](https://pytest.org), including
 a CLI runner. These plugins provide Pokie-related fixtures and, optionally, automatic database management.
 
+To use the pytest integration, it is required to use the pplication factory to initialize the application, see 
+the [tutorial](../tutorial/tutorial.md#application-factory-build_pokie) for more details.
+
 Currently, only PostgreSQL is supported for database operations; the configured database user must have database creation/drop privileges;
 The plugins also assume the user can connect to the database 'postgres', as it is used as the default db for
 administrative operations.
@@ -37,8 +40,7 @@ exposed via **pokie.config.TestConfigTemplate**:
 **TEST_SHARE_CTX**
 
 **False (default)**: Each test is run with a separate application instance; the application is bootstrapped at each
-test, by using
-the existing application factory.
+test, by using the existing application factory.
 
 **True**: All tests are run with the same pokie FlaskApplication and Flask instance; services, events, etc. will be
 managed
@@ -80,7 +82,7 @@ TEST_SKIP_FIXTURES values.
 
 **False (default)**:Existing fixtures will be run when the database is recreated.
 
-**True**: Existing fixtures are ingored, even if the database is recreated.
+**True**: Existing fixtures are ignored, even if the database is recreated.
 
 ## Available fixtures
 

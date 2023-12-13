@@ -35,9 +35,11 @@ class RestView(PokieView):
         :return:
         """
         search_fields = self.search_fields if self.search_fields is not None else []
-        dbgrid_request = DbGridRequest(self.record_class, use_camel_case=self.camel_case)
+        dbgrid_request = DbGridRequest(
+            self.record_class, use_camel_case=self.camel_case
+        )
 
-        if not dbgrid_request.is_valid(request.args ):
+        if not dbgrid_request.is_valid(request.args):
             return self.request_error(dbgrid_request)
         try:
             count, data = self.svc.list(

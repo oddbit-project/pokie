@@ -37,7 +37,7 @@ nav:
     - Scaffolding: tutorial/scaffolding.md
     - Tutorial: tutorial/tutorial.md
 - Views:
-    - Pokie Views: http/index.md
+    - Pokie Views: http/views.md
     - REST Views: http/rest.md
     - Error Handlers: http/error_handler.md
 

@@ -32,7 +32,6 @@ def result_object(pokie_di):
 
 
 class TestResponse:
-
     def test_serializer(self):
         obj = JsonResponse()
         serializer = obj.serializer()()
@@ -61,37 +60,50 @@ class TestResponse:
         obj = JsonResponse(result_dict)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{"success":true,"data":{"field_a":"123","field_b":"456"}}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":{"field_a":"123","field_b":"456"}}'
+        )
 
     def test_str(self, pokie_app, result_str):
         obj = JsonResponse(result_str)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{"success":true,"data":"the quick brown fox jumps over the lazy dog"}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":"the quick brown fox jumps over the lazy dog"}'
+        )
 
     def test_list(self, pokie_app, result_list):
         obj = JsonResponse(result_list)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{"success":true,"data":["item_1","item_2","item_3"]}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":["item_1","item_2","item_3"]}'
+        )
 
     def test_object(self, pokie_app, result_object):
         obj = JsonResponse(result_object)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(
-            True) == '{"success":true,"data":{"address":"67, rue des Cinquante Otages","city":"Nantes","company_name":"Du monde entier","contact_name":"Janine Labrune","contact_title":"Owner","country":"France","fax":"40.67.89.89","id":"DUMON","phone":"40.67.88.88","postal_code":"44000","region":null}}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":{"address":"67, rue des Cinquante Otages","city":"Nantes","company_name":"Du monde entier","contact_name":"Janine Labrune","contact_title":"Owner","country":"France","fax":"40.67.89.89","id":"DUMON","phone":"40.67.88.88","postal_code":"44000","region":null}}'
+        )
 
     def test_compact(self, pokie_app, result_list):
         # test debug mode
         obj = JsonResponse(result_list)
         pokie_app.json.compact = True
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{\n  "success": true, \n  "data": [\n    "item_1", \n    "item_2", \n    "item_3"\n  ]\n}'
+        assert (
+            result.get_data(True)
+            == '{\n  "success": true, \n  "data": [\n    "item_1", \n    "item_2", \n    "item_3"\n  ]\n}'
+        )
 
 
 class TestCamelCaseResponse:
-
     def serializer(self):
         obj = CamelCaseJsonResponse()
         serializer = obj.serializer()()
@@ -120,30 +132,44 @@ class TestCamelCaseResponse:
         obj = CamelCaseJsonResponse(result_dict)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{"success":true,"data":{"fieldA":"123","fieldB":"456"}}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":{"fieldA":"123","fieldB":"456"}}'
+        )
 
     def test_str(self, pokie_app, result_str):
         obj = CamelCaseJsonResponse(result_str)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{"success":true,"data":"the quick brown fox jumps over the lazy dog"}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":"the quick brown fox jumps over the lazy dog"}'
+        )
 
     def test_list(self, pokie_app, result_list):
         obj = CamelCaseJsonResponse(result_list)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{"success":true,"data":["item_1","item_2","item_3"]}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":["item_1","item_2","item_3"]}'
+        )
 
     def test_object(self, pokie_app, result_object):
         obj = CamelCaseJsonResponse(result_object)
 
         result = obj.assemble(pokie_app)
-        assert result.get_data(
-            True) == '{"success":true,"data":{"address":"67, rue des Cinquante Otages","city":"Nantes","companyName":"Du monde entier","contactName":"Janine Labrune","contactTitle":"Owner","country":"France","fax":"40.67.89.89","id":"DUMON","phone":"40.67.88.88","postalCode":"44000","region":null}}'
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":{"address":"67, rue des Cinquante Otages","city":"Nantes","companyName":"Du monde entier","contactName":"Janine Labrune","contactTitle":"Owner","country":"France","fax":"40.67.89.89","id":"DUMON","phone":"40.67.88.88","postalCode":"44000","region":null}}'
+        )
 
     def test_compact(self, pokie_app, result_list):
         # test debug mode
         obj = CamelCaseJsonResponse(result_list)
         pokie_app.json.compact = True
         result = obj.assemble(pokie_app)
-        assert result.get_data(True) == '{\n  "success": true, \n  "data": [\n    "item_1", \n    "item_2", \n    "item_3"\n  ]\n}'
+        assert (
+            result.get_data(True)
+            == '{\n  "success": true, \n  "data": [\n    "item_1", \n    "item_2", \n    "item_3"\n  ]\n}'
+        )

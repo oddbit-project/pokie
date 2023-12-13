@@ -56,9 +56,75 @@ class FilmView(PokieView):
         return self.success() 
 ```
 
-### Using custom dispatch hooks
+### Custom Response objects
 
-Dispatch hooks work as middlweware methods - they can be used to perform additional validations. If a given hook returns
+PokieView responses are traditionally either **JsonResponse** or **CamelCaseJsonResponse** objects; however,
+it is quite simple to override the default response class to use your own custom implementation - just
+extend **pokie.http.ResponseRendererInterface**, and refer it in your view, using the **response_class** attribute: 
+
+```python
+from pokie.http import PokieView, ResponseRendererInterface
+
+
+class HamburgerResponse(ResponseRendererInterface):
+
+    def assemble(self, _app, **kwargs):
+        # our custom Response only returns "hamburger"
+        return "hamburger"
+
+
+class CustomResponseView(PokieView):
+    # custom response class to be used, intead of the default one
+    response_class = HamburgerResponse
+
+    def get(self):
+        # just generate a response
+        return self.success()
+```
+
+### CamelCase response
+
+PokieView can, automatically, convert keys from the snake_case notation to camelCase before assembling the JSON response. This functionality
+is provided by the *pokie.http.CamelCaseJsonResponse* class, and is controlled by the *PokieView.camel_case* attribute:
+
+```python
+from pokie.http import PokieView
+from pokie_test.dto import CustomerRecord
+
+
+class CamelCaseResponseView(PokieView):
+    # enable automatic camelCasing of responses    
+    camel_case = True
+
+    def get(self):
+        record = CustomerRecord(
+            company_name="company_name",
+            contact_name="contact_name",
+            contact_title="contact_title",
+            address="address"
+
+        )
+        return self.success(record)
+```
+
+
+Generated response:
+```json
+{
+   "success":true,
+   "data":{
+      "address":"address",
+      "companyName":"company_name",
+      "contactName":"contact_name",
+      "contactTitle":"contact_title"
+   }
+}
+```
+
+
+### Custom pre-dispatch hooks
+
+Pre-dispatch hooks work as middlweware methods - they can be used to perform additional validations. If a given hook returns
 a **ResponseReturnValue**, the dispatch exits with the specified response. If a hook is run successfully, it should return None.
 
 Example:

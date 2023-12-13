@@ -13,10 +13,8 @@ class RouteListCmd(CliCommand):
         with app.app_context():
             result = []
             for rule in app.url_map.iter_rules():
-                methods = ','.join(rule.methods)
+                methods = ",".join(rule.methods)
                 result.append([str(rule), methods])
 
-            self.tty.write(
-                tabulate(result, headers=["Endpoint", "Methods"])
-            )
+            self.tty.write(tabulate(result, headers=["Endpoint", "Methods"]))
         return True

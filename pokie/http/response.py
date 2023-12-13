@@ -109,7 +109,9 @@ class JsonResponse(ResponseRendererInterface):
         data = json.dumps(
             self.response, indent=indent, separators=separators, cls=self.serializer()
         )
-        return _app.response_class(data, status=self.code, mimetype=self.mime_type, headers=self.headers)
+        return _app.response_class(
+            data, status=self.code, mimetype=self.mime_type, headers=self.headers
+        )
 
     def serializer(self) -> Type[json.JSONEncoder]:
         """
@@ -120,7 +122,6 @@ class JsonResponse(ResponseRendererInterface):
 
 
 class CamelCaseJsonResponse(JsonResponse):
-
     def assemble(self, _app, **kwargs):
         """
         Assemble Flask response object
@@ -135,9 +136,14 @@ class CamelCaseJsonResponse(JsonResponse):
             separators = (", ", ": ")
 
         data = json.dumps(
-            humps.camelize(self.response), indent=indent, separators=separators, cls=self.serializer()
+            humps.camelize(self.response),
+            indent=indent,
+            separators=separators,
+            cls=self.serializer(),
         )
-        return _app.response_class(data, status=self.code, mimetype=self.mime_type, headers=self.headers)
+        return _app.response_class(
+            data, status=self.code, mimetype=self.mime_type, headers=self.headers
+        )
 
     def serializer(self) -> Type[json.JSONEncoder]:
         """

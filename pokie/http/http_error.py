@@ -3,13 +3,14 @@
 # This class provides Flask with JSON-enabled global error handler responses for common errors, such as 400,404,405 and
 # 500.
 # The HTTP Error Handler class mechanism is pluggable, and a custom one can be provided instead of the default one.
-# To override the default one, just change the CFG_HTTP_ERROR_HANLDER config setting to point to a new custom class that
+# To override the default one, just change the HTTP_ERROR_HANDLER config setting to point to a new custom class that
 # extends *Injectable*
 #
 from rick.base import Di
 from rick.mixin import Injectable
 
 from pokie.constants import (
+    HTTP_BADREQ,
     HTTP_NOT_FOUND,
     HTTP_INTERNAL_ERROR,
     DI_FLASK,

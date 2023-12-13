@@ -23,8 +23,7 @@ class CustomerRequest(RequestRecord):
 
 
 class CustomerController(PokieView):
-
-    def view_customer(self, id_customer:str):
+    def view_customer(self, id_customer: str):
         """
         Controller-style GET endpoint
 

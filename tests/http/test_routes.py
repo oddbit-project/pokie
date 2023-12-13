@@ -3,7 +3,6 @@ from pokie.rest import RestView
 
 
 class IncompleteResourceView(PokieView):
-
     def get(self, id_record=None):
         pass
 
@@ -13,7 +12,6 @@ class CompleteResourceView(RestView):
 
 
 class IncompleteControllerView(PokieView):
-
     def show(self, id_record):
         pass
 
@@ -22,7 +20,6 @@ class IncompleteControllerView(PokieView):
 
 
 class CompleteControllerView(IncompleteControllerView):
-
     def list(self):
         pass
 
@@ -34,7 +31,6 @@ class CompleteControllerView(IncompleteControllerView):
 
 
 class TestAutoRouter:
-
     def test_incomplete_resource(self, pokie_app):
         slug = "test_operation"
         # register incomplete resource class
@@ -52,10 +48,10 @@ class TestAutoRouter:
         assert len(result) == 2
         key = "/" + slug
         assert key in result.keys()
-        assert result[key] == sorted({'HEAD', 'GET', 'OPTIONS'})
+        assert result[key] == sorted({"HEAD", "GET", "OPTIONS"})
         key = "/" + slug + "/<int:id_record>"
         assert key in result.keys()
-        assert result[key] == sorted({'HEAD', 'GET', 'OPTIONS'})
+        assert result[key] == sorted({"HEAD", "GET", "OPTIONS"})
 
     def test_complete_resource(self, pokie_app):
         slug = "test_operation"
@@ -71,11 +67,11 @@ class TestAutoRouter:
                     result.append([rule_name, sorted(methods)])
 
         expected = [
-            ["/test_operation", ['GET', 'HEAD', 'OPTIONS']],
-            ["/test_operation/<int:id_record>", ['GET', 'HEAD', 'OPTIONS']],
-            ["/test_operation", ['OPTIONS', 'POST']],
-            ["/test_operation/<int:id_record>", ['OPTIONS', 'PATCH', 'PUT']],
-            ["/test_operation/<int:id_record>", ['DELETE', 'OPTIONS']],
+            ["/test_operation", ["GET", "HEAD", "OPTIONS"]],
+            ["/test_operation/<int:id_record>", ["GET", "HEAD", "OPTIONS"]],
+            ["/test_operation", ["OPTIONS", "POST"]],
+            ["/test_operation/<int:id_record>", ["OPTIONS", "PATCH", "PUT"]],
+            ["/test_operation/<int:id_record>", ["DELETE", "OPTIONS"]],
         ]
 
         # should only have 2 endpoints - get and list
@@ -100,10 +96,10 @@ class TestAutoRouter:
         assert len(result) == 2
         key = "/" + slug
         assert key in result.keys()
-        assert result[key] == sorted({'OPTIONS', 'POST'})
+        assert result[key] == sorted({"OPTIONS", "POST"})
         key = "/" + slug + "/<string:id_record>"
         assert key in result.keys()
-        assert result[key] == sorted({'HEAD', 'GET', 'OPTIONS'})
+        assert result[key] == sorted({"HEAD", "GET", "OPTIONS"})
 
     def test_complete_controller(self, pokie_app):
         slug = "test_operation"
@@ -119,11 +115,11 @@ class TestAutoRouter:
                     result.append([rule_name, sorted(methods)])
 
         expected = [
-            ["/test_operation", ['GET', 'HEAD', 'OPTIONS']],
-            ["/test_operation/<int:id_record>", ['GET', 'HEAD', 'OPTIONS']],
-            ["/test_operation", ['OPTIONS', 'POST']],
-            ["/test_operation/<int:id_record>", ['OPTIONS', 'PATCH', 'PUT']],
-            ["/test_operation/<int:id_record>", ['DELETE', 'OPTIONS']],
+            ["/test_operation", ["GET", "HEAD", "OPTIONS"]],
+            ["/test_operation/<int:id_record>", ["GET", "HEAD", "OPTIONS"]],
+            ["/test_operation", ["OPTIONS", "POST"]],
+            ["/test_operation/<int:id_record>", ["OPTIONS", "PATCH", "PUT"]],
+            ["/test_operation/<int:id_record>", ["DELETE", "OPTIONS"]],
         ]
         # should only have 2 endpoints - get and list
         assert len(result) == len(expected)

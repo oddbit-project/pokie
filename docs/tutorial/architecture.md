@@ -13,7 +13,7 @@ This is the level where Flask views are implemented, using class-based definitio
 assembling responses; No specific business-related logic should reside here, adhering to the philosophy of "thin controllers".
 
 As a default, these classes are instantiated as short-lived objects, and often only exist during the execution of a request, being 
-destroyed afterwards. As such, all required initialization boilerplate must be as lightweight as possible. 
+destroyed afterward. As such, all required initialization boilerplate must be as lightweight as possible. 
 
 To override this behaviour and allow for long-lived view objects, please refer to the Flask documentation.  
 

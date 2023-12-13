@@ -11,7 +11,10 @@ class AutoRouter:
     # predefined resource methods and route rule expansions
     resource_action_map = {
         # method_name: [rule, rule, ...]
-        "get": [["/{slug}", ["GET"], "_list"], ["/{slug}/<{type}:id_record>", ["GET"], "_show"]],
+        "get": [
+            ["/{slug}", ["GET"], "_list"],
+            ["/{slug}/<{type}:id_record>", ["GET"], "_show"],
+        ],
         "post": [["/{slug}", ["POST"], "_create"]],
         "put": [["/{slug}/<{type}:id_record>", ["PUT", "PATCH"], "_update"]],
         "delete": [["/{slug}/<{type}:id_record>", ["DELETE"], "_delete"]],

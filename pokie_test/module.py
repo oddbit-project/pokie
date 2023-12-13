@@ -1,8 +1,13 @@
-from flask import Blueprint
 from pokie.core import BaseModule
 from pokie.http import AutoRouter
 from pokie_test.constants import SVC_CUSTOMER
-from pokie_test.views import CustomerController
+from pokie_test.views import (
+    CustomerController,
+    CustomRequestRecordView,
+    CustomResponseView,
+    CamelCaseResponseView,
+)
+from pokie_test.views.dispatch_hook import HookView
 from pokie_test.views.rest_view import CustomerView
 
 
@@ -11,7 +16,7 @@ class Module(BaseModule):
     name = "pokie_test"
 
     # internal module description
-    description = "mock module to enable pokie unit tests on functionality"
+    description = "mock module for pokie unit testing"
 
     # service map
     #
@@ -76,7 +81,9 @@ class Module(BaseModule):
         # 'full.path.to.job.class'
     ]
 
-    fixtures = []
+    fixtures = [
+        "pokie_test.fixtures.ExampleFixture",
+    ]
 
     def build(self, parent=None):
         # This method is called when modules are initialized; At this point, all other dependencies have already been
@@ -84,11 +91,34 @@ class Module(BaseModule):
         #
         # All Flask-related routing calls should reside here
         app = parent.app
-        AutoRouter.resource(app, 'customers', CustomerView)
+        AutoRouter.resource(app, "customers", CustomerView)
 
         app.add_url_rule(
             "/mycustomer/<string:id_customer>",
             methods=["GET"],
-            view_func=CustomerController.view_method('view_customer'),
+            view_func=CustomerController.view_method("view_customer"),
         )
-        # app.add_url_rule('/some-path', methods=['GET', 'POST'], view_func=MyViewClass.as_view('route-name'))
+
+        app.add_url_rule(
+            "/views/custom-requestrecord",
+            methods=["GET", "POST", "PUT", "PATCH"],
+            view_func=CustomRequestRecordView.as_view("view_customrequestrecord"),
+        )
+
+        app.add_url_rule(
+            "/views/custom-response",
+            methods=["GET"],
+            view_func=CustomResponseView.as_view("view_customresponse"),
+        )
+
+        app.add_url_rule(
+            "/views/hooks",
+            methods=["GET"],
+            view_func=HookView.as_view("view_hooks"),
+        )
+
+        app.add_url_rule(
+            "/views/camelcase",
+            methods=["GET"],
+            view_func=CamelCaseResponseView.as_view("view_camelcase"),
+        )
