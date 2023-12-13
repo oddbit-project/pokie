@@ -36,10 +36,15 @@ nav:
     - Architecture: tutorial/architecture.md
     - Scaffolding: tutorial/scaffolding.md
     - Tutorial: tutorial/tutorial.md
+
 - Views:
     - Pokie Views: http/views.md
     - REST Views: http/rest.md
     - Error Handlers: http/error_handler.md
+
+- REST Operations:
+    - REST Views: http/rest.md
+    - REST Services: rest/services.md
 
 - Fixtures:
      - Adding fixtures: fixtures.md

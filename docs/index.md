@@ -9,7 +9,7 @@ Pokie is an API-oriented modular web framework built on top of [Flask](https://g
 [Rick](https://git.oddbit.org/OddBit/rick) and [Rick-db](https://git.oddbit.org/OddBit/rick_db) libraries, following three-layer and clean architecture
 design principles.
 
-It features a object-oriented design, borrowing from common patterns found in other languages, such as
+It features an object-oriented design, borrowing from common patterns found in other languages, such as
 dependency injection, service location, factories and object composition. It also offers the following functionality:
 
 - Modular design;
@@ -27,7 +27,7 @@ dependency injection, service location, factories and object composition. It als
 Contents:
 
 * [Pokie Tutorial](tutorial/tutorial.md)
-* [Pokie Views](http/index.md)
+* [Pokie Views](http/views.md)
 * [Pokie REST Views](http/rest.md)
 * [Grid Requests](http/dbgridrequest.md)
 * [JSON Responses](http/json_response.md)

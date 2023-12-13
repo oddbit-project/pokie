@@ -1,3 +1,4 @@
+import threading
 from typing import List
 
 from flask import request
@@ -93,12 +94,12 @@ class RestView(PokieView):
             if mgr.contains(svc_name):
                 return mgr.get(svc_name)
 
-            # register new service that relies on a RestService instance
-            mgr.add(svc_name, "pokie.rest.RestService")
-            # get new service to patch it
-            svc = mgr.get(svc_name)
-            # patch it
+            # build service
+            svc = RestService(self.di)
             svc.set_record_class(self.record_class)
+
+            # register it in the service manager
+            mgr.register(svc_name, svc)
             return svc
 
         svc = mgr.get(self.service_name)
