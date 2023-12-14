@@ -91,7 +91,7 @@ class Module(BaseModule):
         #
         # All Flask-related routing calls should reside here
         app = parent.app
-        AutoRouter.resource(app, "customers", CustomerView)
+        AutoRouter.resource(app, "customers", CustomerView, id_type="string")
 
         app.add_url_rule(
             "/mycustomer/<string:id_customer>",

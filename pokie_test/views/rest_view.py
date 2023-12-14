@@ -7,7 +7,7 @@ from pokie_test.dto import CustomerRecord
 # RequestRecord class
 class CustomerRequest(RequestRecord):
     fields = {
-        "id": field(validators="required|maxlen:5"),
+        "id": field(validators="required|maxlen:16"),
         "company_name": field(validators="required|maxlen:40"),
         "contact_name": field(validators="maxlen:30"),
         "contact_title": field(validators="maxlen:30"),

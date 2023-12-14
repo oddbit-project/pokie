@@ -77,7 +77,7 @@ class RestView(PokieView):
         :param id_record:
         :return:
         """
-        if not self.svc.exists(id):
+        if not self.svc.exists(id_record):
             return self.not_found()
 
         self.svc.delete(id_record)
