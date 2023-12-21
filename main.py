@@ -2,6 +2,9 @@ from rick.resource.config import EnvironmentConfig
 from pokie.config.template import BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
+from pokie.http import PokieView
+from pokie.rest import RestView
+
 
 class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate):
     TEST_MANAGE_DB = True
@@ -14,7 +17,7 @@ def build_pokie():
 
     # modules to load & initialize
     modules = [
-        'pokie_test', # default test module
+        'pokie_test',  # default test module
     ]
 
     # factories to run
@@ -23,6 +26,7 @@ def build_pokie():
     # build app
     pokie_app = FlaskApplication(cfg)
     flask_app = pokie_app.build(modules, factories)
+
     return pokie_app, flask_app
 
 

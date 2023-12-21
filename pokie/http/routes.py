@@ -41,7 +41,7 @@ class AutoRouter:
                 )
 
     @staticmethod
-    def resource(app, slug, cls, id_type: str = "int", prefix: str = ""):
+    def resource(app, slug, cls, id_type: str = None, prefix: str = ""):
         """
         Register default routes for a resource class
 
@@ -55,7 +55,8 @@ class AutoRouter:
         :return:
         """
         name = ".".join([cls.__module__, cls.__name__]).replace(".", "_")
-
+        if not id_type:
+            id_type = "int"
         for view_name, routes in AutoRouter.resource_action_map.items():
             for item in routes:
                 route, methods, suffix = item

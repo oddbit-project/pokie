@@ -23,7 +23,11 @@ class ModuleListCmd(CliCommand):
         table = []
         for module_name, module in self.get_di().get(DI_APP).modules.items():
             table.append(
-                [module_name, inspect.getfile(module.__class__), module.description]
+                [
+                    module_name,
+                    inspect.getfile(module.__class__),
+                    module.territory_description,
+                ]
             )
 
         if not args.json:

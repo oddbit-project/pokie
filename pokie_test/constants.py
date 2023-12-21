@@ -1,4 +1,5 @@
 # module constants
 
 
-SVC_CUSTOMER = "svc_pokie_test_customer"
+SVC_NORTHWIND_CUSTOMER = "svc_northwind_customer"
+SVC_NORTHWIND_STATES = "svc_northwind_us_states"

@@ -3,7 +3,7 @@
 Pokie includes a set of plugins to aid unit testing of applications with [pytest](https://pytest.org), including
 a CLI runner. These plugins provide Pokie-related fixtures and, optionally, automatic database management.
 
-To use the pytest integration, it is required to use the pplication factory to initialize the application, see 
+To use the pytest integration, it is required to use the application factory to initialize the application, see 
 the [tutorial](../tutorial/tutorial.md#application-factory-build_pokie) for more details.
 
 Currently, only PostgreSQL is supported for database operations; the configured database user must have database creation/drop privileges;

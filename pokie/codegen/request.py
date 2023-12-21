@@ -17,20 +17,19 @@ class RequestGenerator:
         "date": ["iso8601"],
     }
 
-    def _field(self, f: FieldSpec, camelcase=False, db_camelcase=False) -> tuple:
+    def _field(self, f: FieldSpec, camelcase=False) -> tuple:
         """
         Generate a RequestRecord field definition
         :param f:
         :param camelcase:
-        :param db_camelcase:
         :return: touple with (name, validators, bind_name)
         """
         validators = []
         if not f.pk:
             name = f.name if camelcase is False else snake_to_camel(f.name)
-            target = f.name if db_camelcase is False else snake_to_camel(f.name)
+            target = f.name
 
-            if not f.nullable:
+            if not f.nullable and not f.auto:
                 validators.append("required")
         else:
             # primary key name is always id
@@ -57,25 +56,23 @@ class RequestGenerator:
 
         return name, validators, target
 
-    def _gen_field_src(self, f: FieldSpec, camelcase=False, db_camelcase=False) -> str:
+    def _gen_field_src(self, f: FieldSpec, camelcase=False) -> str:
         """
         Assemble a field definition source code line
         :param f:
-        :param camelcase:
         :param db_camelcase:
         :return: str
         """
-        name, validators, target = self._field(f, camelcase, db_camelcase)
+        name, validators, target = self._field(f, camelcase)
         validators = "|".join(validators)
         return "'{name}': field(validators='{validators}', bind='{bind}'),".format(
             name=name, validators=validators, bind=target
         )
 
-    def gen_source(
+    def generate_source(
         self,
         spec: TableSpec,
         camelcase=False,
-        db_camelcase=False,
         gen: TextBuffer = None,
         imports=True,
     ):
@@ -84,7 +81,6 @@ class RequestGenerator:
 
         :param spec: Table spec
         :param camelcase: if True, attributes will be camelCased
-        :param db_camelcase: if True, db record attributes will be camelCased
         :param gen: optional TextBuffer
         :param imports: if True, generate import line
         :return: source code string
@@ -100,14 +96,12 @@ class RequestGenerator:
         )
         gen.writeln("fields = {", level=1)
         for f in spec.fields:
-            gen.writeln(self._gen_field_src(f, camelcase, db_camelcase), level=2)
+            gen.writeln(self._gen_field_src(f, camelcase), level=2)
         gen.writeln("}", level=1)
         gen.writeln(gen.newline())
         return gen.read()
 
-    def gen_class(
-        self, spec: TableSpec, camelcase=False, db_camelcase=False
-    ) -> RequestRecord:
+    def generate_class(self, spec: TableSpec, camelcase=False) -> RequestRecord:
         """
         Generate a Rick RequestRecord class from a spec
         :param spec:
@@ -121,7 +115,7 @@ class RequestGenerator:
 
         fields = {}
         for f in spec.fields:
-            name, validators, target = self._field(f, camelcase, db_camelcase)
+            name, validators, target = self._field(f, camelcase)
             fields[name] = field(validators="|".join(validators), bind=target)
 
         setattr(reqRecord, "fields", fields)

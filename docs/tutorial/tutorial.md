@@ -35,8 +35,8 @@ The typical sequence of operations (both explicit and implicit) of a Pokie appli
 * build a service map and initialize the Service Manager;
 * run factories defined in the factory list;
 * parse event definitions from modules and build the Event Manager;
-* initialize modules (by calling *build()* on each Module object);
 * run appropriate CLI wrapper, or pass app variable to a WSGI server;
+* initialize modules (by calling *build()* on each Module object); 
 
 ### Configuration
 

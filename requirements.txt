@@ -1,5 +1,5 @@
-rick-db>=1.1.2
-rick>=0.6.5
+rick-db>=1.2.1
+rick>=0.6.6
 rick-mailer>=1.0.1
 Flask==2.3.3
 Werkzeug==2.3.7

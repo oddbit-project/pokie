@@ -1,5 +1,6 @@
 import os
 import sys
+import threading
 from argparse import ArgumentParser
 from typing import List
 
@@ -21,6 +22,7 @@ from pokie.constants import (
     CFG_HTTP_ERROR_HANDLER,
     DI_HTTP_ERROR_HANDLER,
 )
+from .middleware import ModuleRunnerMiddleware
 from .module import BaseModule
 from .command import CliCommand
 from pokie.util.cli_args import ArgParser
@@ -47,6 +49,8 @@ class FlaskApplication:
         self.di.add(DI_CONFIG, cfg)
         self.di.add(DI_APP, self)
         self.cfg = cfg
+        self.lock = threading.Lock()
+        self.initialized = False
 
     def build(self, module_list: list, factories: List = None) -> Flask:
         """
@@ -64,6 +68,7 @@ class FlaskApplication:
             factories = []
 
         self.app = Flask(type(self).__name__)
+
         self.app.di = self.di
         self.di.add(DI_FLASK, self.app)
 
@@ -72,6 +77,16 @@ class FlaskApplication:
 
         # initialize TTY
         self.di.add(DI_TTY, ConsoleWriter())
+
+        # run factories
+        for factory in factories:
+            if type(factory) is str:
+                # if factory is string, assume it is a path to a callable
+                factory = load_class(factory, raise_exception=True)
+            if not callable(factory):
+                raise RuntimeError("build(): non-callable or non-existing factory")
+            else:
+                factory(self.di)
 
         # load modules
         self.modules = {}
@@ -112,16 +127,6 @@ class FlaskApplication:
         # register service mapper
         self.di.add(DI_SERVICES, MapLoader(self.di, svc_map))
 
-        # run factories
-        for factory in factories:
-            if type(factory) is str:
-                # if factory is string, assume it is a path to a callable
-                factory = load_class(factory, raise_exception=True)
-            if not callable(factory):
-                raise RuntimeError("build(): non-callable or non-existing factory")
-            else:
-                factory(self.di)
-
         # parse events from modules
         evt_mgr = EventManager()
         for _, module in self.modules.items():
@@ -147,11 +152,22 @@ class FlaskApplication:
             handler = handler(self.di)
             self.di.add(DI_HTTP_ERROR_HANDLER, handler)
 
-        # initialize modules
-        for _, module in self.modules.items():
-            module.build(self)
-
+        self.app.wsgi_app = ModuleRunnerMiddleware(self.app.wsgi_app, self)
         return self.app
+
+    def init(self):
+        with self.lock:
+            if not self.initialized:
+                # initialize modules
+                for _, module in self.modules.items():
+                    module.build(self)
+                self.initialized = True
+
+            def stub(**kwargs):
+                pass
+
+            # instead of flag, we empty the method
+            setattr(self, "init", stub)
 
     def http(self, **kwargs):
         self.app.run(**kwargs)

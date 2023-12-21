@@ -57,7 +57,7 @@ class PgTableSpec:
             "cardinal": f.numeric_precision_cardinal,
         }
 
-    def table_spec(self, table, schema: str = None) -> TableSpec:
+    def generate(self, table, schema: str = None) -> TableSpec:
         """
         Generate a table spec for the given table
         :param table:
@@ -70,6 +70,9 @@ class PgTableSpec:
         pk = self.get_pk(table, schema)
         fks = self.get_fk(table, schema)
         fields = self.get_fields(table, schema)
+        serials = []
+        for record in self.mgr.list_table_sequences(table, schema):
+            serials.append(record.column)
         identity = None
         pk_auto = False
 
@@ -99,7 +102,7 @@ class PgTableSpec:
         spec = TableSpec(table=table, schema=schema, pk=pk, fields=[])
         for name, f in fields.items():
             is_pk = pk == f.column
-            auto = is_pk and pk_auto
+            auto = (is_pk and pk_auto) or (f.column in serials)
 
             spec_formatter = getattr(self, "spec_" + f.udt_name, None)
             type_spec = {}

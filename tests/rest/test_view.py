@@ -85,6 +85,26 @@ class TestRestView:
             ]:
                 assert name in result.data.keys()
 
+            # create invalid record
+            record = CustomerRecord(
+                id="FIXTURE",
+                company_name="company_name",
+                contact_name="contact_name",
+                contact_title="contact_title",
+                address="address",
+                city="city",
+                region="region",
+                postal_code="pc",
+                country="country",
+                phone="phone",
+                fax="fax",
+            )
+
+            # create new item with duplicate key
+            result = client.post(self.base_url, data=record.asdict())
+            assert result.code == HTTP_BADREQ
+            assert result.success is False
+
     def test_view_put(self, pokie_app):
         with pokie_app.test_client() as client:
             client = PokieClient(client)
@@ -99,8 +119,6 @@ class TestRestView:
             record["company_name"] = "UPDATED"
             # update item
             result = client.put(url, data=record)
-            print(result.error)
-            print(result.error_message)
             assert result.code == HTTP_OK
             assert result.success is True
 
@@ -109,6 +127,14 @@ class TestRestView:
             assert result.code == HTTP_OK
             assert result.success is True
             assert result.data["company_name"] == "UPDATED"
+
+            # update record with too long data
+            record = result.data
+            record["postal_code"] = "ABCDEFGHIJK"
+            # update item
+            result = client.put(url, data=record)
+            assert result.code == HTTP_BADREQ
+            assert result.success is False
 
     def test_view_delete(self, pokie_app):
         with pokie_app.test_client() as client:

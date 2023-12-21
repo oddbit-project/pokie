@@ -16,7 +16,7 @@ from pokie.constants import (
 )
 from pokie.core import FlaskApplication, SignalManager, BaseModule
 from pokie.http import HttpErrorHandler
-from pokie_test.constants import SVC_CUSTOMER
+from pokie_test.constants import SVC_NORTHWIND_CUSTOMER
 
 
 class TestFlaskApplication:
@@ -59,7 +59,7 @@ class TestFlaskApplication:
         # services
         svc = app.di.get(DI_SERVICES)
         assert svc is not None
-        assert svc.contains(SVC_CUSTOMER)
+        assert svc.contains(SVC_NORTHWIND_CUSTOMER)
 
         # http error handler
         assert app.di.has(DI_HTTP_ERROR_HANDLER)

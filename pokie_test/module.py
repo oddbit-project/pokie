@@ -1,6 +1,13 @@
 from pokie.core import BaseModule
-from pokie.http import AutoRouter
-from pokie_test.constants import SVC_CUSTOMER
+from pokie.http import AutoRouter, PokieView
+from pokie.rest.auto import Auto
+from pokie_test.constants import SVC_NORTHWIND_CUSTOMER, SVC_NORTHWIND_STATES
+from pokie_test.dto import (
+    CategoryRecord,
+    ShipperRecord,
+    UsStatesRecord,
+    TerritoriesRecord,
+)
 from pokie_test.views import (
     CustomerController,
     CustomRequestRecordView,
@@ -8,7 +15,11 @@ from pokie_test.views import (
     CamelCaseResponseView,
 )
 from pokie_test.views.dispatch_hook import HookView
-from pokie_test.views.rest_view import CustomerView
+from pokie_test.views.northwind_customer import CustomerView
+
+from pokie_test.views.northwind_shipper import ShipperRequest
+from pokie_test.views.northwind_states import StatesRequest
+from pokie_test.views.northwind_territories import TerritoriesView
 
 
 class Module(BaseModule):
@@ -28,7 +39,8 @@ class Module(BaseModule):
     #
     services = {
         # service entries are defined as {'service_name': 'path_to_class'}
-        SVC_CUSTOMER: "pokie_test.service.CustomerService"
+        SVC_NORTHWIND_CUSTOMER: "pokie_test.service.CustomerService",
+        SVC_NORTHWIND_STATES: "pokie_test.service.StatesService",
     }
 
     # cli command map
@@ -114,7 +126,7 @@ class Module(BaseModule):
         app.add_url_rule(
             "/views/hooks",
             methods=["GET"],
-            view_func=HookView.as_view("view_hooks"),
+            view_func=HookView.as_view("view_hooks", di=app.di),
         )
 
         app.add_url_rule(
@@ -122,3 +134,56 @@ class Module(BaseModule):
             methods=["GET"],
             view_func=CamelCaseResponseView.as_view("view_camelcase"),
         )
+
+        # Auto Rest - category
+        Auto.rest(
+            app, "catalog/category", CategoryRecord, search_fields=[CategoryRecord.name]
+        )
+
+        # Auto Rest with custom RequestRecord class
+        Auto.rest(
+            app,
+            "catalog/shipper",
+            ShipperRecord,
+            ShipperRequest,
+            search_fields=[ShipperRecord.name],
+        )
+
+        # Auto Rest with custom RequestRecord and custom service
+        Auto.rest(
+            app,
+            "region/states",
+            UsStatesRecord,
+            StatesRequest,
+            SVC_NORTHWIND_STATES,
+            search_fields=[
+                UsStatesRecord.name,
+                UsStatesRecord.abbr,
+                UsStatesRecord.region,
+            ],
+        )
+
+        # Auto Rest with custom base Class
+        Auto.rest(
+            app,
+            "region/territories",
+            TerritoriesRecord,
+            base_cls=TerritoriesView,
+            id_type="string",
+            search_fields=[
+                TerritoriesRecord.id,
+                TerritoriesRecord.territory_description,
+            ],
+        )
+
+        # Auto View - suppliers
+        view = Auto.view(app, "suppliers")
+        AutoRouter.resource(app, "catalog/supplier", view)
+
+        # Auto View - products
+        view = Auto.view(app, "products")
+        AutoRouter.resource(app, "catalog/product", view)
+
+        # Auto View - tablespec
+        view = Auto.view(app, "tablespec_serial")
+        AutoRouter.resource(app, "tablespec", view)

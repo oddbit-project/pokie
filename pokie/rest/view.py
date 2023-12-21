@@ -1,4 +1,3 @@
-import threading
 from typing import List
 
 from flask import request
@@ -86,7 +85,7 @@ class RestView(PokieView):
     @property
     def svc(self) -> RestService:
         mgr = self.di.get(DI_SERVICES)
-        if self.service_name is None:
+        if not self.service_name:
             svc_name = "svc.rest.{}.{}".format(
                 self.__module__,
                 str(self.record_class.__name__).replace("Record", "", 1),

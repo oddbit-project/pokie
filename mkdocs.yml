@@ -41,10 +41,12 @@ nav:
     - Pokie Views: http/views.md
     - REST Views: http/rest.md
     - Error Handlers: http/error_handler.md
+    - Extending Views: http/extending_views.md
 
 - REST Operations:
     - REST Views: http/rest.md
     - REST Services: rest/services.md
+    - Auto REST: rest/auto.md
 
 - Fixtures:
      - Adding fixtures: fixtures.md
@@ -52,6 +54,12 @@ nav:
 - Classes:
     - DbGridRequest: http/dbgridrequest.md
     - JSONResponse: http/json_response.md
+
+- Cli Operations:
+    - Available Commands: cli/commands.md
+
+- Code Generation:
+    - Code Generation: codegen/codegen.md
 
 - Writing Tests:
     - Using pytest: test/pytest.md

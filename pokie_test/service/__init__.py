@@ -1,1 +1,2 @@
-from .services import *
+from .services import CustomerService
+from .northwind import StatesService

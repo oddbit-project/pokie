@@ -2,8 +2,10 @@
 
 Pokie provides several helpers to implement REST endpoints; one of them is the *RestView* class. This class
 implements all the basic REST operations for CRUD operations on a given Record/Service. Service can either be the
-generic *pokie.rest.RestService*,
-or a custom service that implements *pokie.rest.RestServiceInterface*.
+generic *pokie.rest.RestService*, or a custom service that implements *pokie.rest.RestServiceInterface*.
+
+There are also advanced helpers that provide endpoint generation with a greater degree of automation, and based
+on *pokie.rest.RestView*. These helpers are described in detail in the [Auto REST](../rest/auto.md) section.
 
 ## Resource-based REST views - RestView
 

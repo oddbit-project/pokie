@@ -6,7 +6,7 @@ from pokie.codegen.textfile import TextBuffer
 
 
 class RecordGenerator:
-    def gen_source(
+    def generate_source(
         self, spec: TableSpec, camelcase=False, gen: TextBuffer = None, imports=True
     ):
         """
@@ -42,7 +42,7 @@ class RecordGenerator:
         gen.writeln(gen.newline())
         return gen.read()
 
-    def gen_class(self, spec: TableSpec, camelcase=False):
+    def generate_class(self, spec: TableSpec, camelcase=False):
         """
         Generate a RickDB Record class from a spec
         :param spec:

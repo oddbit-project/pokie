@@ -1,7 +1,7 @@
 from rick.form import RequestRecord, field
 
 from pokie.http import PokieView
-from pokie_test.constants import SVC_CUSTOMER
+from pokie_test.constants import SVC_NORTHWIND_CUSTOMER
 from pokie_test.service import CustomerService
 
 
@@ -37,4 +37,4 @@ class CustomerController(PokieView):
         return self.success(record)
 
     def svc_customer(self) -> CustomerService:
-        return self.get_service(SVC_CUSTOMER)
+        return self.get_service(SVC_NORTHWIND_CUSTOMER)

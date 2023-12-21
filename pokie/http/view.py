@@ -37,8 +37,10 @@ class PokieView(MethodView):
     # default error message
     msg_error_default = "request failed"
 
+    # mixin constructors, to be called at the end of __init__
+    init_methods = []
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.di = current_app.di
         self.logger = current_app.logger
 
@@ -78,6 +80,12 @@ class PokieView(MethodView):
             attr = getattr(self, name, None)
             if attr is not None and not callable(attr):
                 setattr(self, name, value)
+
+        # perform mixin initialization
+        for name in self.init_methods:
+            fn = getattr(self, name, None)
+            if callable(fn):
+                fn(**kwargs)
 
     def _hook_request(
         self, method: str, *args: Any, **kwargs: Any

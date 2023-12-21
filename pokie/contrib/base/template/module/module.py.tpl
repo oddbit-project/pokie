@@ -92,3 +92,9 @@ class Module(BaseModule):
         # register custom route:
         # app.add_url_rule('/some-path', methods=['GET', 'POST'], view_func=MyViewClass.as_view('route-name'))
 
+        # register a runtime-generated REST endpoint for CategoryRecord:
+        # Auto.rest(app, "catalog/category", CategoryRecord, search_fields=[CategoryRecord.name])
+
+        # create an automatic endpoint in /catalog/brand for the table product_brand:
+        # view = Auto.view(app, "product_brand")
+        # AutoRouter.resource(app, "catalog/brand", view)
