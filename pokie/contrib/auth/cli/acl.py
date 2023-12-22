@@ -77,14 +77,14 @@ class AclRoleCreateCmd(AclCommand):
 
     def run(self, args) -> bool:
         req = DescriptionRequest()
-        if not req.is_valid({"description": args.description}):
+        if not req.is_valid({"description": args.territory_description}):
             for k, v in req.get_errors().items():
                 self.tty.write(
                     self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
                 )
             return False
 
-        lower = args.description.lower()
+        lower = args.territory_description.lower()
         for record in self.svc_acl.list_roles():
             if record.description.lower() == lower:
                 self.tty.write(
@@ -94,9 +94,11 @@ class AclRoleCreateCmd(AclCommand):
                 )
                 return False
 
-        id = self.svc_acl.add_role(args.description)
+        id = self.svc_acl.add_role(args.territory_description)
         self.tty.write(
-            "Created role #{} with description '{}'".format(str(id), args.description)
+            "Created role #{} with description '{}'".format(
+                str(id), args.territory_description
+            )
         )
 
         return True
@@ -178,15 +180,20 @@ class AclResourceCreateCmd(AclCommand):
 
     def run(self, args) -> bool:
         req = IdDescriptionRequest()
-        if not req.is_valid({"id_resource": args.id, "description": args.description}):
+        if not req.is_valid(
+            {
+                "id_resource": args.territory_id,
+                "description": args.territory_description,
+            }
+        ):
             for k, v in req.get_errors().items():
                 self.tty.write(
                     self.tty.colorizer.red("Error in {}: {}".format(k, v["*"]))
                 )
             return False
 
-        id_lower = args.id.lower()
-        lower = args.description.lower()
+        id_lower = args.territory_id.lower()
+        lower = args.territory_description.lower()
         for record in self.svc_acl.list_resources():
             if record.id.lower() == id_lower:
                 self.tty.write(
@@ -203,10 +210,10 @@ class AclResourceCreateCmd(AclCommand):
                 )
                 return False
 
-        id = self.svc_acl.add_resource(args.id, args.description)
+        id = self.svc_acl.add_resource(args.territory_id, args.territory_description)
         self.tty.write(
             "Created resource '{}' with description '{}'".format(
-                str(id), args.description
+                str(id), args.territory_description
             )
         )
 

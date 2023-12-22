@@ -19,7 +19,6 @@ class ValidatorRepository(BaseRepository):
             .where(pk_name, "=", pk_value)
             .assemble()
         )
-
         with self._db.cursor() as c:
             record = c.fetchone(sql, values)
             return record is not None

@@ -5,3 +5,5 @@ from .db_codegen import GenDtoCmd, GenRequestRecordCmd
 from .tpl_codegen import ModuleGenCmd
 from .fixture import RunFixtureCmd, CheckFixtureCmd
 from .pytest import PyTestCmd
+from .module import ModuleListCmd
+from .route import RouteListCmd

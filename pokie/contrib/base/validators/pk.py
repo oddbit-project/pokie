@@ -35,9 +35,12 @@ class DbPrimaryKey(Rule):
                 "DbPrimaryKey(): invalid table name '{}'".format(table_name)
             )
         schema = None
-        table_name = tokens[0]
+
         if len(tokens) == 2:
-            schema = tokens[1]
+            table_name = tokens[1]
+            schema = tokens[0]
+        else:
+            table_name = tokens[0]
 
         pk_name = ""
         if len(options) > 1:
