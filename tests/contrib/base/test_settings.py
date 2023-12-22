@@ -4,11 +4,11 @@ from pokie.contrib.base.service import SettingsService
 
 class TestSettings:
     def test_settings(self, pokie_service_manager):
-        svc = pokie_service_manager.get(SVC_SETTINGS) # type: SettingsService
+        svc = pokie_service_manager.get(SVC_SETTINGS)  # type: SettingsService
 
         assert len(svc.list()) == 0
-        for i in range(1,10):
-            svc.upsert("module1","setting_{}".format(i),str(i))
+        for i in range(1, 10):
+            svc.upsert("module1", "setting_{}".format(i), str(i))
         assert len(svc.list()) == 9
 
         record = svc.by_key("module1", "setting_5")

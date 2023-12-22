@@ -139,6 +139,7 @@ from rick.resource.config import EnvironmentConfig
 from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
+from pokie.core.factories.login import FlaskLogin
 
 
 # base configuration

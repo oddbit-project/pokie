@@ -59,7 +59,6 @@ are called by name at the end of the *__init__()* function. These initializer me
 follow *(\*\*kwargs)* as an interface:
 
 ```python
-from pokie.constants import DI_CONFIG
 from pokie.http import PokieView
 from flask import request
 from typing import Any, Optional

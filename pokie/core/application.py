@@ -52,6 +52,13 @@ class FlaskApplication:
         self.lock = threading.Lock()
         self.initialized = False
 
+        self.pre_http_hooks = (
+            []
+        )  # list of hooks to run before initializing http operations
+        self.pre_cli_hooks = (
+            []
+        )  # list of hooks to run before initializing cli operations
+
     def build(self, module_list: list, factories: List = None) -> Flask:
         """
         Build the application
@@ -67,7 +74,7 @@ class FlaskApplication:
         if not factories:
             factories = []
 
-        self.app = Flask(type(self).__name__)
+        self.app = Flask(type(self).__name__, static_folder=None)
 
         self.app.di = self.di
         self.di.add(DI_FLASK, self.app)
@@ -155,6 +162,32 @@ class FlaskApplication:
         self.app.wsgi_app = ModuleRunnerMiddleware(self.app.wsgi_app, self)
         return self.app
 
+    def register_pre_http_hook(self, f):
+        """
+        Register a hook to be executed during the init() of the webserver
+
+        the hook must have the following interface:
+
+        callable(app:FlaskApplication)
+
+        :param f:
+        :return:
+        """
+        self.pre_http_hooks.append(f)
+
+    def register_pre_cli_hook(self, f):
+        """
+        Register a hook to be executed before any cli operation
+
+        the hook must have the following interface:
+
+        callable(app:FlaskApplication)
+
+        :param f:
+        :return:
+        """
+        self.pre_cli_hooks.append(f)
+
     def init(self):
         with self.lock:
             if not self.initialized:
@@ -162,6 +195,10 @@ class FlaskApplication:
                 for _, module in self.modules.items():
                     module.build(self)
                 self.initialized = True
+
+                # call pre-http hooks
+                for fn in self.pre_http_hooks:
+                    fn(self)
 
             def stub(**kwargs):
                 pass
@@ -173,6 +210,10 @@ class FlaskApplication:
         self.app.run(**kwargs)
 
     def cli_runner(self, command: str, args: list = None, **kwargs) -> int:
+        # run pre-cli hooks
+        for fn in self.pre_cli_hooks:
+            fn(self)
+
         # either console or inline commands
         if args is None:
             args = []

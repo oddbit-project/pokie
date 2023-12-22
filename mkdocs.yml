@@ -26,8 +26,8 @@ theme:
   - content.tabs.link
   icon:
     repo: fontawesome/brands/github-alt
-  logo: img/logo.png
-  favicon: img/favicon.png
+  logo: img/pokie_logo_small.png
+  favicon: img/pokie_logo_small.png
   language: en
 
 nav:

@@ -1,12 +1,12 @@
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate
+from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 
 
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate):
-    TEST_MANAGE_DB = True
-    TEST_DB_SSL = False
+# config parameters, injectable from ENV vars
+class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
+    pass
 
 
 def build_pokie():
@@ -14,9 +14,7 @@ def build_pokie():
     cfg = Config().build()
 
     # modules to load & initialize
-    modules = [
-        'pokie_test',  # default test module
-    ]
+    modules = []
 
     # factories to run
     factories = [PgSqlFactory, ]
@@ -29,8 +27,6 @@ def build_pokie():
 
 
 main, app = build_pokie()
-
-# =============================================================================
 
 if __name__ == '__main__':
     main.cli()

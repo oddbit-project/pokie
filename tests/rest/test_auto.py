@@ -137,7 +137,6 @@ class TestAuto:
             assert result.code == HTTP_OK
             assert result.success is True
 
-
     def test_suppliers(self, pokie_app):
         with pokie_app.test_client() as client:
             client = PokieClient(client)
@@ -162,7 +161,7 @@ class TestAuto:
                 "id": 9999,
                 "company_name": "supplier 9999",
                 "contact_name": "john connor",
-                "homepage": "http://google.com"
+                "homepage": "http://google.com",
             }
 
             result = client.post("/catalog/supplier", data=record)
