@@ -10,22 +10,26 @@
       
       
       
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/test/pytest/">
+      
+      
+        <link rel="prev" href="../../codegen/codegen/">
       
       
       
-      <link rel="icon" href="/oddbit-project/pokie/img/pokie_logo_small.png">
+      <link rel="icon" href="../../img/pokie_logo_small.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.2.7">
     
     
       
-        <title>Pokie</title>
+        <title>Using pytest - Pokie</title>
       
     
     
-      <link rel="stylesheet" href="/oddbit-project/pokie/assets/stylesheets/main.046329b4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css">
       
         
-        <link rel="stylesheet" href="/oddbit-project/pokie/assets/stylesheets/palette.85d0ee34.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
       
       
 
@@ -44,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("/oddbit-project/pokie/",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,6 +76,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#writing-tests-with-pytest" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -84,9 +93,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/oddbit-project/pokie/." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="/oddbit-project/pokie/img/pokie_logo_small.png" alt="logo">
+  <img src="../../img/pokie_logo_small.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -103,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Using pytest
             
           </span>
         </div>
@@ -215,9 +224,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/oddbit-project/pokie/." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="/oddbit-project/pokie/img/pokie_logo_small.png" alt="logo">
+  <img src="../../img/pokie_logo_small.png" alt="logo">
 
     </a>
     Pokie
@@ -243,7 +252,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -296,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/architecture/" class="md-nav__link">
+      <a href="../../tutorial/architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -316,7 +325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/scaffolding/" class="md-nav__link">
+      <a href="../../tutorial/scaffolding/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -336,7 +345,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/tutorial/" class="md-nav__link">
+      <a href="../../tutorial/tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -397,7 +406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/views/" class="md-nav__link">
+      <a href="../../http/views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/rest/" class="md-nav__link">
+      <a href="../../http/rest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,7 +446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/error_handler/" class="md-nav__link">
+      <a href="../../http/error_handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -457,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/extending_views/" class="md-nav__link">
+      <a href="../../http/extending_views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -518,7 +527,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/rest/" class="md-nav__link">
+      <a href="../../http/rest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -538,7 +547,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/rest/services/" class="md-nav__link">
+      <a href="../../rest/services/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -558,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/rest/auto/" class="md-nav__link">
+      <a href="../../rest/auto/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -619,7 +628,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/fixtures/" class="md-nav__link">
+      <a href="../../fixtures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -680,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/dbgridrequest/" class="md-nav__link">
+      <a href="../../http/dbgridrequest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -700,7 +709,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/json_response/" class="md-nav__link">
+      <a href="../../http/json_response/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -761,7 +770,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/cli/commands/" class="md-nav__link">
+      <a href="../../cli/commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -822,7 +831,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/codegen/codegen/" class="md-nav__link">
+      <a href="../../codegen/codegen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -847,17 +856,19 @@
       
   
   
+    
+  
   
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
             
@@ -870,7 +881,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             Writing Tests
@@ -881,9 +892,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/test/pytest/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Using pytest
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -892,6 +923,74 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pokie-configuration" class="md-nav__link">
+    Pokie Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Pokie Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-lifecycle-parameters" class="md-nav__link">
+    Application lifecycle parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-management" class="md-nav__link">
+    Database management
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-fixtures" class="md-nav__link">
+    Available fixtures
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-tests" class="md-nav__link">
+    Writing Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-tox" class="md-nav__link">
+    Using tox
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -921,6 +1020,64 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pokie-configuration" class="md-nav__link">
+    Pokie Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Pokie Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#application-lifecycle-parameters" class="md-nav__link">
+    Application lifecycle parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-management" class="md-nav__link">
+    Database management
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-fixtures" class="md-nav__link">
+    Available fixtures
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-tests" class="md-nav__link">
+    Writing Tests
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-tox" class="md-nav__link">
+    Using tox
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -932,8 +1089,216 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+  
+
+
+<h1 id="writing-tests-with-pytest">Writing tests with pytest<a class="headerlink" href="#writing-tests-with-pytest" title="Permanent link">&para;</a></h1>
+<p>Pokie includes a set of plugins to aid unit testing of applications with <a href="https://pytest.org">pytest</a>, including
+a CLI runner. These plugins provide Pokie-related fixtures and, optionally, automatic database management.</p>
+<p>To use the pytest integration, it is required to use the application factory to initialize the application, see 
+the <a href="../../tutorial/tutorial/#application-factory-build_pokie">tutorial</a> for more details.</p>
+<p>Currently, only PostgreSQL is supported for database operations; the configured database user must have database creation/drop privileges;
+The plugins also assume the user can connect to the database 'postgres', as it is used as the default db for
+administrative operations.</p>
+<blockquote>
+<p>Note: To use Pokie's unit testing capabilities, you need to install pytest </p>
+</blockquote>
+<h2 id="pokie-configuration">Pokie Configuration<a class="headerlink" href="#pokie-configuration" title="Permanent link">&para;</a></h2>
+<p>There are several test-related configuration parameters available to control execution of tests,
+exposed via <strong>pokie.config.TestConfigTemplate</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TEST_DB_NAME</td>
+<td>PostgreSQL test database name</td>
+</tr>
+<tr>
+<td>TEST_DB_HOST</td>
+<td>PostgreSQL host</td>
+</tr>
+<tr>
+<td>TEST_DB_PORT</td>
+<td>PostgreSQL port</td>
+</tr>
+<tr>
+<td>TEST_DB_USER</td>
+<td>PostgreSQL user</td>
+</tr>
+<tr>
+<td>TEST_DB_PASSWORD</td>
+<td>PostgreSQL password</td>
+</tr>
+<tr>
+<td>TEST_DB_SSL</td>
+<td>if True, enforces SSL</td>
+</tr>
+<tr>
+<td>TEST_MANAGE_DB</td>
+<td>if False, no db is managed via pytest-pokie</td>
+</tr>
+<tr>
+<td>TEST_SHARE_CTX</td>
+<td>if False, create a new application instance between tests (default)</td>
+</tr>
+<tr>
+<td>TEST_DB_REUSE</td>
+<td>if False, drops and recreates the database between tests (default)</td>
+</tr>
+<tr>
+<td>TEST_SKIP_MIGRATIONS</td>
+<td>if False, runs migrations when creating the database</td>
+</tr>
+<tr>
+<td>TEST_SKIP_FIXTURES</td>
+<td>if False, runs fixtures when creating the database</td>
+</tr>
+</tbody>
+</table>
+<h3 id="application-lifecycle-parameters">Application lifecycle parameters<a class="headerlink" href="#application-lifecycle-parameters" title="Permanent link">&para;</a></h3>
+<p><strong>TEST_SHARE_CTX</strong></p>
+<p><strong>False (default)</strong>: Each test is run with a separate application instance; the application is bootstrapped at each
+test, by using the existing application factory.</p>
+<p><strong>True</strong>: All tests are run with the same pokie FlaskApplication and Flask instance; services, events, etc. will be
+managed
+and cached as in a production run.</p>
+<h3 id="database-management">Database management<a class="headerlink" href="#database-management" title="Permanent link">&para;</a></h3>
+<p>Please note: The credentials provided to the test database <strong>must</strong> have enough privileges for the required operations,
+such as creating and dropping databases.</p>
+<p><strong>TEST_MANAGE_DB</strong></p>
+<p><strong>False (default)</strong>: If TEST_MANAGE_DB is False, database management is completely ignored, and available db connection
+is the regular
+application connection. All database test configurations are ignored. With this mode, it is up to the developer to
+ensure a clean state between database runs.</p>
+<p><strong>True</strong>: If TEST_MANAGE_DB is True, pytest-pokie will manage the database connection using the available test
+credentials.
+The global database connection is replaced with the test connection, and fixtures and migrations may be executed between
+tests.</p>
+<p><strong>TEST_DB_REUSE</strong></p>
+<p><strong>False (default)</strong>: if TEST_DB_REUSE is False, pytest-pokie will attempt to drop and recreate the test database between
+each test.</p>
+<p><strong>True</strong>: if TEST_DB_REUSE is True, pytest-pokie will not drop the testing database if exists. If it doesn't exist, it
+will attempt to create the database and optionally run migrations and fixtures, depending on TEST_SKIP_MIGRATIONS and
+TEST_SKIP_FIXTURES values.</p>
+<p><strong>TEST_SKIP_MIGRATIONS</strong></p>
+<p><strong>False (default)</strong>: Existing SQL migrations will be run when the database is recreated.</p>
+<p><strong>True</strong>: Existing SQL migrations are ingored, even if the database is recreated.</p>
+<p><strong>TEST_SKIP_FIXTURES</strong></p>
+<p><strong>False (default)</strong>:Existing fixtures will be run when the database is recreated.</p>
+<p><strong>True</strong>: Existing fixtures are ignored, even if the database is recreated.</p>
+<h2 id="available-fixtures">Available fixtures<a class="headerlink" href="#available-fixtures" title="Permanent link">&para;</a></h2>
+<p>Note: fixtures depend on the predefined values for the different DI constants as specified on the <em>pokie.constants</em>
+file.</p>
+<table>
+<thead>
+<tr>
+<th>Fixture</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pokie_app</td>
+<td>Pokie Flask object</td>
+</tr>
+<tr>
+<td>pokie_config</td>
+<td>Pokie Config object</td>
+</tr>
+<tr>
+<td>pokie_di</td>
+<td>Pokie Di object</td>
+</tr>
+<tr>
+<td>pokie_db</td>
+<td>Pokie Database client</td>
+</tr>
+<tr>
+<td>pokie_client</td>
+<td>Flask test client</td>
+</tr>
+</tbody>
+</table>
+<h2 id="writing-tests">Writing Tests<a class="headerlink" href="#writing-tests" title="Permanent link">&para;</a></h2>
+<p>Pytest must be invoked using the internal Pokie pytest runner. The pytest runner will automatically add the required
+dependencies to pytest. All additional pytest command-line arguments can be specified:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>pytest<span class="w"> </span>--help
+
+<span class="o">[</span>Pokie<span class="o">]</span><span class="w"> </span>Running<span class="w"> </span>pytest<span class="w"> </span>with:<span class="w"> </span><span class="o">[</span><span class="s1">&#39;--help&#39;</span><span class="o">]</span>
+usage:<span class="w"> </span>main.py<span class="w"> </span><span class="o">[</span>options<span class="o">]</span><span class="w"> </span><span class="o">[</span>file_or_dir<span class="o">]</span><span class="w"> </span><span class="o">[</span>file_or_dir<span class="o">]</span><span class="w"> </span><span class="o">[</span>...<span class="o">]</span>
+
+positional<span class="w"> </span>arguments:
+<span class="w">  </span>file_or_dir
+
+general:
+<span class="w">  </span>-k<span class="w"> </span>EXPRESSION<span class="w">         </span>only<span class="w"> </span>run<span class="w"> </span>tests<span class="w"> </span>which<span class="w"> </span>match<span class="w"> </span>the<span class="w"> </span>given<span class="w"> </span>substring<span class="w"> </span>expression.<span class="w"> </span>An<span class="w"> </span>expression<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>python<span class="w"> </span>evaluatable<span class="w"> </span>expression<span class="w"> </span>where<span class="w"> </span>all<span class="w"> </span>names<span class="w"> </span>are<span class="w"> </span>substring-matched<span class="w"> </span>against<span class="w"> </span><span class="nb">test</span><span class="w"> </span>names<span class="w"> </span>and<span class="w"> </span>their<span class="w"> </span>parent<span class="w"> </span>classes.<span class="w"> </span>Example:<span class="w"> </span>-k
+<span class="w">                        </span><span class="s1">&#39;test_method or test_other&#39;</span><span class="w"> </span>matches<span class="w"> </span>all<span class="w"> </span><span class="nb">test</span><span class="w"> </span>functions<span class="w"> </span>and<span class="w"> </span>classes<span class="w"> </span>whose<span class="w"> </span>name<span class="w"> </span>contains<span class="w"> </span><span class="s1">&#39;test_method&#39;</span><span class="w"> </span>or<span class="w"> </span><span class="s1">&#39;test_other&#39;</span>,<span class="w"> </span><span class="k">while</span><span class="w"> </span>-k<span class="w"> </span><span class="s1">&#39;not test_method&#39;</span><span class="w"> </span>matches<span class="w"> </span>those<span class="w"> </span>that<span class="w"> </span>don<span class="s1">&#39;t contain &#39;</span>test_method<span class="s1">&#39; in their names. -k</span>
+<span class="s1">                        &#39;</span>not<span class="w"> </span>test_method<span class="w"> </span>and<span class="w"> </span>not<span class="w"> </span>test_other<span class="s1">&#39; will eliminate the matches. Additionally keywords are matched to classes and functions containing extra names in their &#39;</span>extra_keyword_matches<span class="s1">&#39; set, as well as functions which</span>
+<span class="s1">                        have names assigned directly to them. The matching is case-insensitive.</span>
+<span class="s1">  -m MARKEXPR           only run tests matching given mark expression.</span>
+<span class="s1">                        For example: -m &#39;</span>mark1<span class="w"> </span>and<span class="w"> </span>not<span class="w"> </span>mark2<span class="err">&#39;</span>.
+<span class="w">  </span>--markers<span class="w">             </span>show<span class="w"> </span>markers<span class="w"> </span><span class="o">(</span>builtin,<span class="w"> </span>plugin<span class="w"> </span>and<span class="w"> </span>per-project<span class="w"> </span>ones<span class="o">)</span>.
+<span class="w">  </span>-x,<span class="w"> </span>--exitfirst<span class="w">       </span><span class="nb">exit</span><span class="w"> </span>instantly<span class="w"> </span>on<span class="w"> </span>first<span class="w"> </span>error<span class="w"> </span>or<span class="w"> </span>failed<span class="w"> </span>test.
+<span class="w">  </span>--fixtures,<span class="w"> </span>--funcargs
+<span class="o">(</span>...<span class="o">)</span>
+$
+</code></pre></div>
+<p>The scaffold structure is similar to the common pytest usage:</p>
+<div class="highlight"><pre><span></span><code>some_module/
+<span class="w">  </span><span class="o">(</span>...<span class="o">)</span>
+main.py
+tests/
+<span class="w">  </span>__init__.py
+<span class="w">  </span>some_module/
+<span class="w">    </span>__init__.py
+<span class="w">    </span>test_something.py<span class="w">  </span>
+</code></pre></div>
+<p>test_something.py:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">test_example_1</span><span class="p">(</span><span class="n">pokie_app</span><span class="p">,</span> <span class="n">pokie_di</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">pokie_app</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">pokie_app</span><span class="o">.</span><span class="n">di</span> <span class="o">==</span> <span class="n">pokie_di</span>
+
+
+<span class="k">def</span> <span class="nf">test_example_2</span><span class="p">(</span><span class="n">pokie_db</span><span class="p">,</span> <span class="n">pokie_service_manager</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">pokie_db</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">pokie_service_manager</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</code></pre></div>
+<p>And to run the tests:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python3<span class="w"> </span>main.py<span class="w"> </span>pytest
+</code></pre></div>
+<h2 id="using-tox">Using tox<a class="headerlink" href="#using-tox" title="Permanent link">&para;</a></h2>
+<p>Example tox.ini:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tox]</span>
+<span class="na">envlist</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">py39</span>
+<span class="w">    </span><span class="na">py310</span>
+
+<span class="k">[testenv]</span>
+<span class="na">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-rrequirements-dev.txt</span>
+<span class="na">commands</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">python3 main.py pytest</span>
+</code></pre></div>
+<p>Example requirements-dev.txt:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">pytest</span><span class="o">==</span><span class="m">7</span>.3.1
+<span class="nv">pokie</span><span class="o">==</span><span class="m">1</span>.0.0
+<span class="nv">tox</span><span class="o">==</span><span class="m">4</span>.5.1
+</code></pre></div>
+<p>Running tox:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>tox<span class="w"> </span>-e<span class="w"> </span>py310
+</code></pre></div>
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -982,10 +1347,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "/oddbit-project/pokie/", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "/oddbit-project/pokie/assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="/oddbit-project/pokie/assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
       
     
   </body>

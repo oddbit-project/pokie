@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://github.com/oddbit-project/pokie/tutorial/tutorial/">
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/rest/auto/">
       
       
-        <link rel="prev" href="../scaffolding/">
+        <link rel="prev" href="../services/">
       
       
-        <link rel="next" href="../../http/views/">
+        <link rel="next" href="../../fixtures/">
       
       
       <link rel="icon" href="../../img/pokie_logo_small.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Tutorial - Pokie</title>
+        <title>Auto REST - Pokie</title>
       
     
     
@@ -79,7 +79,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pokie-tutorial" class="md-skip">
+        <a href="#automatic-rest-generation" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Tutorial
+              Auto REST
             
           </span>
         </div>
@@ -271,19 +271,17 @@
       
   
   
-    
-  
   
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
@@ -296,7 +294,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Introduction
@@ -309,7 +307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../architecture/" class="md-nav__link">
+      <a href="../../tutorial/architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -329,7 +327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../scaffolding/" class="md-nav__link">
+      <a href="../../tutorial/scaffolding/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -347,29 +345,9 @@
                 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Tutorial
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../tutorial/tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -378,101 +356,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#foreword" class="md-nav__link">
-    Foreword
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#initializing-the-application" class="md-nav__link">
-    Initializing the application
-  </a>
-  
-    <nav class="md-nav" aria-label="Initializing the application">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    Configuration
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#environment-based-configuration" class="md-nav__link">
-    Environment-based configuration
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#file-based-configuration" class="md-nav__link">
-    File-based configuration
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#module-initialization" class="md-nav__link">
-    Module initialization
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factory-initialization" class="md-nav__link">
-    Factory initialization
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#application-factory-build_pokie" class="md-nav__link">
-    Application factory: build_pokie()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#minimal-mainpy-example" class="md-nav__link">
-    Minimal main.py example
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -610,17 +493,19 @@
       
   
   
+    
+  
   
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
@@ -633,7 +518,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             REST Operations
@@ -666,7 +551,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rest/services/" class="md-nav__link">
+      <a href="../services/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -684,9 +569,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../rest/auto/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Auto REST
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -695,6 +600,80 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-rest-from-dto" class="md-nav__link">
+    Automatic REST from DTO
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic REST from DTO">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-signature" class="md-nav__link">
+    Method signature
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-example" class="md-nav__link">
+    Usage example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatic-rest-from-database-table" class="md-nav__link">
+    Automatic REST from Database Table
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic REST from Database Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-signature_1" class="md-nav__link">
+    Method signature
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-example_1" class="md-nav__link">
+    Usage example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1059,57 +1038,23 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#foreword" class="md-nav__link">
-    Foreword
+  <a href="#automatic-rest-from-dto" class="md-nav__link">
+    Automatic REST from DTO
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#initializing-the-application" class="md-nav__link">
-    Initializing the application
-  </a>
-  
-    <nav class="md-nav" aria-label="Initializing the application">
+    <nav class="md-nav" aria-label="Automatic REST from DTO">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#configuration" class="md-nav__link">
-    Configuration
-  </a>
-  
-    <nav class="md-nav" aria-label="Configuration">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#environment-based-configuration" class="md-nav__link">
-    Environment-based configuration
+  <a href="#method-signature" class="md-nav__link">
+    Method signature
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#file-based-configuration" class="md-nav__link">
-    File-based configuration
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#module-initialization" class="md-nav__link">
-    Module initialization
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factory-initialization" class="md-nav__link">
-    Factory initialization
+  <a href="#usage-example" class="md-nav__link">
+    Usage example
   </a>
   
 </li>
@@ -1120,16 +1065,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#application-factory-build_pokie" class="md-nav__link">
-    Application factory: build_pokie()
+  <a href="#automatic-rest-from-database-table" class="md-nav__link">
+    Automatic REST from Database Table
+  </a>
+  
+    <nav class="md-nav" aria-label="Automatic REST from Database Table">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-signature_1" class="md-nav__link">
+    Method signature
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#minimal-mainpy-example" class="md-nav__link">
-    Minimal main.py example
+        
+          <li class="md-nav__item">
+  <a href="#usage-example_1" class="md-nav__link">
+    Usage example
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1151,158 +1109,335 @@
   
 
 
-<h1 id="pokie-tutorial">Pokie Tutorial<a class="headerlink" href="#pokie-tutorial" title="Permanent link">&para;</a></h1>
-<h2 id="foreword">Foreword<a class="headerlink" href="#foreword" title="Permanent link">&para;</a></h2>
-<p>Pokie is built upon Dependency Injection and Resource Location. As such, dependencies are often specified by a full class
-path string, instead of a direct import; coupling is inferred in runtime via provided configuration, instead of more
-traditional approaches of using imports to provide dependencies. One of the main advantages of this approach is the
-quasi-elimination of circular imports problem, and provides an elegant mechanism of overriding dependencies either at
-load time or in runtime.</p>
-<p>Pokie also makes heavy use of classes and namespaces, and often each class will reside in its own file; this requires more
-discipline when scaffolding an application, and (sometimes) writing classes is more verbose than using more traditional
-approaches. This is a calculated tradeoff by design, and not just a mere consequence of heavy pattern usage.</p>
-<p><strong>Contents</strong>:</p>
-<ul>
-<li><a href="../architecture/">Architecture</a></li>
-<li><a href="../scaffolding/">Scaffolding</a></li>
-</ul>
-<h2 id="initializing-the-application">Initializing the application<a class="headerlink" href="#initializing-the-application" title="Permanent link">&para;</a></h2>
-<p>To fully bootstrap the application, three components are required: the configuration container
-(a <em>ShallowContainer</em> instance, <a href="#configuration">see below</a>), the module list to be instantiated, and the factory list to be initialized.</p>
-<p>It is recommended the bootstrap itself is built inside a factory function with the name <em>build_pokie()</em>; by encapsulating 
-all the initialization within a single identified function, we can provide a clean application context to run unit 
-tests.</p>
-<p>The typical sequence of operations (both explicit and implicit) of a Pokie application is:</p>
-<ul>
-<li>load configuration; </li>
-<li>build base Flask app; </li>
-<li>load configured modules (instantiate Module objects only);</li>
-<li>build a service map and initialize the Service Manager;</li>
-<li>run factories defined in the factory list;</li>
-<li>parse event definitions from modules and build the Event Manager;</li>
-<li>run appropriate CLI wrapper, or pass app variable to a WSGI server;</li>
-<li>initialize modules (by calling <em>build()</em> on each Module object); </li>
-</ul>
-<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
-<p>Pokie manages configuration using Rick's configuration resources - it supports both environment-variable based configuration
-or file-based configuration using JSON format. Both are parsed into a <em>ShallowContainer</em> object.</p>
-<h4 id="environment-based-configuration">Environment-based configuration<a class="headerlink" href="#environment-based-configuration" title="Permanent link">&para;</a></h4>
-<p>Environment-based configuration is a Docker-friendly mechanism to provide configurations; The configuration class extends
-<em>EnvironmentConfig</em>, and when invoking build(), it attempts to read environment variables matching the existing <strong>uppercase-named 
-class attributes</strong>. If a match is found, the default value is replaced. </p>
-<p>In addition, if the default value is an object of type <em>StrOrFile</em>, it will consider the specified existing value a
-path to a file containing the actual value. Any <em>StrOrFile</em> attribute with a computed value (either default or injected
-via environment variables) that starts with <em>/</em> or <em>./</em> will be treated as a file to be read to determine the final value. </p>
+<h1 id="automatic-rest-generation">Automatic REST generation<a class="headerlink" href="#automatic-rest-generation" title="Permanent link">&para;</a></h1>
+<p>Common REST scenarios include CRUD interaction with a database object (a view, a table or a predefined query); these
+often involve a <em>RequestRecord</em> with request validation rules, a <a href="https://oddbit-project.github.io/rick_db/object_mapper/">DTO Record</a> representing the database object, a
+<em>Service</em> that implements domain logic, and obviously a <em>RestView</em> to implement the different endpoints.</p>
+<p>Pokie's <em>rest.Auto</em> helpers leverage the existing <a href="../../codegen/codegen/">Code Generation</a> mechanisms to generate in
+runtime the required classes for a barebones REST implementation. These classes can be incrementally overridden later,
+making them ideal in PoC and simple use cases. They can also be used to perform rapid prototyping - implementations can be done incrementally, starting with automatic helpers and gradually
+implementing the specific business logic.</p>
 <blockquote>
-<p><strong>Note:</strong> The return <em>ShallowContainer</em> object from <em>Config.build()</em> will have <strong>all keys in lowercase</strong>, including the ones defined 
-originally as uppercase. This allows the configuration class to have internal static configuration attributes that are
-not injectable from environment variables.</p>
+<p><strong>Note:</strong> The <em>rest.Auto</em> database functionality is only available for PostgreSQL databases. Some data types may not
+work well, and complex schemas may not be fully supported. </p>
+<p><strong>Note:</strong> Code generated classes always use <strong>id</strong> as the name representing the primary key field on the database - e.g.
+a table with a field <em>id_foo</em> will be referenced on the DTO Record and the RequestRecord as <strong>id</strong>, and not <em>id_foo</em></p>
 </blockquote>
-<p>Minimal Pokie environment-based configuration example:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
-<span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span>
-
-<span class="c1"># minimal Pokie environment-based configuration</span>
-<span class="c1"># Pokie&#39;s defaults come from BaseConfigTemplate</span>
-<span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">):</span>
-    <span class="k">pass</span>
-
-<span class="c1"># load configuration and return a ShallowContainer</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-</code></pre></div>
-<h4 id="file-based-configuration">File-based configuration<a class="headerlink" href="#file-based-configuration" title="Permanent link">&para;</a></h4>
-<p>File-based configuration is comparatively simpler, as all values are read from the specified file. However, default values
-for settings need also to exist on the file, resulting in more complex files.</p>
-<p>Minimal Pokie file-based configuration example:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">json_file</span>
-
-<span class="c1"># load configuration from file and return a ShallowContainer</span>
-<span class="n">cfg</span> <span class="o">=</span> <span class="n">json_file</span><span class="p">(</span><span class="s1">&#39;config.json&#39;</span><span class="p">)</span>
-</code></pre></div>
-<p>config.json contents:
-<div class="highlight"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;modules&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
-<span class="w">  </span><span class="nt">&quot;use_auth&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;auth_plugins&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pokie.contrib.auth.plugin.DbAuthPlugin&quot;</span><span class="p">],</span>
-<span class="w">  </span><span class="nt">&quot;auth_secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;very_secret_key&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;db_cache_metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
-<span class="p">}</span>
-</code></pre></div></p>
-<h3 id="module-initialization">Module initialization<a class="headerlink" href="#module-initialization" title="Permanent link">&para;</a></h3>
-<p>Bootstrapping a Pokie application requires a list of modules to be initialized; Each element of the list is a string with
-a python class path for the module itself; Each module directory must then contain a <em>Module</em> class that inherits from
-<em>BaseModule</em>, inside a file called <em>module.py</em>. This is the initialization class for a given module.</p>
-<p>The list of modules to be initialized can also be provided via configuration setting, depending on the desired implementation.</p>
-<h3 id="factory-initialization">Factory initialization<a class="headerlink" href="#factory-initialization" title="Permanent link">&para;</a></h3>
-<p>Factories are assorted initializers for several purposes. One of them is to provide lazy loading mechanisms for
-database connections or cache connections. The factory list is a list of direct classes (python classes, not strings).</p>
-<h2 id="application-factory-build_pokie">Application factory: build_pokie()<a class="headerlink" href="#application-factory-build_pokie" title="Permanent link">&para;</a></h2>
-<p>Usage of the main application factory is not mandatory, but essential if unit tests are required. Unit testing often
-requires the opposite strategy of a production application, in the sense that reusage and caching of objects should be
-avoided completely. To ensure this, the factory encapsulates the complete bootstrap of the application, in such a way 
-that can be called once per single test, ensuring that available internal resources are <em>not</em> reused. </p>
-<p><strong>build_pokie() -&gt; Tuple[FlaskApplication, Flask]</strong> 
-Factory to build a pokie application and returns both the Pokie FlaskApplication object and the Flask object.</p>
-<h2 id="minimal-mainpy-example">Minimal main.py example<a class="headerlink" href="#minimal-mainpy-example" title="Permanent link">&para;</a></h2>
-<p>The main.py script is usually a simple file, containing the previously mentioned components. In addition, it should
-also provide the cli wrapper, to automatically also be able to execute cli operations. To enable this feature, just add
-this to the bottom of the file:</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
-</code></pre></div>
-<p>A minimal  but complete main.py example:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
-
+<h2 id="automatic-rest-from-dto">Automatic REST from DTO<a class="headerlink" href="#automatic-rest-from-dto" title="Permanent link">&para;</a></h2>
+<p>This mechanism enables the automatic creation of a <a href="../../http/rest/">RestView</a> object based on a <a href="https://oddbit-project.github.io/rick_db/object_mapper/">DTO Record</a> representing
+a database object. It will automatically generate a <em>Request</em> object if none is specified, based on the existing database
+table referenced by the DTO Record. The generated View class can also extend either a custom base class or a set of mixins.</p>
+<h3 id="method-signature">Method signature<a class="headerlink" href="#method-signature" title="Permanent link">&para;</a></h3>
+<p><em>Auto.rest(app: object, slug: str, dto_record: object, request_class: RequestRecord = None, service: str = None,
+        id_type: str = None, search_fields: list = None, allow_methods: list = None, base_cls: tuple = None,
+        mixins: tuple = None,  **kwargs)</em></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td>Flask</td>
+<td>Flask object</td>
+</tr>
+<tr>
+<td>slug</td>
+<td>str</td>
+<td>A endpoint url slug</td>
+</tr>
+<tr>
+<td>dto_record</td>
+<td>RickDB <a href="https://oddbit-project.github.io/rick_db/object_mapper/">DTO Record</a></td>
+<td>A DTO Record to use</td>
+</tr>
+<tr>
+<td>request_class</td>
+<td>Rick <a href="https://oddbit-project.github.io/rick/forms/requests/">RequestRecord</a></td>
+<td>An optional RequestRecord to use for input values</td>
+</tr>
+<tr>
+<td>service</td>
+<td>str</td>
+<td>An optional service to use instead of the automatically generated one</td>
+</tr>
+<tr>
+<td>id_type</td>
+<td>str</td>
+<td>The type of the record id for the urls, supported by Flask; defaults to "int"</td>
+</tr>
+<tr>
+<td>search_fields</td>
+<td>list</td>
+<td>Optional list of fields to perform text search; if omitted, all varchar/text fields are used</td>
+</tr>
+<tr>
+<td>allow_methods</td>
+<td>list</td>
+<td>If specified, will only allow the specified http methods</td>
+</tr>
+<tr>
+<td>base_cls</td>
+<td>class</td>
+<td>Optional base class to use instead of <em>pokie.rest.RestView</em></td>
+</tr>
+<tr>
+<td>mixins</td>
+<td>tuple</td>
+<td>Optional tuple with additional mixins</td>
+</tr>
+</tbody>
+</table>
+<h3 id="usage-example">Usage example<a class="headerlink" href="#usage-example" title="Permanent link">&para;</a></h3>
+<p>A complete minimal application to expose a database table called <em>customers</em> as a REST endpoint:
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick_db</span> <span class="kn">import</span> <span class="n">fieldmapper</span>
+<span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
 <span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span>
 <span class="kn">from</span> <span class="nn">pokie.core</span> <span class="kn">import</span> <span class="n">FlaskApplication</span>
 <span class="kn">from</span> <span class="nn">pokie.core.factories.pgsql</span> <span class="kn">import</span> <span class="n">PgSqlFactory</span>
-<span class="kn">from</span> <span class="nn">pokie.core.factories.login</span> <span class="kn">import</span> <span class="n">FlaskLogin</span>
+<span class="kn">from</span> <span class="nn">pokie.rest.auto</span> <span class="kn">import</span> <span class="n">Auto</span>
 
 
-<span class="c1"># base configuration</span>
+<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s2">&quot;customer_id&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">CustomerRecord</span><span class="p">:</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="s2">&quot;customer_id&quot;</span> <span class="c1"># this field is actually a varchar</span>
+    <span class="n">company_name</span> <span class="o">=</span> <span class="s2">&quot;company_name&quot;</span>
+    <span class="n">contact_name</span> <span class="o">=</span> <span class="s2">&quot;contact_name&quot;</span>
+    <span class="n">contact_title</span> <span class="o">=</span> <span class="s2">&quot;contact_title&quot;</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="s2">&quot;address&quot;</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;city&quot;</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="s2">&quot;region&quot;</span>
+    <span class="n">postal_code</span> <span class="o">=</span> <span class="s2">&quot;postal_code&quot;</span>
+    <span class="n">country</span> <span class="o">=</span> <span class="s2">&quot;country&quot;</span>
+    <span class="n">phone</span> <span class="o">=</span> <span class="s2">&quot;phone&quot;</span>
+    <span class="n">fax</span> <span class="o">=</span> <span class="s2">&quot;fax&quot;</span>
+
+
+<span class="c1"># config parameters, injectable from ENV vars</span>
 <span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span><span class="p">):</span>
     <span class="k">pass</span>
+
+
+<span class="c1"># Our custom route initialization to skip usage of modules</span>
+<span class="c1"># because Auto.rest() will require database access to the table customers, we need to postpone route registration</span>
+<span class="c1"># to the actual web initialization routines, as it is done with modules</span>
+<span class="k">def</span> <span class="nf">router</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">FlaskApplication</span><span class="p">):</span>
+    <span class="c1"># Auto.rest() will generate all required classes and register the following routes:</span>
+    <span class="c1"># /customer                     OPTIONS,HEAD,GET</span>
+    <span class="c1"># /customer/&lt;string:id_record&gt;  OPTIONS,HEAD,GET</span>
+    <span class="c1"># /customer                     POST,OPTIONS</span>
+    <span class="c1"># /customer/&lt;string:id_record&gt;  OPTIONS,PUT,PATCH</span>
+    <span class="c1"># /customer/&lt;string:id_record&gt;  OPTIONS,DELETE</span>
+    <span class="n">Auto</span><span class="o">.</span><span class="n">rest</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">app</span><span class="p">,</span>  <span class="c1"># our Flask app</span>
+              <span class="s2">&quot;customer&quot;</span><span class="p">,</span>  <span class="c1"># the base slug</span>
+              <span class="n">CustomerRecord</span><span class="p">,</span>  <span class="c1"># the DTO to use</span>
+              <span class="n">search_fields</span><span class="o">=</span><span class="p">[</span><span class="n">CustomerRecord</span><span class="o">.</span><span class="n">company_name</span><span class="p">,</span> <span class="n">CustomerRecord</span><span class="o">.</span><span class="n">contact_name</span><span class="p">],</span>  <span class="c1"># fields to allow text search</span>
+              <span class="n">id_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span> <span class="c1"># type of id_record to use</span>
+              <span class="p">)</span>
+
 
 <span class="k">def</span> <span class="nf">build_pokie</span><span class="p">():</span>
     <span class="c1"># load configuration from ENV</span>
     <span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 
-    <span class="c1"># modules to load &amp; initialize:</span>
-    <span class="c1"># the internal auth module, and a custom-defined local module called &#39;my_module&#39;</span>
-    <span class="n">modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pokie.contrib.auth&#39;</span><span class="p">,</span> <span class="s1">&#39;my_module&#39;</span><span class="p">]</span>
+    <span class="c1"># modules to load &amp; initialize</span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># factories to run</span>
-    <span class="c1"># the postgresql initializer, and the flask-login initializer</span>
-    <span class="n">factories</span> <span class="o">=</span> <span class="p">[</span><span class="n">PgSqlFactory</span><span class="p">,</span> <span class="n">FlaskLogin</span><span class="p">,</span> <span class="p">]</span>
+    <span class="n">factories</span> <span class="o">=</span> <span class="p">[</span><span class="n">PgSqlFactory</span><span class="p">,</span> <span class="p">]</span>
 
-    <span class="c1"># build Pokie application</span>
+    <span class="c1"># build app</span>
     <span class="n">pokie_app</span> <span class="o">=</span> <span class="n">FlaskApplication</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
-    <span class="c1"># bootstrap Pokie application</span>
-    <span class="c1"># the returned object is a Flask application</span>
-    <span class="n">flask_app</span> <span class="o">=</span> <span class="n">main</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">modules</span><span class="p">,</span> <span class="n">factories</span><span class="p">)</span>
+    <span class="n">flask_app</span> <span class="o">=</span> <span class="n">pokie_app</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">modules</span><span class="p">,</span> <span class="n">factories</span><span class="p">)</span>
+    <span class="c1"># register our route initializer to be used only on web context</span>
+    <span class="n">pokie_app</span><span class="o">.</span><span class="n">register_pre_http_hook</span><span class="p">(</span><span class="n">router</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">pokie_app</span><span class="p">,</span> <span class="n">flask_app</span>
 
-<span class="c1"># main is reused for the cli wrapper</span>
-<span class="c1"># app is often reused as the WSGI Flask object </span>
+
 <span class="n">main</span><span class="p">,</span> <span class="n">app</span> <span class="o">=</span> <span class="n">build_pokie</span><span class="p">()</span>
 
-<span class="c1"># if it is a cli invocation</span>
+<span class="c1"># =============================================================================</span>
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># run the cli wrapper</span>
     <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
 </code></pre></div></p>
-<p>For development purposes, the application can be run directly:
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python3<span class="w"> </span>main.py<span class="w"> </span>runserver<span class="w"> </span>-d<span class="w"> </span>-r
-<span class="w"> </span>*<span class="w"> </span>Serving<span class="w"> </span>Flask<span class="w"> </span>app<span class="w"> </span><span class="s1">&#39;FlaskApplication&#39;</span><span class="w"> </span><span class="o">(</span>lazy<span class="w"> </span>loading<span class="o">)</span>
-<span class="w"> </span>*<span class="w"> </span>Environment:<span class="w"> </span>production
-<span class="w">   </span>WARNING:<span class="w"> </span>This<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>development<span class="w"> </span>server.<span class="w"> </span>Do<span class="w"> </span>not<span class="w"> </span>use<span class="w"> </span>it<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>deployment.
-<span class="w">   </span>Use<span class="w"> </span>a<span class="w"> </span>production<span class="w"> </span>WSGI<span class="w"> </span>server<span class="w"> </span>instead.
-<span class="w"> </span>*<span class="w"> </span>Debug<span class="w"> </span>mode:<span class="w"> </span>on
-INFO:werkzeug:<span class="w"> </span>*<span class="w"> </span>Running<span class="w"> </span>on<span class="w"> </span>http://127.0.0.1:5000<span class="w"> </span><span class="o">(</span>Press<span class="w"> </span>CTRL+C<span class="w"> </span>to<span class="w"> </span>quit<span class="o">)</span>
-INFO:werkzeug:<span class="w"> </span>*<span class="w"> </span>Restarting<span class="w"> </span>with<span class="w"> </span>watchdog<span class="w"> </span><span class="o">(</span>inotify<span class="o">)</span>
-WARNING:werkzeug:<span class="w"> </span>*<span class="w"> </span>Debugger<span class="w"> </span>is<span class="w"> </span>active!
-INFO:werkzeug:<span class="w"> </span>*<span class="w"> </span>Debugger<span class="w"> </span>PIN:<span class="w"> </span><span class="m">354</span>-883-950
-</code></pre></div></p>
+<p>While it is possible to build single-file applications with Pokie, the most common scenario is to build modular applications.
+When using modules, <em>Auto.rest</em> is commonly used in the <em>build()</em> section of your <em>module.py</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pokie.core</span> <span class="kn">import</span> <span class="n">BaseModule</span>
+<span class="kn">from</span> <span class="nn">pokie.rest.auto</span> <span class="kn">import</span> <span class="n">Auto</span>
+<span class="kn">from</span> <span class="nn">pokie_test.dto.records</span> <span class="kn">import</span> <span class="n">CustomerRecord</span>
+
+
+<span class="k">class</span> <span class="nc">Module</span><span class="p">(</span><span class="n">BaseModule</span><span class="p">):</span>
+    <span class="c1"># internal module name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;my_module&quot;</span>
+
+    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">app</span>
+
+        <span class="c1"># Auto.rest() will generate all required classes and register the following routes:</span>
+        <span class="c1"># /customer                     OPTIONS,HEAD,GET</span>
+        <span class="c1"># /customer/&lt;string:id_record&gt;  OPTIONS,HEAD,GET</span>
+        <span class="c1"># /customer                     POST,OPTIONS</span>
+        <span class="c1"># /customer/&lt;string:id_record&gt;  OPTIONS,PUT,PATCH</span>
+        <span class="c1"># /customer/&lt;string:id_record&gt;  OPTIONS,DELETE</span>
+        <span class="n">Auto</span><span class="o">.</span><span class="n">rest</span><span class="p">(</span><span class="n">app</span><span class="p">,</span>  <span class="c1"># our Flask app</span>
+                  <span class="s2">&quot;customer&quot;</span><span class="p">,</span>  <span class="c1"># the base slug</span>
+                  <span class="n">CustomerRecord</span><span class="p">,</span>  <span class="c1"># the DTO to use</span>
+                  <span class="c1"># fields to allow text search</span>
+                  <span class="n">search_fields</span><span class="o">=</span><span class="p">[</span><span class="n">CustomerRecord</span><span class="o">.</span><span class="n">company_name</span><span class="p">,</span> <span class="n">CustomerRecord</span><span class="o">.</span><span class="n">contact_name</span><span class="p">],</span>
+                  <span class="n">id_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span>  <span class="c1"># type of id_record to use</span>
+                  <span class="p">)</span>
+        <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="automatic-rest-from-database-table">Automatic REST from Database Table<a class="headerlink" href="#automatic-rest-from-database-table" title="Permanent link">&para;</a></h2>
+<p>It is possible to just skip the usage of a <a href="https://oddbit-project.github.io/rick_db/object_mapper/">DTO Record</a> and
+have the framework build one instead in runtime, from an existing database table; <em>Auto.view()</em> will generate a RestView
+class for the specified table, that can be registered using the <a href="../../http/rest/#registering-routes">AutoRouter</a> or 
+traditional Flask route registration mechanisms.</p>
+<h3 id="method-signature_1">Method signature<a class="headerlink" href="#method-signature_1" title="Permanent link">&para;</a></h3>
+<p><em>Auto.view(app: object, table_name: str, schema: str = None, search_fields: List = None, camel_case: bool = False,
+        allow_methods: list = None, base_cls: tuple = None, mixins: tuple = None, **kwargs) -&gt; PokieView:</em></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app</td>
+<td>Flask</td>
+<td>Flask object</td>
+</tr>
+<tr>
+<td>table_name</td>
+<td>str</td>
+<td>Database table name to use</td>
+</tr>
+<tr>
+<td>schema</td>
+<td>str</td>
+<td>Optional database  schema</td>
+</tr>
+<tr>
+<td>search_fields</td>
+<td>list</td>
+<td>Optional list of fields to perform text search; if omitted, all varchar/text fields are used</td>
+</tr>
+<tr>
+<td>camel_case</td>
+<td>bool</td>
+<td>If true, dict keys are camelCased</td>
+</tr>
+<tr>
+<td>allow_methods</td>
+<td>list</td>
+<td>If specified, will only allow the specified http methods</td>
+</tr>
+<tr>
+<td>base_cls</td>
+<td>class</td>
+<td>Optional base class to use instead of <em>pokie.rest.RestView</em></td>
+</tr>
+<tr>
+<td>mixins</td>
+<td>tuple</td>
+<td>Optional tuple with additional mixins</td>
+</tr>
+</tbody>
+</table>
+<h3 id="usage-example_1">Usage example<a class="headerlink" href="#usage-example_1" title="Permanent link">&para;</a></h3>
+<p>A complete minimal application to expose a database table called <em>customers</em> as a REST endpoint:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rick.resource.config</span> <span class="kn">import</span> <span class="n">EnvironmentConfig</span>
+<span class="kn">from</span> <span class="nn">pokie.config.template</span> <span class="kn">import</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span>
+<span class="kn">from</span> <span class="nn">pokie.core</span> <span class="kn">import</span> <span class="n">FlaskApplication</span>
+<span class="kn">from</span> <span class="nn">pokie.core.factories.pgsql</span> <span class="kn">import</span> <span class="n">PgSqlFactory</span>
+<span class="kn">from</span> <span class="nn">pokie.http</span> <span class="kn">import</span> <span class="n">AutoRouter</span>
+<span class="kn">from</span> <span class="nn">pokie.rest.auto</span> <span class="kn">import</span> <span class="n">Auto</span>
+
+
+<span class="c1"># config parameters, injectable from ENV vars</span>
+<span class="k">class</span> <span class="nc">Config</span><span class="p">(</span><span class="n">EnvironmentConfig</span><span class="p">,</span> <span class="n">BaseConfigTemplate</span><span class="p">,</span> <span class="n">PgConfigTemplate</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># Our custom route initialization to skip usage of modules</span>
+<span class="c1"># because Auto.rest() will require database access to the table customers, we need to postpone route registration</span>
+<span class="c1"># to the actual web initialization routines, as it is done with modules</span>
+<span class="k">def</span> <span class="nf">router</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">FlaskApplication</span><span class="p">):</span>
+    <span class="c1"># Auto.view() will generate a view for the customers table</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">Auto</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">search_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;company_name&quot;</span><span class="p">,</span> <span class="s2">&quot;contact_name&quot;</span><span class="p">])</span>
+    <span class="c1"># and AutoRouter.resouce() registers the following endpoints:</span>
+    <span class="c1"># /customer                     HEAD,GET,OPTIONS</span>
+    <span class="c1"># /customer/&lt;string:id_record&gt;  HEAD,GET,OPTIONS</span>
+    <span class="c1"># /customer                     OPTIONS,POST</span>
+    <span class="c1"># /customer/&lt;string:id_record&gt;  PATCH,PUT,OPTIONS</span>
+    <span class="c1"># /customer/&lt;string:id_record&gt;  DELETE,OPTIONS</span>
+    <span class="n">AutoRouter</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">id_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">build_pokie</span><span class="p">():</span>
+    <span class="c1"># load configuration from ENV</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="c1"># modules to load &amp; initialize</span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># factories to run</span>
+    <span class="n">factories</span> <span class="o">=</span> <span class="p">[</span><span class="n">PgSqlFactory</span><span class="p">,</span> <span class="p">]</span>
+
+    <span class="c1"># build app</span>
+    <span class="n">pokie_app</span> <span class="o">=</span> <span class="n">FlaskApplication</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+    <span class="n">flask_app</span> <span class="o">=</span> <span class="n">pokie_app</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">modules</span><span class="p">,</span> <span class="n">factories</span><span class="p">)</span>
+    <span class="n">pokie_app</span><span class="o">.</span><span class="n">register_pre_http_hook</span><span class="p">(</span><span class="n">router</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pokie_app</span><span class="p">,</span> <span class="n">flask_app</span>
+
+
+<span class="n">main</span><span class="p">,</span> <span class="n">app</span> <span class="o">=</span> <span class="n">build_pokie</span><span class="p">()</span>
+
+<span class="c1"># =============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="o">.</span><span class="n">cli</span><span class="p">()</span>
+</code></pre></div>
+<p>While it is possible to build single-file applications with Pokie, the most common scenario is to build modular applications.
+As it happens with <em>Auto.rest()</em>, <em>Auto.view</em> is commonly used in the <em>build()</em> section of your <em>module.py</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pokie.core</span> <span class="kn">import</span> <span class="n">BaseModule</span>
+<span class="kn">from</span> <span class="nn">pokie.rest</span> <span class="kn">import</span> <span class="n">Auto</span>
+<span class="kn">from</span> <span class="nn">pokie.http</span> <span class="kn">import</span> <span class="n">AutoRouter</span>
+
+
+<span class="k">class</span> <span class="nc">Module</span><span class="p">(</span><span class="n">BaseModule</span><span class="p">):</span>
+    <span class="c1"># internal module name</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;my_module&quot;</span>
+
+    <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">app</span>
+
+        <span class="c1"># Auto.view() will generate a view for the customers table</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">Auto</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="s2">&quot;customers&quot;</span><span class="p">,</span> <span class="n">search_fields</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;company_name&quot;</span><span class="p">,</span> <span class="s2">&quot;contact_name&quot;</span><span class="p">])</span>
+        <span class="c1"># and AutoRouter.resouce() registers the following endpoints:</span>
+        <span class="c1"># /customer                     HEAD,GET,OPTIONS</span>
+        <span class="c1"># /customer/&lt;string:id_record&gt;  HEAD,GET,OPTIONS</span>
+        <span class="c1"># /customer                     OPTIONS,POST</span>
+        <span class="c1"># /customer/&lt;string:id_record&gt;  PATCH,PUT,OPTIONS</span>
+        <span class="c1"># /customer/&lt;string:id_record&gt;  DELETE,OPTIONS</span>
+        <span class="n">AutoRouter</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="s2">&quot;customer&quot;</span><span class="p">,</span> <span class="n">view</span><span class="p">,</span> <span class="n">id_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
 
 
 

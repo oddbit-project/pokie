@@ -1,58 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/fixtures/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/fixtures/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/messages/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/signals/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/signals/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/cli/commands/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/tutorial/architecture/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/codegen/codegen/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/tutorial/scaffolding/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/http/camelcase_json_response/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/tutorial/tutorial/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/http/dbgridrequest/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/views/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/http/error_handler/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/views/controllers/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/http/extending_views/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/views/named/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/http/json_response/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://git.oddbit.org/OddBit/pokie/views/rest/</loc>
-         <lastmod>2023-05-22</lastmod>
+         <loc>https://github.com/oddbit-project/pokie/http/rest/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/http/views/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/rest/auto/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/rest/services/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/test/pytest/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/tutorial/architecture/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/tutorial/scaffolding/</loc>
+         <lastmod>2023-12-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://github.com/oddbit-project/pokie/tutorial/tutorial/</loc>
+         <lastmod>2023-12-22</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

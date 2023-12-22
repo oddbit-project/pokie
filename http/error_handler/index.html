@@ -10,22 +10,28 @@
       
       
       
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/http/error_handler/">
       
       
+        <link rel="prev" href="../rest/">
       
-      <link rel="icon" href="/oddbit-project/pokie/img/pokie_logo_small.png">
+      
+        <link rel="next" href="../extending_views/">
+      
+      
+      <link rel="icon" href="../../img/pokie_logo_small.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.2.7">
     
     
       
-        <title>Pokie</title>
+        <title>Error Handlers - Pokie</title>
       
     
     
-      <link rel="stylesheet" href="/oddbit-project/pokie/assets/stylesheets/main.046329b4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css">
       
         
-        <link rel="stylesheet" href="/oddbit-project/pokie/assets/stylesheets/palette.85d0ee34.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
       
       
 
@@ -44,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL("/oddbit-project/pokie/",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,6 +78,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#error-handling" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -84,9 +95,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/oddbit-project/pokie/." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="/oddbit-project/pokie/img/pokie_logo_small.png" alt="logo">
+  <img src="../../img/pokie_logo_small.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -103,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Error Handlers
             
           </span>
         </div>
@@ -215,9 +226,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/oddbit-project/pokie/." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="/oddbit-project/pokie/img/pokie_logo_small.png" alt="logo">
+  <img src="../../img/pokie_logo_small.png" alt="logo">
 
     </a>
     Pokie
@@ -243,7 +254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -296,7 +307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/architecture/" class="md-nav__link">
+      <a href="../../tutorial/architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -316,7 +327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/scaffolding/" class="md-nav__link">
+      <a href="../../tutorial/scaffolding/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -336,7 +347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/tutorial/" class="md-nav__link">
+      <a href="../../tutorial/tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -361,17 +372,19 @@
       
   
   
+    
+  
   
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
@@ -384,7 +397,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Views
@@ -397,7 +410,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/views/" class="md-nav__link">
+      <a href="../views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/rest/" class="md-nav__link">
+      <a href="../rest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -435,9 +448,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/error_handler/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Error Handlers
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -446,6 +479,40 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flask-errors" class="md-nav__link">
+    Flask errors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httperrorhandler-class" class="md-nav__link">
+    HttpErrorHandler class
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -457,7 +524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/extending_views/" class="md-nav__link">
+      <a href="../extending_views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -518,7 +585,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/rest/" class="md-nav__link">
+      <a href="../rest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -538,7 +605,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/rest/services/" class="md-nav__link">
+      <a href="../../rest/services/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -558,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/rest/auto/" class="md-nav__link">
+      <a href="../../rest/auto/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -619,7 +686,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/fixtures/" class="md-nav__link">
+      <a href="../../fixtures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -680,7 +747,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/dbgridrequest/" class="md-nav__link">
+      <a href="../dbgridrequest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -700,7 +767,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/json_response/" class="md-nav__link">
+      <a href="../json_response/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -761,7 +828,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/cli/commands/" class="md-nav__link">
+      <a href="../../cli/commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -822,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/codegen/codegen/" class="md-nav__link">
+      <a href="../../codegen/codegen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -883,7 +950,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/test/pytest/" class="md-nav__link">
+      <a href="../../test/pytest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -921,6 +988,30 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flask-errors" class="md-nav__link">
+    Flask errors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#httperrorhandler-class" class="md-nav__link">
+    HttpErrorHandler class
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -932,8 +1023,54 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+  
+
+
+<h1 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h1>
+<h2 id="flask-errors">Flask errors<a class="headerlink" href="#flask-errors" title="Permanent link">&para;</a></h2>
+<p>Pokie provides a pluggable class-based mechanism to override the default Flask error handlers and provide appropriate JSON responses
+following the global JsonResponse format. These classes must extend <em>Injectable</em>. Please refer to the default class 
+<em>pokie.http.HttpErrorHandler</em> for implementation details.</p>
+<p>The error handler class to be used is defined by a configuration setting in <em>BaseConfigTemplate</em> - <strong>CFG_HTTP_ERROR_HANLDER</strong>.
+The value of this setting is the canonical path name of the class to be used; By default, <em>pokie.http.HttpErrorHandler</em>.</p>
+<p>The created object is also registered in the global registry, and can be accessed with the constant <strong>DI_HTTP_ERROR_HANDLER</strong>.</p>
+<h2 id="httperrorhandler-class"><strong>HttpErrorHandler class</strong><a class="headerlink" href="#httperrorhandler-class" title="Permanent link">&para;</a></h2>
+<p>This class provides JSON-formatted responses for Flask errors for the following HTTP codes:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>400 Bad Request: The browser (or proxy) sent a request that this server could not understand.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>404 Not Found: The requested URL was not found on the server.</td>
+</tr>
+<tr>
+<td>405</td>
+<td>405 Method Not Allowed: The method is not allowed for the requested URL.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>500 Internal Server Error</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -982,10 +1119,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "/oddbit-project/pokie/", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "/oddbit-project/pokie/assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="/oddbit-project/pokie/assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
       
     
   </body>

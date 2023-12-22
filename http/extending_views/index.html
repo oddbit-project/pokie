@@ -10,22 +10,28 @@
       
       
       
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/http/extending_views/">
       
       
+        <link rel="prev" href="../error_handler/">
       
-      <link rel="icon" href="/oddbit-project/pokie/img/pokie_logo_small.png">
+      
+        <link rel="next" href="../rest/">
+      
+      
+      <link rel="icon" href="../../img/pokie_logo_small.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.2.7">
     
     
       
-        <title>Pokie</title>
+        <title>Extending Views - Pokie</title>
       
     
     
-      <link rel="stylesheet" href="/oddbit-project/pokie/assets/stylesheets/main.046329b4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.046329b4.min.css">
       
         
-        <link rel="stylesheet" href="/oddbit-project/pokie/assets/stylesheets/palette.85d0ee34.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.85d0ee34.min.css">
       
       
 
@@ -44,7 +50,7 @@
       
     
     
-    <script>__md_scope=new URL("/oddbit-project/pokie/",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,6 +78,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#extending-views" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -84,9 +95,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/oddbit-project/pokie/." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="/oddbit-project/pokie/img/pokie_logo_small.png" alt="logo">
+  <img src="../../img/pokie_logo_small.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -103,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Extending Views
             
           </span>
         </div>
@@ -215,9 +226,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/oddbit-project/pokie/." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href="../.." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="/oddbit-project/pokie/img/pokie_logo_small.png" alt="logo">
+  <img src="../../img/pokie_logo_small.png" alt="logo">
 
     </a>
     Pokie
@@ -243,7 +254,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -296,7 +307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/architecture/" class="md-nav__link">
+      <a href="../../tutorial/architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -316,7 +327,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/scaffolding/" class="md-nav__link">
+      <a href="../../tutorial/scaffolding/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -336,7 +347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/tutorial/tutorial/" class="md-nav__link">
+      <a href="../../tutorial/tutorial/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -361,17 +372,19 @@
       
   
   
+    
+  
   
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
@@ -384,7 +397,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Views
@@ -397,7 +410,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/views/" class="md-nav__link">
+      <a href="../views/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -417,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/rest/" class="md-nav__link">
+      <a href="../rest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -437,7 +450,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/error_handler/" class="md-nav__link">
+      <a href="../error_handler/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -455,9 +468,29 @@
                 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/extending_views/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Extending Views
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -466,6 +499,47 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#using-hooks" class="md-nav__link">
+    Using Hooks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks-in-subclasses" class="md-nav__link">
+    Hooks in subclasses
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks-in-mixins" class="md-nav__link">
+    Hooks in Mixins
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -518,7 +592,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/rest/" class="md-nav__link">
+      <a href="../rest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -538,7 +612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/rest/services/" class="md-nav__link">
+      <a href="../../rest/services/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -558,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/rest/auto/" class="md-nav__link">
+      <a href="../../rest/auto/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -619,7 +693,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/fixtures/" class="md-nav__link">
+      <a href="../../fixtures/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -680,7 +754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/dbgridrequest/" class="md-nav__link">
+      <a href="../dbgridrequest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -700,7 +774,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/http/json_response/" class="md-nav__link">
+      <a href="../json_response/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -761,7 +835,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/cli/commands/" class="md-nav__link">
+      <a href="../../cli/commands/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -822,7 +896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/codegen/codegen/" class="md-nav__link">
+      <a href="../../codegen/codegen/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -883,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/oddbit-project/pokie/test/pytest/" class="md-nav__link">
+      <a href="../../test/pytest/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -921,6 +995,37 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#using-hooks" class="md-nav__link">
+    Using Hooks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks-in-subclasses" class="md-nav__link">
+    Hooks in subclasses
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooks-in-mixins" class="md-nav__link">
+    Hooks in Mixins
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -932,8 +1037,94 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+  
+
+
+<h1 id="extending-views">Extending Views<a class="headerlink" href="#extending-views" title="Permanent link">&para;</a></h1>
+<p>PokieView functionality can be extended in several ways, either by using pre-dispatch hooks, subclassing or by using
+Mixins.</p>
+<h2 id="using-hooks">Using Hooks<a class="headerlink" href="#using-hooks" title="Permanent link">&para;</a></h2>
+<p>Hooks are methods that are called before performing the dispatch of a given request, and they are maintained in two
+list attributes - <em>PokieView.dispatch_hooks</em> and <em>PokieView.internal_hooks</em>. Because when a request is received these methods
+are called in order sequence by name, by using two lists we guarantee that expensive system hooks - such as automatic body 
+serialization - are postponed to execute after all application hooks, such as authentication.</p>
+<p>All hooks must use the interface <em>(method:str, *args: t.Any, **kwargs: t.Any) -&gt; Optional[ResponseReturnValue]</em> and
+if they return a value different than <em>None</em>, the dispatch is immediately aborted and that value is used as a <em>Response</em>.</p>
+<p>There is no specific naming nomenclature for hooks, but due to their status as protected functions, their name should start
+with underscore ("_").</p>
+<h2 id="hooks-in-subclasses">Hooks in subclasses<a class="headerlink" href="#hooks-in-subclasses" title="Permanent link">&para;</a></h2>
+<p>Adding custom hooks to subclasses is quite simple - just override the <strong>init</strong>() method, add your hooks, and fill
+the appropriate lists with their names:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pokie.constants</span> <span class="kn">import</span> <span class="n">DI_CONFIG</span>
+<span class="kn">from</span> <span class="nn">pokie.http</span> <span class="kn">import</span> <span class="n">PokieView</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">flask.typing</span> <span class="kn">import</span> <span class="n">ResponseReturnValue</span>
+
+<span class="k">class</span> <span class="nc">TokenAuthView</span><span class="p">(</span><span class="n">PokieView</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># get hardcoded auth key from a config value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">di</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DI_CONFIG</span><span class="p">)</span><span class="o">.</span><span class="n">GET</span><span class="p">(</span><span class="s2">&quot;auth_token&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># add auth hook </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_hooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;_hook_token_auth&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_hook_token_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ResponseReturnValue</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_token</span><span class="p">:</span>
+            <span class="c1"># no token defined, allow access</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s2">&quot;x-access-key&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_token</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-access-token&#39;</span><span class="p">]:</span>
+                 <span class="c1"># valid auth token </span>
+                 <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Invalid auth token            </span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbidden</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="hooks-in-mixins">Hooks in Mixins<a class="headerlink" href="#hooks-in-mixins" title="Permanent link">&para;</a></h2>
+<p>Pokie also supports Mixin initializers, that can be used to implement specific hook functionality. These initializers
+are called by name at the end of the <em><strong>init</strong>()</em> function. These initializer methods can have any valid name and
+follow <em>(**kwargs)</em> as an interface:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pokie.http</span> <span class="kn">import</span> <span class="n">PokieView</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">flask.typing</span> <span class="kn">import</span> <span class="n">ResponseReturnValue</span>
+
+<span class="k">class</span> <span class="nc">TokenAuthMixin</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">init_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dispatch_hooks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;_hook_token_auth&quot;</span><span class="p">)</span>        
+
+    <span class="k">def</span> <span class="nf">_hook_token_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ResponseReturnValue</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_token</span><span class="p">:</span>
+            <span class="c1"># no token defined, allow access</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s2">&quot;x-access-key&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_token</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;x-access-token&#39;</span><span class="p">]:</span>
+                 <span class="c1"># valid auth token </span>
+                 <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># Invalid auth token            </span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbidden</span><span class="p">()</span>
+
+
+<span class="c1"># declare a class using the mixin</span>
+<span class="k">class</span> <span class="nc">MyView</span><span class="p">(</span><span class="n">PokieView</span><span class="p">,</span> <span class="n">TokenAuthMixin</span><span class="p">):</span>
+    <span class="c1"># Add the Mixin initializer name to be called on __init__()</span>
+    <span class="n">init_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;init_auth&quot;</span><span class="p">,]</span>
+</code></pre></div>
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -982,10 +1173,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "/oddbit-project/pokie/", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "/oddbit-project/pokie/assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.dfff1995.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="/oddbit-project/pokie/assets/javascripts/bundle.dff1b7c8.min.js"></script>
+      <script src="../../assets/javascripts/bundle.dff1b7c8.min.js"></script>
       
     
   </body>
