@@ -8,7 +8,8 @@ from rick_db.conn import Connection
 from rick_db.sql.dialect import PgSqlDialect
 from rick_db.util.pg import PgInfo
 
-from pokie.codegen.pg import PgTableSpec, RecordGenerator, RequestGenerator
+from pokie.codegen.pg import PgTableSpec
+from pokie.codegen import RecordGenerator, RequestGenerator
 from pokie.constants import DI_DB
 from pokie.core import CliCommand
 
@@ -68,8 +69,10 @@ class DbCodeGenCommand(CliCommand):
                     "generating dto for {}.{}...".format(schema, name), attr="bold"
                 )
             )
-            spec = pg.table_spec(name, schema)
-            result.append(gen.gen_source(spec, camelcase=camel_case, imports=first))
+            spec = pg.generate(name, schema)
+            result.append(
+                gen.generate_source(spec, camelcase=camel_case, imports=first)
+            )
             first = False
 
         if dest_file is None:
@@ -84,9 +87,7 @@ class DbCodeGenCommand(CliCommand):
             self.tty.write(self.tty.colorizer.green("success!"))
         return True
 
-    def pg_gen_request(
-        self, db, table_expr, dest_file, camelcase_id=False, camelcase_cols=False
-    ) -> bool:
+    def pg_gen_request(self, db, table_expr, dest_file, camelcase_id=False) -> bool:
         pg = PgTableSpec(db)
         table_list, schema = self.parse_table_list(pg.manager(), table_expr)
         if len(table_list) == 0:
@@ -102,12 +103,11 @@ class DbCodeGenCommand(CliCommand):
                     attr="bold",
                 )
             )
-            spec = pg.table_spec(name, schema)
+            spec = pg.generate(name, schema)
             result.append(
-                gen.gen_source(
+                gen.generate_source(
                     spec,
                     camelcase=camelcase_id,
-                    db_camelcase=camelcase_cols,
                     imports=first,
                 )
             )
@@ -172,13 +172,6 @@ class GenRequestRecordCmd(DbCodeGenCommand):
             default=False,
             help="camelCase field names",
         )
-        parser.add_argument(
-            "-C",
-            "--camelcase-cols",
-            action="store_true",
-            default=False,
-            help="camelCase bind columns",
-        )
 
     def run(self, args) -> bool:
         db = self.get_db()
@@ -192,6 +185,4 @@ class GenRequestRecordCmd(DbCodeGenCommand):
                 self.tty.error("destination file already exists")
                 return False
 
-        return self.pg_gen_request(
-            db, args.table, args.file, args.camelcase_names, args.camelcase_cols
-        )
+        return self.pg_gen_request(db, args.table, args.file, args.camelcase_names)

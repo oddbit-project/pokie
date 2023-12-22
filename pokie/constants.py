@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "5", "2"]
+POKIE_VERSION = ["0", "8", "0"]
 
 
 def get_version():
@@ -28,8 +28,8 @@ DI_TTY = "tty"  # console writer
 DI_SIGNAL = "signal"  # signal manager
 DI_HTTP_ERROR_HANDLER = "http_error_handler"  # http exception manager
 
-# Error Handler configuration
-CFG_HTTP_ERROR_HANLDER = "http_error_handler"
+# Flask error Handler configuration
+CFG_HTTP_ERROR_HANDLER = "http_error_handler"
 
 # DB Configuration
 CFG_DB_NAME = "db_name"
@@ -49,15 +49,26 @@ CFG_REDIS_SSL = "redis_ssl"
 # Auth Configuration
 CFG_AUTH_SECRET = "auth_secret"
 
-# SMTP Configuration
-CFG_SMTP_HOST = "smtp_host"
-CFG_SMTP_PORT = "smtp_port"
-CFG_SMTP_USE_TLS = "smtp_use_tls"
-CFG_SMTP_USE_SSL = "smtp_use_ssl"
-CFG_SMTP_DEBUG = "smtp_debug"
-CFG_SMTP_USERNAME = "smtp_username"
-CFG_SMTP_PASSWORD = "smtp_password"
-CFG_SMTP_DEFAULT_SENDER = "smtp_default_sender"
-CFG_SMTP_TIMEOUT = "smtp_timeout"
-CFG_SMTP_SSL_KEYFILE = "smtp_ssl_keyfile"
-CFG_SMTP_SSL_CERTFILE = "smtp_ssl_certfile"
+
+# default list size for DBGrid Operations
+DEFAULT_LIST_SIZE = 100
+
+
+# unit testing constants
+POKIE_NAMESPACE = "POKIE_NAMESPACE"
+POKIE_APP = "POKIE_APP"
+POKIE_FACTORY = "POKIE_FACTORY"
+
+# Testing configuration
+CFG_TEST_DB_NAME = "test_db_name"
+CFG_TEST_DB_HOST = "test_db_host"
+CFG_TEST_DB_PORT = "test_db_port"
+CFG_TEST_DB_USER = "test_db_user"
+CFG_TEST_DB_PASSWORD = "test_db_password"
+CFG_TEST_DB_SSL = "test_db_ssl"
+
+CFG_TEST_MANAGE_DB = "test_manage_db"
+CFG_TEST_SHARE_CTX = "test_share_ctx"
+CFG_TEST_DB_REUSE = "test_db_reuse"
+CFG_TEST_SKIP_MIGRATIONS = "test_skip_migrations"
+CFG_TEST_SKIP_FIXTURES = "test_skip_fixtures"

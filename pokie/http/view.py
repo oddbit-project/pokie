@@ -8,14 +8,15 @@ from flask import current_app
 from flask_login import current_user
 from rick.form import RequestRecord
 
-from .response import JsonResponse
+from .response import JsonResponse, CamelCaseJsonResponse
 from pokie.constants import (
     HTTP_OK,
     HTTP_BADREQ,
     HTTP_INTERNAL_ERROR,
     HTTP_NOAUTH,
     HTTP_FORBIDDEN,
-    DI_SERVICES, HTTP_NOT_FOUND,
+    DI_SERVICES,
+    HTTP_NOT_FOUND,
 )
 
 
@@ -28,15 +29,27 @@ class PokieView(MethodView):
     request_class = None  # type: RequestRecord
 
     # default response class
-    response_class = JsonResponse
+    response_class = None  # default will use JsonResponse
+
+    # if true, responses are camelCased
+    camel_case = False
 
     # default error message
     msg_error_default = "request failed"
 
+    # mixin constructors, to be called at the end of __init__
+    init_methods = []
+
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.di = current_app.di
         self.logger = current_app.logger
+
+        # if no specific response class, use generic one
+        # based on camelCase options
+        if self.response_class is None:
+            self.response_class = (
+                CamelCaseJsonResponse if self.camel_case else JsonResponse
+            )
 
         # methods where automatic body deserialization is attempted
         #
@@ -50,11 +63,15 @@ class PokieView(MethodView):
         self.request = None
 
         # pre-dispatch hooks
-        # these are called before performing the actual dispatch, with the folloing interface:
+        # these are called before performing the actual dispatch, with the following interface:
         # (method:str, *args: t.Any, **kwargs: t.Any) -> Optional[ResponseReturnValue]
         # if they generate a response other than None, dispatch is aborted and that response is used
         # Note: they are not chained - eg. the first one to return something aborts dispatching
-        self.dispatch_hooks = [
+        self.dispatch_hooks = []
+
+        # pre-dispatch internal hooks
+        # these hooks are appended to the dispatch hooks to be executed lastly
+        self.internal_hooks = [
             "_hook_request",
         ]
 
@@ -63,6 +80,12 @@ class PokieView(MethodView):
             attr = getattr(self, name, None)
             if attr is not None and not callable(attr):
                 setattr(self, name, value)
+
+        # perform mixin initialization
+        for name in self.init_methods:
+            fn = getattr(self, name, None)
+            if callable(fn):
+                fn(**kwargs)
 
     def _hook_request(
         self, method: str, *args: Any, **kwargs: Any
@@ -91,7 +114,7 @@ class PokieView(MethodView):
             # form-data
             data = request.form.items()
 
-        if data is None or len(data) == 0:
+        if data is None:
             return self.error("empty body")
 
         # validate request body
@@ -124,6 +147,7 @@ class PokieView(MethodView):
         # retry with GET.
         if handler is None and method == "head":
             handler = getattr(self, "get", None)
+
         # support for named views
         if "_action_method_" in kwargs.keys():
             handler = getattr(self, kwargs["_action_method_"], None)
@@ -133,7 +157,9 @@ class PokieView(MethodView):
 
         try:
             # run pre-dispatch hooks
-            for name in self.dispatch_hooks:
+            hook_list = self.dispatch_hooks
+            hook_list.extend(self.internal_hooks)  # add system hooks
+            for name in hook_list:
                 hook = getattr(self, name, None)
                 assert hook is not None, f"non-existing dispatch hook {name!r}"
                 pre = hook(method, *args, **kwargs)
@@ -274,6 +300,11 @@ class PokieView(MethodView):
         return self.error("access denied", code=HTTP_NOAUTH)
 
     def get_service(self, service_name):
+        """
+        Service helper
+        :param service_name:
+        :return:
+        """
         return self.di.get(DI_SERVICES).get(service_name)
 
 
@@ -285,8 +316,8 @@ class PokieAuthView(PokieView):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # auth first
-        self.dispatch_hooks = ["_hook_auth"] + self.dispatch_hooks
+        # auth hook
+        self.dispatch_hooks.append("_hook_auth")
         self.user = current_user
 
     def _hook_auth(

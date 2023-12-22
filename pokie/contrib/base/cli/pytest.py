@@ -1,6 +1,5 @@
+import importlib
 import os
-
-import pytest
 import sys
 from pokie.core import CliCommand
 
@@ -10,6 +9,12 @@ class PyTestCmd(CliCommand):
     skipargs = True
 
     def run(self, args) -> bool:
+        if importlib.util.find_spec("pytest") is None:
+            self.tty.error(
+                "Pytest package not found; to use this command please install pytest"
+            )
+            return False
+
         args = []
         if len(sys.argv) > 2:
             args = sys.argv[2:]
@@ -17,4 +22,6 @@ class PyTestCmd(CliCommand):
             self.tty.colorizer.white("[Pokie]", attr="bold")
             + " Running pytest with: {}".format(str(args))
         )
-        sys.exit(pytest.main(args, plugins=["pytest_pokie"]))
+        import pytest
+
+        sys.exit(pytest.main(args, plugins=["pokie.test"]))

@@ -1,0 +1,47 @@
+
+create table tablespec_serial(
+    id_tablespec serial not null primary key,
+    field_bigint bigint,
+    field_bigserial bigserial,
+    field_bit bit,
+    field_varbit varbit(10),
+    field_box box,
+    field_bytea bytea,
+    field_char char(10),
+    field_varchar varchar(10),
+    field_cidr cidr,
+    field_circle circle,
+    field_date date,
+    field_float8 float8,
+    field_inet inet,
+    field_int4 int4,
+    field_interval interval,
+    field_json json,
+    field_jsonb jsonb,
+    field_line line,
+    field_lseg lseg,
+    field_macaddr macaddr,
+    field_macaddr8 macaddr8,
+    field_money money,
+    field_numeric numeric(10,4),
+    field_path path,
+    field_point point,
+    field_polygon polygon,
+    field_float4 float4,
+    field_int2 int2,
+    field_smallserial serial2,
+    field_text text,
+    field_time time without time zone,
+    field_timetz timetz,
+    field_timestamp timestamp,
+    field_timestamptz timestamptz,
+    field_tsquery tsquery,
+    field_tsvector tsvector,
+    field_uuid uuid,
+    field_xml xml
+);
+
+create table tablespec_rel(
+    id_tablespec_rel int generated always as identity,
+    fk_tablespec_serial int not null references tablespec_serial
+);

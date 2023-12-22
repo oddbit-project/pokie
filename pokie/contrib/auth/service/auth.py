@@ -9,7 +9,9 @@ from pokie.plugins.auth import AuthPluginInterface
 
 
 class AuthService(Injectable):
-    def authenticate(self, username: str, password: str, **kwargs) -> Optional[AuthUser]:
+    def authenticate(
+        self, username: str, password: str, **kwargs
+    ) -> Optional[AuthUser]:
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
             if plugin.valid_username(username, **kwargs):
                 result = plugin.autenticate(username, password, **kwargs)
@@ -20,7 +22,7 @@ class AuthService(Injectable):
     def update_password(self, username: str, password: str, **kwargs) -> bool:
         for plugin in self.auth_plugins:  # type: AuthPluginInterface
             if plugin.valid_username(username) and plugin.has_capability(
-                    AuthPluginInterface.UPDATE_PASSWORD
+                AuthPluginInterface.UPDATE_PASSWORD
             ):
                 return plugin.update_password(username, password, **kwargs)
         return False

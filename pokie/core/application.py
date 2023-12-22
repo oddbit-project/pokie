@@ -1,8 +1,8 @@
 import os
 import sys
+import threading
 from argparse import ArgumentParser
 from typing import List
-from collections import OrderedDict
 
 from flask import Flask
 from rick.base import Di, Container, MapLoader
@@ -18,8 +18,11 @@ from pokie.constants import (
     DI_APP,
     DI_EVENTS,
     DI_TTY,
-    DI_SIGNAL, CFG_HTTP_ERROR_HANLDER, DI_HTTP_ERROR_HANDLER,
+    DI_SIGNAL,
+    CFG_HTTP_ERROR_HANDLER,
+    DI_HTTP_ERROR_HANDLER,
 )
+from .middleware import ModuleRunnerMiddleware
 from .module import BaseModule
 from .command import CliCommand
 from pokie.util.cli_args import ArgParser
@@ -46,6 +49,15 @@ class FlaskApplication:
         self.di.add(DI_CONFIG, cfg)
         self.di.add(DI_APP, self)
         self.cfg = cfg
+        self.lock = threading.Lock()
+        self.initialized = False
+
+        self.pre_http_hooks = (
+            []
+        )  # list of hooks to run before initializing http operations
+        self.pre_cli_hooks = (
+            []
+        )  # list of hooks to run before initializing cli operations
 
     def build(self, module_list: list, factories: List = None) -> Flask:
         """
@@ -62,7 +74,8 @@ class FlaskApplication:
         if not factories:
             factories = []
 
-        self.app = Flask(type(self).__name__)
+        self.app = Flask(type(self).__name__, static_folder=None)
+
         self.app.di = self.di
         self.di.add(DI_FLASK, self.app)
 
@@ -72,13 +85,23 @@ class FlaskApplication:
         # initialize TTY
         self.di.add(DI_TTY, ConsoleWriter())
 
+        # run factories
+        for factory in factories:
+            if type(factory) is str:
+                # if factory is string, assume it is a path to a callable
+                factory = load_class(factory, raise_exception=True)
+            if not callable(factory):
+                raise RuntimeError("build(): non-callable or non-existing factory")
+            else:
+                factory(self.di)
+
         # load modules
         self.modules = {}
         module_list = [*self.system_modules, *module_list]
         for name in module_list:
             cls = load_class(
                 "{}.{}.{}".format(name, self.module_file_name, self.module_class_name),
-                True
+                raise_exception=True,
             )
             if cls is None:
                 raise RuntimeError(
@@ -111,16 +134,6 @@ class FlaskApplication:
         # register service mapper
         self.di.add(DI_SERVICES, MapLoader(self.di, svc_map))
 
-        # run factories
-        for factory in factories:
-            if type(factory) is str:
-                # if factory is string, assume it is a path to a callable
-                factory = load_class(factory, True)
-            if not callable(factory):
-                raise RuntimeError("build(): non-callable or non-existing factory")
-            else:
-                factory(self.di)
-
         # parse events from modules
         evt_mgr = EventManager()
         for _, module in self.modules.items():
@@ -134,24 +147,73 @@ class FlaskApplication:
         self.di.add(DI_EVENTS, evt_mgr)
 
         # register exception handler
-        if self.cfg.has(CFG_HTTP_ERROR_HANLDER):
-            handler = load_class(self.cfg.get(CFG_HTTP_ERROR_HANLDER), True)
+        if self.cfg.has(CFG_HTTP_ERROR_HANDLER):
+            handler = load_class(
+                self.cfg.get(CFG_HTTP_ERROR_HANDLER), raise_exception=True
+            )
             if not issubclass(handler, Injectable):
-                raise RuntimeError("build(): HTTP_ERROR_HANDLER class does not extend Injectable")
+                raise RuntimeError(
+                    "build(): HTTP_ERROR_HANDLER class does not extend Injectable"
+                )
             # initialize & register handler
             handler = handler(self.di)
             self.di.add(DI_HTTP_ERROR_HANDLER, handler)
 
-        # initialize modules
-        for _, module in self.modules.items():
-            module.build(self)
-
+        self.app.wsgi_app = ModuleRunnerMiddleware(self.app.wsgi_app, self)
         return self.app
+
+    def register_pre_http_hook(self, f):
+        """
+        Register a hook to be executed during the init() of the webserver
+
+        the hook must have the following interface:
+
+        callable(app:FlaskApplication)
+
+        :param f:
+        :return:
+        """
+        self.pre_http_hooks.append(f)
+
+    def register_pre_cli_hook(self, f):
+        """
+        Register a hook to be executed before any cli operation
+
+        the hook must have the following interface:
+
+        callable(app:FlaskApplication)
+
+        :param f:
+        :return:
+        """
+        self.pre_cli_hooks.append(f)
+
+    def init(self):
+        with self.lock:
+            if not self.initialized:
+                # initialize modules
+                for _, module in self.modules.items():
+                    module.build(self)
+                self.initialized = True
+
+                # call pre-http hooks
+                for fn in self.pre_http_hooks:
+                    fn(self)
+
+            def stub(**kwargs):
+                pass
+
+            # instead of flag, we empty the method
+            setattr(self, "init", stub)
 
     def http(self, **kwargs):
         self.app.run(**kwargs)
 
     def cli_runner(self, command: str, args: list = None, **kwargs) -> int:
+        # run pre-cli hooks
+        for fn in self.pre_cli_hooks:
+            fn(self)
+
         # either console or inline commands
         if args is None:
             args = []
@@ -167,17 +229,21 @@ class FlaskApplication:
         # lookup handler
         for _, module in self.modules.items():
             if command in module.cmd.keys():
-                handler = load_class(module.cmd[command])
+                # load_class may raise ModuleNotFoundError if path not found
+                handler = load_class(module.cmd[command], raise_exception=True)
+
                 if not handler:
                     raise RuntimeError(
                         "cli(): handler class '{}' not found".format(
                             module.cmd[command]
                         )
                     )
+
                 if not issubclass(handler, CliCommand):
                     raise RuntimeError(
                         "cli(): command handler does not extend CliCommand"
                     )
+
                 handler = handler(self.di, writer=tty)  # type: CliCommand
                 if not handler.skipargs:  # skipargs controls usage of argparser
                     handler.arguments(parser)

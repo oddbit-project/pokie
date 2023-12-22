@@ -1,4 +1,4 @@
-`# Pokie Tutorial
+# Pokie Tutorial
 
 ## Foreword
 
@@ -21,7 +21,7 @@ approaches. This is a calculated tradeoff by design, and not just a mere consequ
 ## Initializing the application
 
 To fully bootstrap the application, three components are required: the configuration container
-(a *ShallowContainer* instance), the module list to be instantiated, and the factory list to be initialized.
+(a *ShallowContainer* instance, [see below](#configuration)), the module list to be instantiated, and the factory list to be initialized.
 
 It is recommended the bootstrap itself is built inside a factory function with the name *build_pokie()*; by encapsulating 
 all the initialization within a single identified function, we can provide a clean application context to run unit 
@@ -35,8 +35,8 @@ The typical sequence of operations (both explicit and implicit) of a Pokie appli
 * build a service map and initialize the Service Manager;
 * run factories defined in the factory list;
 * parse event definitions from modules and build the Event Manager;
-* initialize modules (by calling *build()* on each Module object);
 * run appropriate CLI wrapper, or pass app variable to a WSGI server;
+* initialize modules (by calling *build()* on each Module object); 
 
 ### Configuration
 
@@ -53,7 +53,7 @@ In addition, if the default value is an object of type *StrOrFile*, it will cons
 path to a file containing the actual value. Any *StrOrFile* attribute with a computed value (either default or injected
 via environment variables) that starts with */* or *./* will be treated as a file to be read to determine the final value. 
 
-**Note:** The return *ShallowContainer* object from *build()* will have **all keys in lowercase**, including the ones defined 
+>**Note:** The return *ShallowContainer* object from *Config.build()* will have **all keys in lowercase**, including the ones defined 
 originally as uppercase. This allows the configuration class to have internal static configuration attributes that are
 not injectable from environment variables.
 
@@ -139,6 +139,7 @@ from rick.resource.config import EnvironmentConfig
 from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
+from pokie.core.factories.login import FlaskLogin
 
 
 # base configuration

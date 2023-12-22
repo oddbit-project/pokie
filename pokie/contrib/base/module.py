@@ -13,6 +13,8 @@ class Module(BaseModule):
         "help": "pokie.contrib.base.cli.HelpCmd",
         "version": "pokie.contrib.base.cli.VersionCmd",
         "runserver": "pokie.contrib.base.cli.RunServerCmd",
+        "module:list": "pokie.contrib.base.cli.ModuleListCmd",
+        "route:list": "pokie.contrib.base.cli.RouteListCmd",
         # database-related commands
         "db:init": "pokie.contrib.base.cli.DbInitCmd",
         "db:check": "pokie.contrib.base.cli.DbCheckCmd",

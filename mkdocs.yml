@@ -1,12 +1,34 @@
 site_name: Pokie
-site_description: Flask boilerplate
+site_description: REST Web Framework based on Flask
 strict: true
-site_url: https://git.oddbit.org/OddBit/pokie/
+site_url: https://github.com/oddbit-project/pokie
 repo_name: OddBit/pokie
-repo_url: https://git.oddbit.org/OddBit/pokie
+repo_url: https://github.com/oddbit-project/pokie
 
 theme:
   name: material
+  palette:
+  - scheme: slate
+    primary: deep purple
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to light mode
+  - scheme: default
+    primary: deep purple
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to light mode
+  features:
+  - search.suggest
+  - search.highlight
+  - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github-alt
+  logo: img/pokie_logo_small.png
+  favicon: img/pokie_logo_small.png
+  language: en
 
 nav:
 - Overview: index.md
@@ -14,16 +36,53 @@ nav:
     - Architecture: tutorial/architecture.md
     - Scaffolding: tutorial/scaffolding.md
     - Tutorial: tutorial/tutorial.md
+
 - Views:
-    - Pokie Views: views/index.md
-    - REST Views: views/rest.md
-    - Controllers: views/controllers.md
-plugins:
-- search
+    - Pokie Views: http/views.md
+    - REST Views: http/rest.md
+    - Error Handlers: http/error_handler.md
+    - Extending Views: http/extending_views.md
+
+- REST Operations:
+    - REST Views: http/rest.md
+    - REST Services: rest/services.md
+    - Auto REST: rest/auto.md
+
+- Fixtures:
+     - Adding fixtures: fixtures.md
+
+- Classes:
+    - DbGridRequest: http/dbgridrequest.md
+    - JSONResponse: http/json_response.md
+
+- Cli Operations:
+    - Available Commands: cli/commands.md
+
+- Code Generation:
+    - Code Generation: codegen/codegen.md
+
+- Writing Tests:
+    - Using pytest: test/pytest.md
+
 
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
+- toc:
+    permalink: true
+- markdown.extensions.codehilite:
+    guess_lang: false
+- admonition
+- codehilite
+- extra
+- pymdownx.superfences:
+    custom_fences:
+    - name: mermaid
+      class: mermaid
+      format: !!python/name:pymdownx.superfences.fence_code_format ''
+- pymdownx.tabbed:
+    alternate_style: true
+- mdx_include
+
+extra:
+  social:
+  - icon: fontawesome/brands/github-alt
+    link: https://github.com/oddbit/pokie

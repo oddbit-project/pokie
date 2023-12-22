@@ -3,6 +3,7 @@ from pokie.config.template import BaseConfigTemplate, PgConfigTemplate, TestConf
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 
+
 class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate):
     TEST_MANAGE_DB = True
     TEST_DB_SSL = False
@@ -13,7 +14,9 @@ def build_pokie():
     cfg = Config().build()
 
     # modules to load & initialize
-    modules = []
+    modules = [
+        'pokie_test',  # default test module
+    ]
 
     # factories to run
     factories = [PgSqlFactory, ]
@@ -21,6 +24,7 @@ def build_pokie():
     # build app
     pokie_app = FlaskApplication(cfg)
     flask_app = pokie_app.build(modules, factories)
+
     return pokie_app, flask_app
 
 

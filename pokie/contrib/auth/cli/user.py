@@ -290,7 +290,7 @@ class UserListCmd(UserCommand):
 
         sort_field = None
         limit = 100
-        if not args.id:
+        if not args.territory_id:
             sort_field = UserRecord.username
         if args.count != 0:
             limit = args.count
