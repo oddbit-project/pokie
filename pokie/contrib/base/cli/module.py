@@ -26,7 +26,7 @@ class ModuleListCmd(CliCommand):
                 [
                     module_name,
                     inspect.getfile(module.__class__),
-                    module.territory_description,
+                    module.description,
                 ]
             )
 
