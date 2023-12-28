@@ -12,6 +12,9 @@ from pokie.contrib.base.module import Module
 class Config(
     EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate
 ):
+    # ENV var with optional plugins
+    POKIE_PLUGINS = []
+
     TEST_MANAGE_DB = True
     TEST_DB_SSL = False
 
@@ -36,9 +39,10 @@ def main(args=None):
     setattr(Module, "cmd", cli_list)
 
     # build cli app
-    pokie_app = FlaskApplication(Config().build())
+    cfg = Config().build()
+    pokie_app = FlaskApplication(cfg)
     pokie_app.build(
-        [],
+        cfg.get("pokie_plugins"),
         [
             PgSqlFactory,
         ],

@@ -29,7 +29,7 @@ class PgConfigTemplate:
     DB_PORT = 5432
     DB_USER = StrOrFile("postgres")
     DB_PASSWORD = StrOrFile("")
-    DB_SSL = "True"
+    DB_SSL = True
 
 
 class RedisConfigTemplate:

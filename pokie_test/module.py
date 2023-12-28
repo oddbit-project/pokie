@@ -90,7 +90,7 @@ class Module(BaseModule):
     # The job list is a list of strings with the full path for each job class, similar to other existing referencing structures
     #
     jobs = [
-        # 'full.path.to.job.class'
+        "pokie_test.job.SampleJob",
     ]
 
     fixtures = [
