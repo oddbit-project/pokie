@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "8", "0"]
+POKIE_VERSION = ["0", "8", "1"]
 
 
 def get_version():
@@ -23,6 +23,7 @@ DI_MODULES = "modules"  # module list
 DI_SERVICES = "svc_manager"  # service manager
 DI_DB = "db"  # database client
 DI_REDIS = "redis"  # redis client
+DI_CACHE = "cache"  # generic cache client
 DI_EVENTS = "event_manager"  # event manager
 DI_TTY = "tty"  # console writer
 DI_SIGNAL = "signal"  # signal manager

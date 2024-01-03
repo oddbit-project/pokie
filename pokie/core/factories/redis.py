@@ -1,5 +1,5 @@
 from rick.base import Di
-from rick.resource.redis import RedisCache
+import redis
 
 from pokie.constants import (
     CFG_REDIS_HOST,
@@ -30,4 +30,4 @@ def RedisFactory(_di: Di):
             "db": int(cfg.get(CFG_REDIS_DB, 0)),
             "ssl": True if cfg.get(CFG_REDIS_SSL, None) else False,
         }
-        return RedisCache(**redis_cfg)
+        return redis.Redis(**redis_cfg)

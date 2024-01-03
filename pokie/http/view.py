@@ -292,13 +292,6 @@ class PokieView(MethodView):
         """
         return self.error("access denied", code=HTTP_FORBIDDEN)
 
-    def denied(self):
-        """
-        Error: access denied
-        :return: Request
-        """
-        return self.error("access denied", code=HTTP_NOAUTH)
-
     def get_service(self, service_name):
         """
         Service helper

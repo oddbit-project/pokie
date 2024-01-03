@@ -1,5 +1,7 @@
 import subprocess
 
+from pokie.constants import DI_APP
+
 
 class TestCli:
     """
@@ -34,8 +36,13 @@ class TestCli:
         self.run_cmd(["db:check"], self.get_config(pokie_config), 0)
         self.run_cmd(["db:update"], self.get_config(pokie_config), 0)
 
-    def test_job(self, pokie_config):
+    def test_job(self, pokie_config, pokie_di):
         self.run_cmd(["job:list"], self.get_config(pokie_config), 0)
+        app = pokie_di.get(DI_APP)
+        app.job_runner(single_run=True)
+        # detect changes performed by SampleJob
+        assert pokie_di.has("SAMPLE_JOB_KEY")
+        assert pokie_di.get("SAMPLE_JOB_KEY") > 0
 
     def get_config(self, cfg) -> dict:
         result = {

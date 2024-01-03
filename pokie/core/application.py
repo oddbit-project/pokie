@@ -7,7 +7,7 @@ from typing import List
 from flask import Flask
 from rick.base import Di, Container, MapLoader
 from rick.event import EventManager
-from rick.mixin import Injectable
+from rick.mixin import Injectable, Runnable
 from rick.util.loader import load_class
 from rick.resource.console import ConsoleWriter
 
@@ -22,11 +22,12 @@ from pokie.constants import (
     CFG_HTTP_ERROR_HANDLER,
     DI_HTTP_ERROR_HANDLER,
 )
+import signal
+from .signal_manager import SignalManager
 from .middleware import ModuleRunnerMiddleware
 from .module import BaseModule
 from .command import CliCommand
 from pokie.util.cli_args import ArgParser
-from .signal import SignalManager
 
 
 class FlaskApplication:
@@ -50,6 +51,7 @@ class FlaskApplication:
         self.di.add(DI_APP, self)
         self.cfg = cfg
         self.lock = threading.Lock()
+        self.tty = ConsoleWriter()
         self.initialized = False
 
         self.pre_http_hooks = (
@@ -83,7 +85,7 @@ class FlaskApplication:
         self.di.add(DI_SIGNAL, SignalManager(self.di))
 
         # initialize TTY
-        self.di.add(DI_TTY, ConsoleWriter())
+        self.di.add(DI_TTY, self.tty)
 
         # run factories
         for factory in factories:
@@ -287,3 +289,62 @@ class FlaskApplication:
 
         # exit code directly maps return codes
         exit(self.cli_runner(command, sys.argv[2:], **kwargs))
+
+    def get_jobs(self) -> dict:
+        result = {}
+        for module_name, module in self.modules.items():
+            jobs = getattr(module, "jobs", [])
+            if len(jobs) > 0:
+                result[module_name] = jobs
+        return result
+
+    def job_runner(self, single_run=False, silent=False):
+        # prepare job list
+        job_list = []
+        for module_name, jobs in self.get_jobs().items():
+            for job_name in jobs:
+                if not silent:
+                    self.tty.write("Preparing job  '{}'...".format(job_name))
+                job = load_class(job_name)
+                if job is None:
+                    if not silent:
+                        raise ValueError(
+                            "Non-existing job class '{}' in module {}".format(
+                                job_name, module_name
+                            )
+                        )
+                    else:
+                        return False
+                if not issubclass(job, (Injectable, Runnable)):
+                    if not silent:
+                        raise RuntimeError(
+                            "Class '{}' must implement Injectable, Runnable interfaces"
+                        )
+                    else:
+                        return False
+                job_list.append(job(self.di))
+
+        # run job list
+        job_list.reverse()
+
+        if single_run:
+            # single run, runs all jobs once
+            for job in job_list:
+                job.run(self.di)
+        else:
+            # continuous run, run jobs in loop
+            # abort method
+            def abort_jobs(di, signal_no, stack_trace):
+                if not silent:
+                    di.get(DI_TTY).write("\nCtrl+C pressed, exiting...")
+                exit(0)
+
+            if not silent:
+                self.tty.write("\nRunning jobs, press CTRL+C to abort...")
+
+            # register clean shutdown
+            self.di.get(DI_SIGNAL).add_handler(signal.SIGINT, abort_jobs)
+
+            while True:
+                for job in job_list:
+                    job.run(self.di)
