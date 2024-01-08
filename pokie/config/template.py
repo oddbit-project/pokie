@@ -7,12 +7,14 @@ class BaseConfigTemplate:
     # default HTTP Exception Handler - 404 and 500 exceptions
     HTTP_ERROR_HANDLER = "pokie.http.HttpErrorHandler"
 
-    # list of enabled module names
-    MODULES = []
     # if true, all endpoints are authenticated by default
     USE_AUTH = True
-    # Autentication plugins to use
-    AUTH_PLUGINS = ["pokie.contrib.auth.plugin.DbAuthPlugin"]
+
+    # Authentication provider
+    AUTH_PROVIDER = "JWTProvider"
+
+    # If true, ACL are loaded for users
+    AUTH_ACL = True
 
     # Secret key for flask-login hashing
     AUTH_SECRET = uuid.uuid4().hex

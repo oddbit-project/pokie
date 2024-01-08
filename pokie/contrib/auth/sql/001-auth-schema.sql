@@ -20,7 +20,7 @@ CREATE TABLE acl_role(
 
 CREATE TABLE acl_resource(
     id_acl_resource VARCHAR NOT NULL UNIQUE PRIMARY KEY,
-    description VARCHAR(200) NOT NULL UNIQUE
+    description VARCHAR(200) NOT NULL
 );
 
 CREATE TABLE acl_role_resource(

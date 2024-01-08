@@ -73,3 +73,7 @@ CFG_TEST_SHARE_CTX = "test_share_ctx"
 CFG_TEST_DB_REUSE = "test_db_reuse"
 CFG_TEST_SKIP_MIGRATIONS = "test_skip_migrations"
 CFG_TEST_SKIP_FIXTURES = "test_skip_fixtures"
+
+# Default TTLs
+TTL_1H = 3600
+TTL_1D = 86400
