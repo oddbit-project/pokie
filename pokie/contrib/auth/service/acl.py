@@ -19,11 +19,11 @@ class AclService(Injectable):
         super().__init__(di)
         self._ttl = 86400
 
-    def get_user_roles(self, id_user: int) -> dict[int, AclRoleRecord]:
+    def get_user_roles(self, id_user: int) -> dict:
         """
         Retrieve roles associated with the user
         :param id_user:
-        :return: dict[int, AclRole]
+        :return: dict[int, AclRoleRecord]
         """
         key = self.KEY_USER_ROLES.format(id_user)
         id_roles = self.cache.get(key)
@@ -44,7 +44,7 @@ class AclService(Injectable):
 
         return result
 
-    def get_user_resources(self, id_user: int) -> dict[int, AclResourceRecord]:
+    def get_user_resources(self, id_user: int) -> dict:
         """
         Retrieve resources associated with the user
         :param id_user:
