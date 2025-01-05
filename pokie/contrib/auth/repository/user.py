@@ -11,12 +11,14 @@ class UserRepository(Repository):
         super().__init__(db, UserRecord)
 
     def find_by_username(self, username: str) -> Union[UserRecord, None]:
-        key = "__user__:find_by_username"
-        sql = self._cache_get(key)
+        key = "find_by_username"
+        sql = self.query_cache.get(key)
+
         if not sql:
             sql, _ = self.select().where(UserRecord.username, "=", username).assemble()
-            self._cache_set(key, sql)
-        with self._db.cursor() as c:
+            self.query_cache.set(key, sql)
+
+        with self.cursor() as c:
             return c.fetchone(sql, [username], cls=UserRecord)
 
     def list_users(

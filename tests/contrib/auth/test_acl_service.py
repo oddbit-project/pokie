@@ -1,5 +1,5 @@
 import pytest
-from psycopg2 import IntegrityError
+from psycopg2.errors import UniqueViolation, ForeignKeyViolation
 
 from pokie.cache.memory import MemoryCache
 from pokie.constants import DI_CACHE
@@ -24,7 +24,7 @@ class TestAclService:
         assert role2 is not None
 
         # test unique constraint
-        with pytest.raises(IntegrityError):
+        with pytest.raises(UniqueViolation):
             svc_role.add_role("role 2")
 
         # add resource to role
@@ -32,7 +32,7 @@ class TestAclService:
         svc_role.resource_repository.insert_pk(resource)
 
         # test unique constraint
-        with pytest.raises(IntegrityError):
+        with pytest.raises(UniqueViolation):
             svc_role.resource_repository.insert_pk(resource)
 
         # add resource to role
@@ -68,7 +68,7 @@ class TestAclService:
         resources = svc_role.list_role_resources(role2.id)
         assert len(resources) == 0
 
-        with pytest.raises(IntegrityError):
+        with pytest.raises(ForeignKeyViolation):
             svc_role.remove_role(role1.id)
 
         # remove user from role the hard way

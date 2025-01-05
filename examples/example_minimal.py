@@ -1,11 +1,11 @@
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 
 
 # config parameters, injectable from ENV vars
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     pass
 
 

@@ -1,12 +1,10 @@
-import inspect
-import os
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional, List
 
-from rick_db.conn import Connection
+from rick_db.backend.pg import PgConnectionPool, PgInfo
 from rick_db.sql.dialect import PgSqlDialect
-from rick_db.util.pg import PgInfo
+
 
 from pokie.codegen.pg import PgTableSpec
 from pokie.codegen import RecordGenerator, RequestGenerator
@@ -15,7 +13,7 @@ from pokie.core import CliCommand
 
 
 class DbCodeGenCommand(CliCommand):
-    def get_db(self) -> Optional[Connection]:
+    def get_db(self) -> Optional[PgConnectionPool]:
         result = None
         di = self.get_di()
         if di.has(DI_DB):
@@ -23,7 +21,7 @@ class DbCodeGenCommand(CliCommand):
         return result
 
     def is_supported(self, db) -> bool:
-        if isinstance(db, Connection):
+        if isinstance(db, PgConnectionPool):
             return isinstance(db.dialect(), PgSqlDialect)
         return False
 

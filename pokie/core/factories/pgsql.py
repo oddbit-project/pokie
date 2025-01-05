@@ -1,6 +1,7 @@
 from rick.base import Di
-from rick_db.conn.pg import PgConnection
+from rick_db.backend.pg import PgConnectionPool
 
+from pokie.config import PokieConfig
 from pokie.constants import (
     CFG_DB_NAME,
     CFG_DB_HOST,
@@ -10,6 +11,7 @@ from pokie.constants import (
     CFG_DB_SSL,
     DI_DB,
     DI_CONFIG,
+    CFG_DB_MINPROCS,
 )
 
 
@@ -29,5 +31,7 @@ def PgSqlFactory(_di: Di):
             "user": cfg.get(CFG_DB_USER, "postgres"),
             "password": cfg.get(CFG_DB_PASSWORD, ""),
             "sslmode": None if not cfg.get(CFG_DB_SSL, "1") else "require",
+            "minconn": cfg.get(CFG_DB_MINPROCS, PokieConfig.DB_MINPROCS),
+            "maxconn": cfg.get(CFG_DB_MINPROCS, PokieConfig.DB_MAXPROCS),
         }
-        return PgConnection(**db_cfg)
+        return PgConnectionPool(**db_cfg)

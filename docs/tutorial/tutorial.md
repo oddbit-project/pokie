@@ -61,12 +61,14 @@ Minimal Pokie environment-based configuration example:
 
 ```python
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate
+from pokie.config.template import PokieConfig
+
 
 # minimal Pokie environment-based configuration
 # Pokie's defaults come from BaseConfigTemplate
-class Config(EnvironmentConfig, BaseConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     pass
+
 
 # load configuration and return a ShallowContainer
 cfg = Config().build()
@@ -133,38 +135,41 @@ if __name__ == '__main__':
 ```
 
 A minimal  but complete main.py example:
+
 ```python
 from rick.resource.config import EnvironmentConfig
 
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
+from pokie.config.template import PokieConfig, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.core.factories.login import FlaskLogin
 
 
 # base configuration
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
     pass
+
 
 def build_pokie():
     # load configuration from ENV
     cfg = Config().build()
-    
+
     # modules to load & initialize:
     # the internal auth module, and a custom-defined local module called 'my_module'
     modules = ['pokie.contrib.auth', 'my_module']
-    
+
     # factories to run
     # the postgresql initializer, and the flask-login initializer
     factories = [PgSqlFactory, FlaskLogin, ]
-    
+
     # build Pokie application
     pokie_app = FlaskApplication(cfg)
     # bootstrap Pokie application
     # the returned object is a Flask application
     flask_app = main.build(modules, factories)
     return pokie_app, flask_app
-    
+
+
 # main is reused for the cli wrapper
 # app is often reused as the WSGI Flask object 
 main, app = build_pokie()

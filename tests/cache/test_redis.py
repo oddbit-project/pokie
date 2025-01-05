@@ -7,6 +7,7 @@ from pokie.cache import MemoryCache, RedisCache
 def redis_cache(pokie_di):
     return RedisCache(pokie_di)
 
+
 class TestRedisCache:
 
     def test_mutability(self, redis_cache):

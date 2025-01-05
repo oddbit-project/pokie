@@ -5,19 +5,24 @@ from rick.mixin.injectable import Injectable
 from rick.resource import CacheInterface
 
 from pokie.cache import DummyCache
+from pokie.contrib.auth.constants import CFG_AUTH_USE_CACHE
 from pokie.contrib.auth.dto import AclRoleRecord, AclResourceRecord
 from pokie.contrib.auth.repository.acl import AclRoleRepository, AclResourceRepository
-from pokie.constants import DI_DB, DI_CACHE
+from pokie.constants import DI_DB, DI_CACHE, DI_CONFIG, TTL_1D
 
 
 class AclService(Injectable):
     KEY_ROLE = "acl:role:{}"
     KEY_ROLE_RESOURCE = "acl:role:{}:resources"
     KEY_USER_ROLES = "user:{}:roles"
+    TTL = TTL_1D
 
     def __init__(self, di: Di):
         super().__init__(di)
-        self._ttl = 86400
+        self.cache = DummyCache(di)
+        if di.get(DI_CONFIG).get(CFG_AUTH_USE_CACHE, False):
+            if di.has(DI_CACHE):
+                self.cache = di.get(DI_CACHE)
 
     def get_user_roles(self, id_user: int) -> dict:
         """
@@ -40,7 +45,7 @@ class AclService(Injectable):
 
         if len(user_roles) > 0:
             # only cache if it has data
-            self.cache.set(key, user_roles, self._ttl)
+            self.cache.set(key, user_roles, self.TTL)
 
         return result
 
@@ -67,7 +72,7 @@ class AclService(Injectable):
 
         if len(user_roles) > 0:
             # only cache if it has data
-            self.cache.set(key, user_roles, self._ttl)
+            self.cache.set(key, user_roles, self.TTL)
         return resources
 
     def list_role_resources(self, id_role: int) -> List[AclResourceRecord]:
@@ -84,7 +89,7 @@ class AclService(Injectable):
         resource_list = self.resource_repository.find_by_role(id_role)
         if len(resource_list) > 0:
             # only cache if it has data
-            self.cache.set(key, resource_list, self._ttl)
+            self.cache.set(key, resource_list, self.TTL)
         return resource_list
 
     def list_roles(self) -> List[AclRoleRecord]:
@@ -114,7 +119,7 @@ class AclService(Injectable):
 
         record = self.role_repository.fetch_pk(id_role)
         if record:
-            self.cache.set(key, record, self._ttl)
+            self.cache.set(key, record, self.TTL)
         return record
 
     def get_resource(self, id_resource: str) -> Optional[AclResourceRecord]:
@@ -136,7 +141,7 @@ class AclService(Injectable):
         record.id = self.role_repository.insert_pk(record)
         if record.id:
             key = self.KEY_ROLE.format(record.id)
-            self.cache.set(key, record, self._ttl)
+            self.cache.set(key, record, self.TTL)
         return record.id
 
     def add_role_resource(self, id_role: int, id_resource: int):
@@ -234,10 +239,3 @@ class AclService(Injectable):
     @property
     def resource_repository(self):
         return AclResourceRepository(self.get_di().get(DI_DB))
-
-    @property
-    def cache(self) -> CacheInterface:
-        di = self.get_di()
-        if di.has(DI_CACHE):
-            return di.get(DI_CACHE)
-        return DummyCache(di)

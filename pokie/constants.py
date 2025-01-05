@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "8", "1"]
+POKIE_VERSION = ["0", "9", "0"]
 
 
 def get_version():
@@ -39,6 +39,8 @@ CFG_DB_PORT = "db_port"
 CFG_DB_USER = "db_user"
 CFG_DB_PASSWORD = "db_password"
 CFG_DB_SSL = "db_ssl"
+CFG_DB_MINPROCS = "db_minprocs"
+CFG_DB_MAXPROCS = "db_maxprocs"
 
 # Redis Configuration
 CFG_REDIS_HOST = "redis_host"

@@ -1,9 +1,8 @@
 import uuid
-
 from rick.resource.config import StrOrFile
 
 
-class BaseConfigTemplate:
+class PokieConfig:
     # default HTTP Exception Handler - 404 and 500 exceptions
     HTTP_ERROR_HANDLER = "pokie.http.HttpErrorHandler"
 
@@ -19,12 +18,13 @@ class BaseConfigTemplate:
     # Secret key for flask-login hashing
     AUTH_SECRET = uuid.uuid4().hex
 
+    # Enables cache on User and Acl Services
+    AUTH_USE_CACHE = True
+
     # cache table-related metadata (such as primary key info)
     # development should be false
     DB_CACHE_METADATA = False
 
-
-class PgConfigTemplate:
     # Postgresql Configuration
     DB_NAME = "pokie"
     DB_HOST = "localhost"
@@ -32,9 +32,9 @@ class PgConfigTemplate:
     DB_USER = StrOrFile("postgres")
     DB_PASSWORD = StrOrFile("")
     DB_SSL = True
+    DB_MINPROCS = 5
+    DB_MAXPROCS = 15
 
-
-class RedisConfigTemplate:
     # Redis Configuration
     REDIS_HOST = "localhost"
     REDIS_PORT = 6379
@@ -42,8 +42,7 @@ class RedisConfigTemplate:
     REDIS_DB = 0
     REDIS_SSL = "1"
 
-
-class TestConfigTemplate:
+    # Pytest Configuration
     TEST_DB_NAME = "pokie_test"  # test database parameters
     TEST_DB_HOST = "localhost"
     TEST_DB_PORT = 5432

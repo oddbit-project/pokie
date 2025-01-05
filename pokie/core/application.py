@@ -318,7 +318,9 @@ class FlaskApplication:
                 if not issubclass(job, (Injectable, Runnable)):
                     if not silent:
                         raise RuntimeError(
-                            "Class '{}' must implement Injectable, Runnable interfaces"
+                            "Class '{}' must implement Injectable, Runnable interfaces".format(
+                                job_name
+                            )
                         )
                     else:
                         return False

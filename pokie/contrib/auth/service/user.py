@@ -1,15 +1,17 @@
 import secrets
 from datetime import datetime, timezone
 from typing import Optional, List
+
+from rick.base import Di
 from rick.crypto.hasher import HasherInterface
 from rick.crypto.hasher.bcrypt import BcryptHasher
 from rick.mixin import Injectable
-from rick.resource import CacheInterface
 
 from pokie.cache import DummyCache
+from pokie.contrib.auth.constants import CFG_AUTH_USE_CACHE
 from pokie.contrib.auth.repository import UserTokenRepository
 from pokie.contrib.auth.repository.user import UserRepository
-from pokie.constants import DI_DB, DI_CACHE, TTL_1D
+from pokie.constants import DI_DB, DI_CACHE, TTL_1D, DI_CONFIG
 from rick.util.datetime import iso8601_now
 from pokie.contrib.auth.dto import UserRecord, UserTokenRecord
 
@@ -20,7 +22,14 @@ class UserService(Injectable):
     KEY_TOKEN = "user:token:{}"
     TTL = TTL_1D
 
-    def autenticate(self, username: str, password: str) -> Optional[UserRecord]:
+    def __init__(self, di: Di):
+        super().__init__(di)
+        self.cache = DummyCache(di)
+        if di.get(DI_CONFIG).get(CFG_AUTH_USE_CACHE, False):
+            if di.has(DI_CACHE):
+                self.cache = di.get(DI_CACHE)
+
+    def authenticate(self, username: str, password: str) -> Optional[UserRecord]:
         """
         Attempts to authenticate a user
 
@@ -271,10 +280,3 @@ class UserService(Injectable):
     @property
     def hasher(self) -> HasherInterface:
         return BcryptHasher()
-
-    @property
-    def cache(self) -> CacheInterface:
-        di = self.get_di()
-        if di.has(DI_CACHE):
-            return di.get(DI_CACHE)
-        return DummyCache(di)

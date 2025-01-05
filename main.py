@@ -1,14 +1,13 @@
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate, RedisConfigTemplate
-from pokie.constants import DI_REDIS
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.core.factories.redis import RedisFactory
 
 
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate, RedisConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     REDIS_SSL = "0"
-    REDIS_PORT = 63790
+    REDIS_PORT = 6379
     REDIS_PASSWORD = "myRedisPassword"
     TEST_MANAGE_DB = True
     TEST_DB_SSL = False
@@ -37,8 +36,6 @@ def build_pokie():
 main, app = build_pokie()
 
 # =============================================================================
-r = main.di.get(DI_REDIS)
-r.set("abc", "def")
 
 if __name__ == '__main__':
     main.cli()

@@ -1,14 +1,13 @@
 from typing import Optional
 
-from rick_db.conn import Connection
-from rick_db.util.pg.records import ColumnRecord
-from rick_db.util.pg import PgInfo
+from rick_db.backend.pg import PgConnection, ColumnRecord
+from rick_db.backend.pg.pginfo import PgInfo
 
 from pokie.codegen.spec import TableSpec, FieldSpec
 
 
 class PgTableSpec:
-    def __init__(self, conn: Connection):
+    def __init__(self, conn: PgConnection):
         self.db = conn
         self.mgr = PgInfo(conn)
         self._tables = {}

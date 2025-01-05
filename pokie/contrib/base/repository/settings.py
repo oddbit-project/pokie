@@ -14,15 +14,16 @@ class SettingsRepository(Repository):
         :param module: module name
         :return:
         """
-        qry = self._cache_get("fetch_by_module")
+        qry = self.query_cache.get("fetch_by_module")
         if qry is None:
             qry, values = (
                 self.select().where(SettingsRecord.module, "=", module).assemble()
             )
-            self._cache_set("fetch_by_module", qry)
+            self.query_cache.set("fetch_by_module", qry)
         else:
             values = [module]
-        with self._db.cursor() as c:
+
+        with self.cursor() as c:
             return c.fetchall(qry, values, self._record)
 
     def fetch_by_key(self, module: str, key: str) -> Optional[SettingsRecord]:
@@ -32,7 +33,7 @@ class SettingsRepository(Repository):
         :param key: key name
         :return:
         """
-        qry = self._cache_get("fetch_by_key")
+        qry = self.query_cache.get("fetch_by_key")
         if qry is None:
             qry, values = (
                 self.select()
@@ -40,10 +41,11 @@ class SettingsRepository(Repository):
                 .where(SettingsRecord.key, "=", key)
                 .assemble()
             )
-            self._cache_set("fetch_by_key", qry)
+            self.query_cache.set("fetch_by_key", qry)
         else:
             values = [module, key]
-        with self._db.cursor() as c:
+
+        with self.cursor() as c:
             return c.fetchone(qry, values, self._record)
 
     def upsert(self, module: str, key: str, value: str):

@@ -18,8 +18,8 @@ class AclRoleRepository(Repository):
         super().__init__(db, AclRoleRecord)
 
     def find_user_roles(self, id_user: int) -> List[AclRoleRecord]:
-        key = "__acl__:find_user_roles"
-        sql = self._cache_get(key)
+        key = "find_user_roles"
+        sql = self.query_cache.get(key)
         if not sql:
             sql, _ = (
                 self.select()
@@ -33,8 +33,9 @@ class AclRoleRepository(Repository):
                 .order(AclRoleRecord.id)
                 .assemble()
             )
-            self._cache_set(key, sql)
-        with self._db.cursor() as c:
+            self.query_cache.set(key, sql)
+
+        with self.cursor() as c:
             return c.fetchall(sql, [id_user], cls=AclRoleRecord)
 
     def can_remove(self, id_role: int) -> bool:
@@ -45,34 +46,34 @@ class AclRoleRepository(Repository):
         """
         # check if role references resources
         sql, values = (
-            Select(self._dialect)
+            Select(self.dialect)
             .from_(
                 AclRoleResourceRecord,
                 cols={Literal("COUNT(*)"): "total"},
-                schema=self._schema,
+                schema=self.schema,
             )
             .where(AclRoleResourceRecord.id_role, "=", id_role)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchone(sql, values)
             if result["total"] != 0:
                 return False
 
         # check if role is referenced by users
         sql, values = (
-            Select(self._dialect)
+            Select(self.dialect)
             .from_(
                 AclUserRoleRecord,
                 cols={Literal("COUNT(*)"): "total"},
-                schema=self._schema,
+                schema=self.schema,
             )
             .where(AclUserRoleRecord.id_role, "=", id_role)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchone(sql, values)
             if result["total"] != 0:
                 return False
@@ -82,7 +83,7 @@ class AclRoleRepository(Repository):
     def truncate_resources(self, id_role: int):
         # delete role resources
         sql, values = (
-            Delete(self._dialect)
+            Delete(self.dialect)
             .from_(AclRoleResourceRecord)
             .where(AclRoleResourceRecord.id_role, "=", id_role)
             .assemble()
@@ -92,7 +93,7 @@ class AclRoleRepository(Repository):
     def truncate_users(self, id_role: int):
         # delete user associations
         sql, values = (
-            Delete(self._dialect)
+            Delete(self.dialect)
             .from_(AclUserRoleRecord)
             .where(AclUserRoleRecord.id_role, "=", id_role)
             .assemble()
@@ -108,20 +109,20 @@ class AclRoleRepository(Repository):
         """
         # check if resource is already in role
         sql, values = (
-            Select(self._dialect)
-            .from_(AclRoleResourceRecord, schema=self._schema)
+            Select(self.dialect)
+            .from_(AclRoleResourceRecord, schema=self.schema)
             .where(AclRoleResourceRecord.id_role, "=", id_role)
             .where(AclRoleResourceRecord.id_resource, "=", id_resource)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchall(sql, values)
             if len(result) > 0:
                 return
 
         sql, values = (
-            Insert(self._dialect)
+            Insert(self.dialect)
             .into(AclRoleResourceRecord(id_role=id_role, id_resource=id_resource))
             .assemble()
         )
@@ -136,21 +137,21 @@ class AclRoleRepository(Repository):
         """
         # check if resource is already in role
         sql, values = (
-            Select(self._dialect)
-            .from_(AclRoleResourceRecord, schema=self._schema)
+            Select(self.dialect)
+            .from_(AclRoleResourceRecord, schema=self.schema)
             .where(AclRoleResourceRecord.id_role, "=", id_role)
             .where(AclRoleResourceRecord.id_resource, "=", id_resource)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchall(sql, values)
             if len(result) == 0:
                 return
 
         # delete resource from role association
         sql, values = (
-            Delete(self._dialect)
+            Delete(self.dialect)
             .from_(AclRoleResourceRecord)
             .where(AclRoleResourceRecord.id_role, "=", id_role)
             .where(AclRoleResourceRecord.id_resource, "=", id_resource)
@@ -159,8 +160,8 @@ class AclRoleRepository(Repository):
         self.exec(sql, values)
 
     def list_role_user_id(self, id_role: int) -> List[int]:
-        key = "__acl__:list_role_user_id"
-        sql = self._cache_get(key)
+        key = "list_role_user_id"
+        sql = self.query_cache.get(key)
         if not sql:
             repo = UserRepository(self._db)
             sql, _ = (
@@ -174,9 +175,9 @@ class AclRoleRepository(Repository):
                 .where(AclUserRoleRecord.id_role, "=", id_role)
                 .assemble()
             )
-            self._cache_set(key, sql)
+            self.query_cache.set(key, sql)
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return [user.id for user in c.fetchall(sql, [id_role], cls=UserRecord)]
 
     def remove_user_role(self, id_user: int, id_role: int):
@@ -188,21 +189,21 @@ class AclRoleRepository(Repository):
         """
         # check if role is associated with user
         sql, values = (
-            Select(self._dialect)
-            .from_(AclUserRoleRecord, schema=self._schema)
+            Select(self.dialect)
+            .from_(AclUserRoleRecord, schema=self.schema)
             .where(AclUserRoleRecord.id_role, "=", id_role)
             .where(AclUserRoleRecord.id_user, "=", id_user)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchall(sql, values)
             if len(result) == 0:
                 return
 
         # delete role from user
         sql, values = (
-            Delete(self._dialect)
+            Delete(self.dialect)
             .from_(AclUserRoleRecord)
             .where(AclUserRoleRecord.id_role, "=", id_role)
             .where(AclUserRoleRecord.id_user, "=", id_user)
@@ -219,21 +220,21 @@ class AclRoleRepository(Repository):
         """
         # check if role is associated with user
         sql, values = (
-            Select(self._dialect)
-            .from_(AclUserRoleRecord, schema=self._schema)
+            Select(self.dialect)
+            .from_(AclUserRoleRecord, schema=self.schema)
             .where(AclUserRoleRecord.id_role, "=", id_role)
             .where(AclUserRoleRecord.id_user, "=", id_user)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchall(sql, values)
             if len(result) > 0:
                 return
 
         # insert association record
         sql, values = (
-            Insert(self._dialect)
+            Insert(self.dialect)
             .into(AclUserRoleRecord(id_role=id_role, id_user=id_user))
             .assemble()
         )
@@ -245,8 +246,8 @@ class AclResourceRepository(Repository):
         super().__init__(db, AclResourceRecord)
 
     def find_user_resources(self, id_user: int) -> List[AclResourceRecord]:
-        key = "__acl__:find_user_resources"
-        sql = self._cache_get(key)
+        key = "find_user_resources"
+        sql = self.query_cache.get(key)
         if not sql:
             sql, _ = (
                 self.select()
@@ -265,9 +266,9 @@ class AclResourceRepository(Repository):
                 .where(AclUserRoleRecord.id_user, "=", id_user)
                 .assemble()
             )
-            self._cache_set(key, sql)
+            self.query_cache.set(key, sql)
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return c.fetchall(sql, [id_user], cls=AclResourceRecord)
 
     def find_by_role(self, id_role: int) -> List[AclResourceRecord]:
@@ -276,8 +277,8 @@ class AclResourceRepository(Repository):
         :param id_role:
         :return:
         """
-        key = "__acl__:find_by_role"
-        sql = self._cache_get(key)
+        key = "find_by_role"
+        sql = self.query_cache.get(key)
         if not sql:
             sql, _ = (
                 self.select()
@@ -291,9 +292,9 @@ class AclResourceRepository(Repository):
                 .order(AclResourceRecord.id)
                 .assemble()
             )
-            self._cache_set(key, sql)
+            self.query_cache.set(key, sql)
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             return c.fetchall(sql, [id_role], cls=AclResourceRecord)
 
     def can_remove(self, id_resource: str):
@@ -304,16 +305,16 @@ class AclResourceRepository(Repository):
         """
         # check if role references resources
         sql, values = (
-            Select(self._dialect)
+            Select(self.dialect)
             .from_(
                 AclRoleResourceRecord,
                 cols={Literal("COUNT(*)"): "total"},
-                schema=self._schema,
+                schema=self.schema,
             )
             .where(AclRoleResourceRecord.id_resource, "=", id_resource)
             .assemble()
         )
 
-        with self._db.cursor() as c:
+        with self.cursor() as c:
             result = c.fetchone(sql, values)
             return result["total"] == 0

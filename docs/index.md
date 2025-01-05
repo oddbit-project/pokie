@@ -2,7 +2,7 @@
 
 # Welcome to Pokie
 
-[![Tests](https://github.com/oddbit-project/pokie/workflows/Tests/badge.svg?branch=master)](https://github.com/oddbit-project/pokie/actions)
+[![Tests](https://github.com/oddbit-project/pokie/workflows/Tests/badge.svg)](https://github.com/oddbit-project/pokie/actions)
 [![pypi](https://img.shields.io/pypi/v/pokie.svg)](https://pypi.org/project/pokie/)
 [![license](https://img.shields.io/pypi/l/pokie.svg)](https://git.oddbit.org/OddBit/pokie/src/branch/master/LICENSE)
 
@@ -35,13 +35,15 @@ dependency injection, service location, factories and object composition. It als
 
 ```python
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate, TestConfigTemplate):
+
+class Config(EnvironmentConfig, PokieConfig):
     # @todo: add your config options or overrides here
     pass
+
 
 def build_pokie():
     # load configuration from ENV
@@ -49,13 +51,13 @@ def build_pokie():
 
     # modules to load & initialize
     modules = [
-        #@ todo: add your modules here
-        
+        # @ todo: add your modules here
+
     ]
 
     # factories to run
     factories = [
-        PgSqlFactory, 
+        PgSqlFactory,
         # @todo: add additional factories here
     ]
 

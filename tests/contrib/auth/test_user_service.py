@@ -2,7 +2,7 @@ import secrets
 from datetime import datetime, timezone, timedelta
 
 import pytest
-from psycopg2 import IntegrityError
+from psycopg2.errors import UniqueViolation
 
 from pokie.cache.memory import MemoryCache
 from pokie.constants import DI_CACHE
@@ -21,7 +21,7 @@ class TestUserService:
         assert user1.id is not None
 
         # exception with duplicate username
-        with pytest.raises(IntegrityError):
+        with pytest.raises(UniqueViolation):
             _ = svc_user.add_user(user1)
 
         user2 = UserRecord(username="user2", password="abc")
@@ -47,13 +47,13 @@ class TestUserService:
         # test authentication
         user1 = svc_user.get_by_id(user1.id)
         assert user1.last_login is None
-        valid_user = svc_user.autenticate(user1.username, "somePassword")
+        valid_user = svc_user.authenticate(user1.username, "somePassword")
         assert valid_user is not None
         assert valid_user.id == user1.id
         assert valid_user.password is None
         assert valid_user.last_login is not None
 
-        invalid_user = svc_user.autenticate(user1.username, "someInvalidPassword")
+        invalid_user = svc_user.authenticate(user1.username, "someInvalidPassword")
         assert invalid_user is None
 
         # test load_id and sanitization
