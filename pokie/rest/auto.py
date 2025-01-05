@@ -4,9 +4,8 @@ from typing import List, Optional
 
 from rick.base import Di
 from rick.form import RequestRecord
-from rick_db import fieldmapper
 from rick_db.mapper import ATTR_RECORD_MAGIC, ATTR_TABLE, ATTR_SCHEMA, BaseRecord
-from rick_db.util.pg import PgInfo
+from rick_db.backend.pg import PgInfo
 
 import pokie.codegen.pg
 from pokie.codegen import RequestGenerator

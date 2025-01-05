@@ -4,11 +4,11 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional, List
 
-from rick_db.conn import Connection
+from rick_db.backend.pg import PgMigrationManager, PgManager, PgConnectionPool
 
 from pokie.constants import DI_DB, DI_APP
 from pokie.core import CliCommand
-from rick_db.util import MigrationRecord
+from rick_db.migrations import MigrationRecord
 
 
 class DbCliCommand(CliCommand):
@@ -19,7 +19,7 @@ class DbCliCommand(CliCommand):
     error_nodb = "error: no database connection found in the application"
     error_noinit = "error: migration manager not installed; run 'db:init' command first"
 
-    def get_db(self) -> Optional[Connection]:
+    def get_db(self) -> Optional[PgConnectionPool]:
         di = self.get_di()
         if not di.has(DI_DB):
             return None
@@ -54,10 +54,12 @@ class DbInitCmd(DbCliCommand):
             self.tty.error(self.error_nodb)
             return False
 
-        mgr = db.migration_manager()
-        if not mgr.has_manager():
+        mgr = PgManager(db)
+        mm = PgMigrationManager(mgr)
+
+        if not mm.is_installed():
             self.tty.write("installing migration manager...", False)
-            result = mgr.install_manager()
+            result = mm.install()
             if result.success:
                 self.tty.write(self.tty.colorizer.green("success"))
                 return True
@@ -78,8 +80,10 @@ class DbCheckCmd(DbCliCommand):
             self.tty.error(self.error_nodb)
             return False
 
-        mgr = db.migration_manager()
-        if not mgr.has_manager():
+        mgr = PgManager(db)
+        mm = PgMigrationManager(mgr)
+
+        if not mm.is_installed():
             self.tty.error(self.error_noinit)
             return False
 
@@ -95,7 +99,7 @@ class DbCheckCmd(DbCliCommand):
                         self.tty.write("\t{name}... ".format(name=mig.name), False)
 
                         # check if migration is duplicated
-                        record = mgr.fetch_by_name(mig.name)
+                        record = mm.fetch_by_name(mig.name)
                         if record is not None:
                             self.tty.write(
                                 self.tty.colorizer.white("already applied", attr="bold")
@@ -136,8 +140,10 @@ class DbUpdateCmd(DbCliCommand):
             self.tty.error(self.error_nodb)
             return False
 
-        mgr = db.migration_manager()
-        if not mgr.has_manager():
+        mgr = PgManager(db)
+        mm = PgMigrationManager(mgr)
+
+        if not mm.is_installed():
             self.tty.error(self.error_noinit)
             return False
 
@@ -153,7 +159,7 @@ class DbUpdateCmd(DbCliCommand):
                         self.tty.write("\t{name}... ".format(name=mig.name), False)
 
                         # check if migration is duplicated
-                        record = mgr.fetch_by_name(mig.name)
+                        record = mm.fetch_by_name(mig.name)
                         if record is not None:
                             self.tty.write(
                                 self.tty.colorizer.white("already applied", attr="bold")
@@ -170,7 +176,7 @@ class DbUpdateCmd(DbCliCommand):
                             # apply migration
                             if not args.dry:
                                 # try to execute migration and register on the migration manager
-                                result = mgr.execute(mig, content)
+                                result = mm.execute(mig, content)
                                 if result.success:
                                     self.tty.write(
                                         self.tty.colorizer.green("success", attr="bold")

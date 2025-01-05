@@ -1,7 +1,9 @@
 import sys
 import pytest
 import os
-from rick_db.conn.pg import PgConnection
+
+from rick_db.backend.pg import PgConnection, PgManager
+
 from .client import PokieClient
 from pokie.constants import (
     POKIE_NAMESPACE,
@@ -167,7 +169,7 @@ def pokie_app(request, pokie_factory):
     test_db = cfg.get(CFG_TEST_DB_NAME, "test_pokie")
     try:
         # DI_DB container is replaced automatically
-        _init_test_db(app, test_db, reuse_db, skip_migrations, skip_fixtures)
+        _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures)
 
     except Exception as e:
         raise RuntimeError(
@@ -182,12 +184,15 @@ def pokie_app(request, pokie_factory):
     if not reuse_db:
         conn = app.di.get(DI_DB)
         if conn:
+            # discard old connection
+            conn.close()
             # redo connection for drop purposes
-            conn = _test_db_connection(app)
-            conn.metadata().drop_database(test_db)
+            conn = _db_connection(app)
+            mgr = PgManager(conn)
+            mgr.drop_database(test_db)
 
 
-def _test_db_connection(app, db_name: str = None):
+def _db_connection(app, db_name: str = None):
     cfg = app.di.get(DI_CONFIG)
     db_cfg = {
         "dbname": "postgres" if db_name is None else db_name,
@@ -200,15 +205,16 @@ def _test_db_connection(app, db_name: str = None):
     return PgConnection(**db_cfg)
 
 
-def _init_test_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
+def _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
     if not test_db:
         # if test database name is empty, skip database handling altogether
         app.di.add(DI_DB, None)
         return None
 
     # first connection for administrative purposes
-    conn = _test_db_connection(app, None)
-    mgr = conn.metadata()
+    conn = _db_connection(app, None)
+    mgr = PgManager(conn)
+
     db_exists = mgr.database_exists(test_db)
     if db_exists and not reuse_db:
         mgr.drop_database(test_db)
@@ -218,7 +224,7 @@ def _init_test_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
         mgr.create_database(test_db)
 
     # actual final connection
-    conn = _test_db_connection(app, test_db)
+    conn = _db_connection(app, test_db)
     app.di.add(DI_DB, conn, replace=True)
 
     if not db_exists:

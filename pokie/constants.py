@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "8", "0"]
+POKIE_VERSION = ["0", "9", "0"]
 
 
 def get_version():
@@ -23,6 +23,7 @@ DI_MODULES = "modules"  # module list
 DI_SERVICES = "svc_manager"  # service manager
 DI_DB = "db"  # database client
 DI_REDIS = "redis"  # redis client
+DI_CACHE = "cache"  # generic cache client
 DI_EVENTS = "event_manager"  # event manager
 DI_TTY = "tty"  # console writer
 DI_SIGNAL = "signal"  # signal manager
@@ -38,6 +39,8 @@ CFG_DB_PORT = "db_port"
 CFG_DB_USER = "db_user"
 CFG_DB_PASSWORD = "db_password"
 CFG_DB_SSL = "db_ssl"
+CFG_DB_MINPROCS = "db_minprocs"
+CFG_DB_MAXPROCS = "db_maxprocs"
 
 # Redis Configuration
 CFG_REDIS_HOST = "redis_host"
@@ -72,3 +75,7 @@ CFG_TEST_SHARE_CTX = "test_share_ctx"
 CFG_TEST_DB_REUSE = "test_db_reuse"
 CFG_TEST_SKIP_MIGRATIONS = "test_skip_migrations"
 CFG_TEST_SKIP_FIXTURES = "test_skip_fixtures"
+
+# Default TTLs
+TTL_1H = 3600
+TTL_1D = 86400

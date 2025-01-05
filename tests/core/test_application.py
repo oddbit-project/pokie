@@ -50,10 +50,10 @@ class TestFlaskApplication:
 
         # modules
         assert app.modules is not None
-        assert len(app.modules) == 2
+        assert len(app.modules) == 3
         assert isinstance(app.modules, dict)
         for name, obj in app.modules.items():
-            assert name in ["pokie.contrib.base", "pokie_test"]
+            assert name in ["pokie.contrib.base", "pokie.contrib.auth", "pokie_test"]
             assert isinstance(obj, BaseModule)
 
         # services

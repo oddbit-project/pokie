@@ -1,12 +1,12 @@
 from rick.resource.config import EnvironmentConfig
 
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 
 
 # base configuration
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     pass
 
 def build_pokie():

@@ -81,7 +81,7 @@ class HelpCmd(BaseCommand):
         """
         program = os.path.basename(sys.argv[0])
 
-        self.tty.write("{}: {}\n".format(cmd, cmd_object.territory_description))
+        self.tty.write("{}: {}\n".format(cmd, cmd_object.description))
         self.tty.write("usage: {} {} [OPTIONS...]\n".format(program, cmd))
 
         parser = ArgParser(add_help=False)

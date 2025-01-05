@@ -44,10 +44,11 @@ table referenced by the DTO Record. The generated View class can also extend eit
 ### Usage example
 
 A complete minimal application to expose a database table called *customers* as a REST endpoint:
+
 ```python
 from rick_db import fieldmapper
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
+from pokie.config.template import PokieConfig, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.rest.auto import Auto
@@ -55,7 +56,7 @@ from pokie.rest.auto import Auto
 
 @fieldmapper(tablename="customers", pk="customer_id")
 class CustomerRecord:
-    id = "customer_id" # this field is actually a varchar
+    id = "customer_id"  # this field is actually a varchar
     company_name = "company_name"
     contact_name = "contact_name"
     contact_title = "contact_title"
@@ -69,7 +70,7 @@ class CustomerRecord:
 
 
 # config parameters, injectable from ENV vars
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
     pass
 
 
@@ -87,7 +88,7 @@ def router(p: FlaskApplication):
               "customer",  # the base slug
               CustomerRecord,  # the DTO to use
               search_fields=[CustomerRecord.company_name, CustomerRecord.contact_name],  # fields to allow text search
-              id_type="string" # type of id_record to use
+              id_type="string"  # type of id_record to use
               )
 
 
@@ -182,7 +183,7 @@ A complete minimal application to expose a database table called *customers* as 
 
 ```python
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import BaseConfigTemplate, PgConfigTemplate
+from pokie.config.template import PokieConfig, PgConfigTemplate
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.http import AutoRouter
@@ -190,7 +191,7 @@ from pokie.rest.auto import Auto
 
 
 # config parameters, injectable from ENV vars
-class Config(EnvironmentConfig, BaseConfigTemplate, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
     pass
 
 

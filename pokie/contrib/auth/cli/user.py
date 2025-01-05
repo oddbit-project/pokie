@@ -2,10 +2,10 @@ from argparse import ArgumentParser
 import getpass
 from rick.form import RequestRecord, field
 
-from pokie.contrib.auth.constants import SVC_USER, SVC_AUTH
+from pokie.contrib.auth.constants import SVC_USER
 from pokie.constants import DI_SERVICES
 from pokie.contrib.auth.dto import UserRecord
-from pokie.contrib.auth.service import UserService, AuthService
+from pokie.contrib.auth.service import UserService
 from pokie.core import CliCommand
 
 
@@ -215,7 +215,7 @@ class UserModCmd(UserCommand):
 
             if len(pwd) > 0:
                 changes = True
-                if self.svc_auth.update_password(record.username, pwd):
+                if self.svc_user.update_password(record.username, pwd):
                     # reload record
                     record = self.svc_user.get_by_username(args.username)
                     self.tty.write(self.tty.colorizer.green("> updated user password"))
@@ -262,10 +262,6 @@ class UserModCmd(UserCommand):
             self.tty.write("User account already conforms to required changes")
         return True
 
-    @property
-    def svc_auth(self) -> AuthService:
-        return self.get_di().get(DI_SERVICES).get(SVC_AUTH)
-
 
 class UserListCmd(UserCommand):
     description = "list users"
@@ -290,7 +286,7 @@ class UserListCmd(UserCommand):
 
         sort_field = None
         limit = 100
-        if not args.territory_id:
+        if not args.id:
             sort_field = UserRecord.username
         if args.count != 0:
             limit = args.count
