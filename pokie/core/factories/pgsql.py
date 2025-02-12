@@ -12,6 +12,7 @@ from pokie.constants import (
     DI_DB,
     DI_CONFIG,
     CFG_DB_MINPROCS,
+    CFG_DB_MAXPROCS,
 )
 
 
@@ -32,6 +33,6 @@ def PgSqlFactory(_di: Di):
             "password": cfg.get(CFG_DB_PASSWORD, ""),
             "sslmode": None if not cfg.get(CFG_DB_SSL, "1") else "require",
             "minconn": cfg.get(CFG_DB_MINPROCS, PokieConfig.DB_MINPROCS),
-            "maxconn": cfg.get(CFG_DB_MINPROCS, PokieConfig.DB_MAXPROCS),
+            "maxconn": cfg.get(CFG_DB_MAXPROCS, PokieConfig.DB_MAXPROCS),
         }
         return PgConnectionPool(**db_cfg)
