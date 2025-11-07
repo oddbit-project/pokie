@@ -1,7 +1,7 @@
 import pytest
 
 from pokie.cache import MemoryCache, RedisCache
-
+from pokie.constants import DI_REDIS
 
 @pytest.fixture
 def redis_cache(pokie_di):
