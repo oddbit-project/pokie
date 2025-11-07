@@ -1,5 +1,5 @@
 rick-db>=2.0.0
-rick>=0.7.0
+rick>=0.8.0
 rick-mailer>=1.1.1
 Flask>=3.1.0
 Werkzeug
