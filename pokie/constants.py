@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["0", "9", "4"]
+POKIE_VERSION = ["0", "9", "5"]
 
 
 def get_version():
