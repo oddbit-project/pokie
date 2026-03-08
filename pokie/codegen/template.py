@@ -6,7 +6,7 @@ from typing import Optional
 class TemplateProcessor:
     def __init__(self, template_paths: list = None):
         if template_paths is None:
-            self.template_paths = template_paths
+            template_paths = []
         self.template_paths = template_paths
 
     def get_template_path(self, name: str) -> Optional[Path]:

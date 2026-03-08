@@ -127,3 +127,19 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# IDE
+.idea/
+
+# Pipenv
+Pipfile
+Pipfile.lock
+
+# Local env
+env.sh
+
+# Scratch files
+scratch_*.py
+stuff*.py
+mapper.py
+pginfo.py

@@ -8,6 +8,12 @@ from pokie.constants import DI_SERVICES
 
 
 class RestView(PokieView):
+    """
+    WARNING: RestView extends PokieView, which is unauthenticated by default.
+    All auto-generated endpoints are publicly accessible unless you subclass
+    PokieAuthView instead, or provide a PokieAuthView-based class.
+    """
+
     record_class = None
     search_fields = None  # type: List
     service_name = None

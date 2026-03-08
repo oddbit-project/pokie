@@ -38,7 +38,7 @@ class HttpErrorHandler(Injectable):
             return self.error_404(_app, e)
 
         def wrapper_405(e):
-            return self.error_500(_app, e)
+            return self.error_405(_app, e)
 
         def wrapper_500(e):
             return self.error_500(_app, e)

@@ -96,7 +96,7 @@ class DbGridRequest(RequestRecord):
                 else:
                     result[name] = "asc"
 
-        self.fields[self.FIELD_SORT].value = sort
+        self.fields[self.FIELD_SORT].value = result
         return True
 
     def validator_offset(self, data, t: Translator):

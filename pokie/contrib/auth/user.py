@@ -96,4 +96,4 @@ class User(UserInterface):
         return self.roles
 
     def get_resources(self):
-        return self.roles
+        return self.resources

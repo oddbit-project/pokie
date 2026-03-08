@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from flask import Request
@@ -30,7 +31,14 @@ class SessionProvider(Injectable):
 
         cfg = di.get(DI_CONFIG)
         app = di.get(DI_FLASK)
-        app.secret_key = cfg.get(CFG_AUTH_SECRET, uuid.uuid4().hex)
+        secret = cfg.get(CFG_AUTH_SECRET, "")
+        if not secret:
+            logging.getLogger(__name__).warning(
+                "AUTH_SECRET is empty; generating random fallback. "
+                "Set AUTH_SECRET in your config for stable sessions across restarts."
+            )
+            secret = uuid.uuid4().hex
+        app.secret_key = secret
         login_manager = LoginManager()
         login_manager.init_app(app)
 

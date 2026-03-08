@@ -157,7 +157,7 @@ class PokieView(MethodView):
 
         try:
             # run pre-dispatch hooks
-            hook_list = self.dispatch_hooks
+            hook_list = list(self.dispatch_hooks)
             hook_list.extend(self.internal_hooks)  # add system hooks
             for name in hook_list:
                 hook = getattr(self, name, None)

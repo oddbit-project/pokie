@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 import getpass
 from rick.form import RequestRecord, field
+from rick.crypto.hasher.bcrypt import BcryptHasher
 
 from pokie.contrib.auth.constants import SVC_USER
 from pokie.constants import DI_SERVICES
@@ -46,6 +47,12 @@ class UserCreateCmd(UserCommand):
         parser.add_argument("-f", "--first_name", help="First name", required=False)
         parser.add_argument("-l", "--last_name", help="First name", required=False)
         parser.add_argument(
+            "-p",
+            "--password",
+            action="store_true",
+            help="Prompt for password",
+        )
+        parser.add_argument(
             "--enabled",
             default=True,
             action="store_true",
@@ -71,12 +78,26 @@ class UserCreateCmd(UserCommand):
             self.tty.write(self.tty.colorizer.red("Error: username already exists"))
             return False
 
+        password = ""
+        if args.password:
+            pwd = getpass.getpass("New password:")
+            if len(pwd.strip()) == 0:
+                self.tty.write(self.tty.colorizer.red("Error: password cannot be empty"))
+                return False
+            confirmation = getpass.getpass("Confirm password:")
+            if pwd.strip() != confirmation.strip():
+                self.tty.write(
+                    self.tty.colorizer.red("Error: password and confirmation don't match")
+                )
+                return False
+            password = BcryptHasher().hash(pwd.strip())
+
         record = UserRecord(
             username=args.username,
             email=args.email,
             admin=args.admin,
             active=args.enabled,
-            password="",
+            password=password,
             first_name=args.first_name,
             last_name=args.last_name,
         )
@@ -125,7 +146,7 @@ class UserInfoCmd(UserCommand):
 
         data = record.asdict()
         for f, label in self.fields_labels.items():
-            print("{:<16}: {}".format(label, str(data[f])))
+            self.tty.write("{:<16}: {}".format(label, str(data[f])))
 
         return True
 
@@ -215,7 +236,8 @@ class UserModCmd(UserCommand):
 
             if len(pwd) > 0:
                 changes = True
-                if self.svc_user.update_password(record.username, pwd):
+                password_hash = BcryptHasher().hash(pwd)
+                if self.svc_user.update_password(record.id, password_hash):
                     # reload record
                     record = self.svc_user.get_by_username(args.username)
                     self.tty.write(self.tty.colorizer.green("> updated user password"))
