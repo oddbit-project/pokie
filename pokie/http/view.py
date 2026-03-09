@@ -40,6 +40,17 @@ class PokieView(MethodView):
     # mixin constructors, to be called at the end of __init__
     init_methods = []
 
+    # pre-dispatch hooks
+    # these are called before performing the actual dispatch, with the following interface:
+    # (method:str, *args: t.Any, **kwargs: t.Any) -> Optional[ResponseReturnValue]
+    # if they generate a response other than None, dispatch is aborted and that response is used
+    # Note: they are not chained - eg. the first one to return something aborts dispatching
+    dispatch_hooks = []
+
+    # pre-dispatch internal hooks
+    # these hooks are appended to the dispatch hooks to be executed lastly
+    internal_hooks = ["_hook_request"]
+
     def __init__(self, *args, **kwargs):
         self.di = current_app.di
         self.logger = current_app.logger
@@ -62,18 +73,9 @@ class PokieView(MethodView):
         # and validate it using the request_class data type
         self.request = None
 
-        # pre-dispatch hooks
-        # these are called before performing the actual dispatch, with the following interface:
-        # (method:str, *args: t.Any, **kwargs: t.Any) -> Optional[ResponseReturnValue]
-        # if they generate a response other than None, dispatch is aborted and that response is used
-        # Note: they are not chained - eg. the first one to return something aborts dispatching
-        self.dispatch_hooks = []
-
-        # pre-dispatch internal hooks
-        # these hooks are appended to the dispatch hooks to be executed lastly
-        self.internal_hooks = [
-            "_hook_request",
-        ]
+        # copy class-level hooks to instance level so _patch_view_class modifications are preserved
+        self.dispatch_hooks = list(type(self).dispatch_hooks)
+        self.internal_hooks = list(type(self).internal_hooks)
 
         # optional override of internal options
         for name, value in kwargs.items():

@@ -80,8 +80,29 @@ class Auto:
         allow_methods: list = None,
         base_cls: tuple = None,
         mixins: tuple = None,
+        slug: str = None,
+        id_type: str = None,
         **kwargs
     ) -> PokieView:
+        """
+        Assemble a View class from a database table definition
+
+        A View class is generated programmatically by introspecting the database table schema.
+        If slug is provided, routes are automatically registered via AutoRouter.resource().
+
+        :param app: Flask object
+        :param table_name: database table name to introspect
+        :param schema: optional database schema name
+        :param search_fields: optional list of field names to perform search
+        :param camel_case: if True, field names are camelCased
+        :param allow_methods: optional list of http methods to allow
+        :param base_cls: optional base class to use instead of RestView
+        :param mixins: optional list of mixins to include
+        :param slug: optional route slug; if provided, routes are registered automatically
+        :param id_type: optional id type for the route parameter (e.g. "string", "int")
+        :param kwargs: optional extra parameters
+        :return: generated View class
+        """
         if not schema:
             schema = PgInfo.SCHEMA_DEFAULT
 
@@ -131,7 +152,12 @@ class Auto:
             cls_attrs["allow_methods"] = allow_methods
 
         cls = type("AutoView_{}".format(secrets.token_hex(8)), extends, cls_attrs)
-        return Auto._patch_view_class(cls, mixins)
+        cls = Auto._patch_view_class(cls, mixins)
+
+        if slug is not None:
+            AutoRouter.resource(app, slug, cls, id_type=id_type)
+
+        return cls
 
     @staticmethod
     def _view_factory(

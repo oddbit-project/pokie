@@ -32,7 +32,7 @@ class AutoRouter:
         :return:
         """
         for method_name, opts in AutoRouter.controller_action_map.items():
-            route, methods, suffix = opts
+            route, methods, _ = opts
             if callable(getattr(cls, method_name, None)):
                 app.add_url_rule(
                     route.format(slug=slug, type=id_type),
@@ -52,9 +52,12 @@ class AutoRouter:
         :param slug: route slug
         :param cls: class to map
         :param id_type: optional datatype for id
+        :param prefix: optional route prefix (e.g. "/api/v1")
         :return:
         """
         name = ".".join([cls.__module__, cls.__name__]).replace(".", "_")
+        if prefix:
+            name = "{}_{}".format(name, prefix.strip("/").replace("/", "_"))
         if not id_type:
             id_type = "int"
         for view_name, routes in AutoRouter.resource_action_map.items():
@@ -62,7 +65,7 @@ class AutoRouter:
                 route, methods, suffix = item
                 if getattr(cls, view_name, None) is not None:
                     app.add_url_rule(
-                        route.format(slug=slug, type=id_type),
+                        "{}{}".format(prefix, route.format(slug=slug, type=id_type)),
                         methods=methods,
                         view_func=cls.as_view("{}{}".format(name, suffix)),
                     )
