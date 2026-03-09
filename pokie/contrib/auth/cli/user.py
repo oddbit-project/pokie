@@ -313,12 +313,9 @@ class UserListCmd(UserCommand):
         if args.count != 0:
             limit = args.count
         details = self.svc_user.list_users(args.offset, limit, sort_field)
-        # update limit var for display purposes
-        if args.count == 0:
-            limit = details[0]
         self.tty.write(
             self.tty.colorizer.green(
-                "Displaying {} of {} users:".format(limit, details[0])
+                "Displaying {} of {} users:".format(len(details[1]), details[0])
             )
         )
 

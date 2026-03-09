@@ -1,5 +1,4 @@
 import secrets
-import token
 from typing import List, Optional
 
 from rick.base import Di
@@ -216,9 +215,9 @@ class Auto:
         """
         for item in mixins:
             if getattr(item, "dispatch_hooks", None):
-                view_class.dispatch_hooks.extend(item.dispatch_hooks)
+                view_class.dispatch_hooks = list(view_class.dispatch_hooks) + list(item.dispatch_hooks)
             if getattr(item, "internal_hooks", None):
-                view_class.internal_hooks.extend(item.internal_hooks)
+                view_class.internal_hooks = list(view_class.internal_hooks) + list(item.internal_hooks)
             if getattr(item, "init_methods", None):
-                view_class.init_methods.extend(item.init_methods)
+                view_class.init_methods = list(view_class.init_methods) + list(item.init_methods)
         return view_class

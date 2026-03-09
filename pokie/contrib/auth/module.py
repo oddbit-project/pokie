@@ -32,4 +32,21 @@ class Module(BaseModule):
     }
 
     def build(self, parent=None):
-        pass
+        from pokie.contrib.auth.view import LoginView, LogoutView
+        from pokie.contrib.auth.provider.session_provider import SessionProvider
+
+        app = parent.app
+        # initialize session provider
+        SessionProvider(self.get_di())
+
+        # register auth routes
+        app.add_url_rule(
+            "/auth/login",
+            methods=["POST"],
+            view_func=LoginView.as_view("auth_login"),
+        )
+        app.add_url_rule(
+            "/auth/logout",
+            methods=["GET"],
+            view_func=LogoutView.as_view("auth_logout"),
+        )

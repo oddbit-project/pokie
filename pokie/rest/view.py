@@ -109,5 +109,5 @@ class RestView(PokieView):
 
         svc = mgr.get(self.service_name)
         if not isinstance(svc, RestServiceMixin):
-            raise RuntimeError("Service '{}' does not implement RestService mixin")
+            raise RuntimeError("Service '{}' does not implement RestService mixin".format(self.service_name))
         return svc

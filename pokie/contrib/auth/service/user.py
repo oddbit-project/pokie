@@ -127,7 +127,7 @@ class UserService(Injectable):
             record.last_login = now
             self.cache.set(key, record, self.TTL)
 
-    def update_password(self, id_user: int, password_hash: str):
+    def update_password(self, id_user: int, password_hash: str) -> bool:
         """
         Update user password
         :param id_user:
@@ -136,6 +136,7 @@ class UserService(Injectable):
         """
         self.user_repository.update(UserRecord(id=id_user, password=password_hash))
         self.cache.remove(self.KEY_USER.format(id_user))
+        return True
 
     def add_user(self, record: UserRecord) -> int:
         """
@@ -226,9 +227,9 @@ class UserService(Injectable):
         if not record:
             return False
         key = self.KEY_TOKEN.format(record.token)
-        if record.expires:
-            if record.expires < datetime.now(timezone.utc).now():
-                self.cache.remove(key)
+        if record.expires and record.expires < datetime.now(timezone.utc):
+            self.cache.remove(key)
+            return True
 
         if not record.active:
             return True

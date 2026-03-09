@@ -173,3 +173,44 @@ class TestCamelCaseResponse:
             result.get_data(True)
             == '{\n  "success": true, \n  "data": [\n    "item_1", \n    "item_2", \n    "item_3"\n  ]\n}'
         )
+
+
+class TestResponseEdgeCases:
+    def test_success_with_none_data(self):
+        obj = JsonResponse(data=None, success=True)
+        assert obj.response["data"] == {}
+
+    def test_error_with_none_error(self):
+        obj = JsonResponse(success=False, error=None)
+        assert "error" in obj.response
+        assert obj.response["error"]["message"] == obj.msg_default_error
+
+    def test_error_dict_without_message(self):
+        obj = JsonResponse(success=False, error={"detail": "something"})
+        assert obj.response["error"]["message"] == obj.msg_default_error
+        assert obj.response["error"]["detail"] == "something"
+
+    def test_error_dict_with_message(self):
+        obj = JsonResponse(success=False, error={"message": "custom error"})
+        assert obj.response["error"]["message"] == "custom error"
+
+    def test_custom_mime_type(self, pokie_app):
+        obj = JsonResponse(data={"key": "value"}, mime_type="text/plain")
+        assert obj.mime_type == "text/plain"
+        result = obj.assemble(pokie_app)
+        assert result.mimetype == "text/plain"
+
+    def test_custom_headers(self, pokie_app):
+        headers = [("X-Custom", "value")]
+        obj = JsonResponse(data={"key": "value"}, headers=headers)
+        result = obj.assemble(pokie_app)
+        assert result.headers.get("X-Custom") == "value"
+
+    def test_custom_code(self, pokie_app):
+        obj = JsonResponse(data={"key": "value"}, code=201)
+        result = obj.assemble(pokie_app)
+        assert result.status_code == 201
+
+    def test_error_string(self):
+        obj = JsonResponse(success=False, error="some error")
+        assert obj.response["error"] == "some error"

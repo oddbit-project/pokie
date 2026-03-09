@@ -181,7 +181,6 @@ class PokieView(MethodView):
         :param class_args: 
         :param class_kwargs: 
         :return: Callable
-        """ """
         """
         if name is None:
             name = ".".join([cls.__module__, cls.__name__, action_method]).replace(

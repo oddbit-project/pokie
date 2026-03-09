@@ -67,6 +67,7 @@ class DbGridRequest(RequestRecord):
 
     def validator_sort(self, data, t: Translator):
         sort = data.get(self.FIELD_SORT, None)
+        result = None
 
         if sort is not None:
             sort = sort.split(",")

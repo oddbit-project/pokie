@@ -14,7 +14,7 @@ class TemplateProcessor:
             d = Path(p)
             if d.exists() and d.is_dir():
                 for item in d.iterdir():
-                    if item.is_dir() and d.name == name:
+                    if item.is_dir() and item.name == name:
                         return item
         return None
 

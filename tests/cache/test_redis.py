@@ -13,6 +13,7 @@ class TestRedisCache:
     def test_mutability(self, redis_cache):
         key = "key1"
         data = {"key": "value"}
+        redis_cache.remove(key)
         assert redis_cache.has(key) is False
         redis_cache.set(key, data)
         assert redis_cache.has(key) is True

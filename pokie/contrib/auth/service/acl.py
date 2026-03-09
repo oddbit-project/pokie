@@ -15,6 +15,7 @@ class AclService(Injectable):
     KEY_ROLE = "acl:role:{}"
     KEY_ROLE_RESOURCE = "acl:role:{}:resources"
     KEY_USER_ROLES = "user:{}:roles"
+    KEY_USER_ROLE_IDS = "user:{}:role_ids"
     TTL = TTL_1D
 
     def __init__(self, di: Di):
@@ -56,7 +57,7 @@ class AclService(Injectable):
         :return: dict[int, AclResourceRecord]
         """
         resources = {}
-        key = self.KEY_USER_ROLES.format(id_user)
+        key = self.KEY_USER_ROLE_IDS.format(id_user)
         id_roles = self.cache.get(key)
         if id_roles is not None:
             for id_role in id_roles:
@@ -129,6 +130,18 @@ class AclService(Injectable):
         :return:
         """
         return self.resource_repository.fetch_pk(id_resource)
+
+    def add_resource(self, id_resource: str, description: str) -> str:
+        """
+        Add a new Resource
+        :except IntegrityError
+        :param id_resource:
+        :param description:
+        :return:
+        """
+        record = AclResourceRecord(id=id_resource, description=description)
+        self.resource_repository.insert(record)
+        return id_resource
 
     def add_role(self, description: str) -> int:
         """
@@ -221,6 +234,16 @@ class AclService(Injectable):
         self.role_repository.truncate_users(id_role)
         for id_user in user_list:
             self.cache.remove(self.KEY_USER_ROLES.format(id_user))
+
+    def truncate_role(self, id_role: int):
+        """
+        Removes a role and all its associations (resources and users)
+        :param id_role:
+        :return:
+        """
+        self.truncate_role_resources(id_role)
+        self.truncate_role_users(id_role)
+        self.remove_role(id_role)
 
     def remove_role_resource(self, id_role: int, id_resource: int):
         """

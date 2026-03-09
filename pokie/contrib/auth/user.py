@@ -4,14 +4,17 @@ from typing import Any
 
 class UserInterface(ABC):
 
+    @property
     @abstractmethod
     def is_active(self):
         pass
 
+    @property
     @abstractmethod
     def is_anonymous(self) -> bool:
         pass
 
+    @property
     @abstractmethod
     def is_authenticated(self) -> bool:
         pass
@@ -60,7 +63,7 @@ class User(UserInterface):
             resources = []
         self.resources = resources
         # set custom parameters
-        for k, v in kwargs:
+        for k, v in kwargs.items():
             setattr(self, k, v)
 
     @property

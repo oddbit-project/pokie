@@ -356,7 +356,7 @@ class AclUserRoleCmd(AclCommand):
             )
             return False
 
-        for role in self.svc_acl.get_user_roles(user.id):
+        for role in self.svc_acl.get_user_roles(user.id).values():
             self.tty.write("{:<12}: {}".format(role.id, role.description))
 
         return True
