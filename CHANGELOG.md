@@ -14,9 +14,17 @@
 - `OpenApiBuilder` class for programmatic OpenAPI spec generation (`pokie.contrib.base.cli.openapi_builder`)
 - `flask-cors` and `flask-limiter` as dependencies
 - Documentation for CORS, rate limiting, job runner, and OpenAPI CLI
+- `FieldSpec.has_default` attribute for tracking columns with database DEFAULT values
+- Validation: non-auto primary keys (e.g. varchar, uuid) are now marked as `required` in generated RequestRecords
+- SBOM generation via CycloneDX in GitHub Actions (on push to master and on release)
 
 ### Changed
 - Job runner now delegates to `JobRunner` class with per-job state tracking
+- Updated dependencies: `rick-db>=2.1.0`, `rick>=0.8.2`
+
+### Fixed
+- `PgTableSpec.is_serial()`: `pg_get_serial_sequence` returns `[(None,)]` for non-serial columns, not an empty result set; now checks `result[0][0] is not None`
+- `RequestGenerator`: fields with database DEFAULT values are no longer marked as `required`, even if NOT NULL
 
 ### Removed
 - Extracted `pokie.contrib.auth` module from core (now available as a separate package)

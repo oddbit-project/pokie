@@ -14,6 +14,7 @@ class FieldSpec:
     fk_column: Optional[str]
     dtype: str
     dtype_spec: dict
+    has_default: bool = False
 
 
 @dataclass

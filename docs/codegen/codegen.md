@@ -82,7 +82,16 @@ class CustomersRequest(RequestRecord):
     }
 ```
 
-Validators are automatically determined from column data types:
+Validators are automatically determined from column properties and data types:
+
+| Column Property | Validators |
+|-----------------|------------|
+| Auto-increment (serial/identity) PK | `id` |
+| Non-auto PK (e.g. varchar, uuid) | `required` |
+| NOT NULL, non-auto, no DEFAULT | `required` |
+| NOT NULL with DEFAULT value | *(none — DB provides the default)* |
+| Nullable columns | *(none)* |
+| Foreign key columns | `pk:{schema}.{table},{column}` |
 
 | Column Type | Validators |
 |-------------|------------|
@@ -91,8 +100,11 @@ Validators are automatically determined from column data types:
 | `bool` | `bool` |
 | `timestamp`, `timestamptz`, `date` | `iso8601` |
 | Columns with max length | `maxlen:{n}` |
-| Non-nullable, non-auto columns | `required` |
-| Foreign key columns | `pk:{schema}.{table},{column}` |
+
+The primary key field is always named `id` in the generated RequestRecord, regardless of the actual column name.
+Natural (non-auto-increment) primary keys are marked as `required`, since the application must provide the value.
+Columns with database DEFAULT values are never marked as `required`, even if they are NOT NULL, because the database
+will supply the default when the value is omitted.
 
 ### Generating Module Structure
 
