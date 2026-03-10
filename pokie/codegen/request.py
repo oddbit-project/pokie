@@ -29,7 +29,7 @@ class RequestGenerator:
             name = f.name if camelcase is False else snake_to_camel(f.name)
             target = f.name
 
-            if not f.nullable and not f.auto:
+            if not f.nullable and not f.auto and not f.has_default:
                 validators.append("required")
         else:
             # primary key name is always id
@@ -38,6 +38,8 @@ class RequestGenerator:
             target = "id"
             if f.auto:
                 validators.append("id")
+            else:
+                validators.append("required")
 
         # add predefined validators for data types
         if f.dtype in self.validators.keys():

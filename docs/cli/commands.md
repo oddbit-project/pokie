@@ -194,6 +194,54 @@ $ python main.py job:run
 
 Jobs run in an infinite loop until interrupted with SIGINT.
 
+## OpenAPI Commands
+
+### openapi:generate
+
+Generate an [OpenAPI 3.0](https://spec.openapis.org/oas/v3.0.0) specification from the registered routes.
+
+```shell
+$ python main.py openapi:generate [options]
+```
+
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `-f` | *(stdout)* | Output file path. If omitted, the spec is printed to stdout. |
+| `--title` | `"Pokie API"` | API title in the spec |
+| `--version` | `"1.0.0"` | API version in the spec |
+| `--prefix` | `""` | Filter routes by URL prefix (e.g. `/api/v1`) |
+
+The command introspects the Flask URL map and view class metadata to generate paths, parameters, request bodies,
+and response schemas. It maps `RequestRecord` field validators to OpenAPI types:
+
+| Validator | OpenAPI type | OpenAPI format |
+|-----------|-------------|----------------|
+| `numeric` | `integer` | - |
+| `decimal` | `number` | - |
+| `bool` | `boolean` | - |
+| `iso8601` | `string` | `date-time` |
+| `maxlen:N` | `string` | *(maxLength: N)* |
+| *(default)* | `string` | - |
+
+List endpoints (GET without path parameters) automatically include the standard DbGrid query parameters
+(`offset`, `limit`, `sort`, `match`, `search`).
+
+**Examples:**
+
+```shell
+# print to stdout
+$ python main.py openapi:generate
+
+# save to file
+$ python main.py openapi:generate -f openapi.json
+
+# filter to a specific prefix
+$ python main.py openapi:generate --prefix /api/v1 -f api_v1.json
+
+# custom title and version
+$ python main.py openapi:generate --title "My API" --version "2.0.0"
+```
+
 ## Utility Commands
 
 ### module:list
@@ -227,8 +275,3 @@ $ python main.py pytest [pytest-arguments]
 ```
 
 All arguments after `pytest` are forwarded to pytest. See [Writing Tests](../test/pytest.md) for details.
-
-## Auth Commands
-
-When the `pokie.contrib.auth` module is loaded, additional commands for user and ACL management are available.
-See [Auth CLI](../auth/cli.md) for the full reference.

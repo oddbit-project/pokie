@@ -92,9 +92,6 @@ config.json contents:
 ```json
 {
   "modules": [],
-  "use_auth": true,
-  "auth_plugins": ["pokie.contrib.auth.plugin.DbAuthPlugin"],
-  "auth_secret": "very_secret_key",
   "db_cache_metadata": false
 }
 ```
@@ -139,14 +136,13 @@ A minimal  but complete main.py example:
 ```python
 from rick.resource.config import EnvironmentConfig
 
-from pokie.config.template import PokieConfig, PgConfigTemplate
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
-from pokie.core.factories.login import FlaskLogin
 
 
 # base configuration
-class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     pass
 
 
@@ -154,13 +150,11 @@ def build_pokie():
     # load configuration from ENV
     cfg = Config().build()
 
-    # modules to load & initialize:
-    # the internal auth module, and a custom-defined local module called 'my_module'
-    modules = ['pokie.contrib.auth', 'my_module']
+    # modules to load & initialize
+    modules = ['my_module']
 
     # factories to run
-    # the postgresql initializer, and the flask-login initializer
-    factories = [PgSqlFactory, FlaskLogin, ]
+    factories = [PgSqlFactory, ]
 
     # build Pokie application
     pokie_app = FlaskApplication(cfg)

@@ -82,14 +82,6 @@ Handlers are executed synchronously in priority order. If an event has no regist
 **Circular dependency protection:** If a handler dispatches the same event that is currently being processed, a
 `RuntimeError` is raised.
 
-## Built-in Events
-
-| Event | Module | Description |
-|-------|--------|-------------|
-| `afterLogin` | `pokie.contrib.auth` | Dispatched after successful user authentication |
-
-The `afterLogin` event passes a `user` keyword argument containing the authenticated `User` object.
-
 ## EventManager API
 
 | Method | Description |

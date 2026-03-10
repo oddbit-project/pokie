@@ -1,8 +1,9 @@
 from typing import List
 
 from flask import request
-
 from flask.typing import ResponseReturnValue
+from psycopg2 import IntegrityError, DataError
+
 from pokie.http import DbGridRequest, PokieView
 from pokie.rest import RestService, RestServiceMixin
 from pokie.constants import DI_SERVICES, HTTP_BADREQ, HTTP_INTERNAL_ERROR
@@ -63,6 +64,8 @@ class RestView(PokieView):
         Create Record
         :return:
         """
+        if self.request is None:
+            return self.error("invalid request", code=HTTP_BADREQ)
         record = self.request.bind(self.record_class)
         result = self.svc.insert(record)
         return self.success({"id": result})
@@ -74,6 +77,8 @@ class RestView(PokieView):
         """
         if not self.svc.exists(id_record):
             return self.not_found()
+        if self.request is None:
+            return self.error("invalid request", code=HTTP_BADREQ)
         record = self.request.bind(self.record_class)
         self.svc.update(id_record, record)
         return self.success()
@@ -93,7 +98,9 @@ class RestView(PokieView):
     def exception_handler(self, e) -> ResponseReturnValue:
         if e is not None:
             self.logger.exception(e)
-        return self.error("bad request", code=HTTP_BADREQ)
+        if isinstance(e, (IntegrityError, DataError)):
+            return self.error("bad request", code=HTTP_BADREQ)
+        return self.error("internal error", code=HTTP_INTERNAL_ERROR)
 
     @property
     def svc(self) -> RestService:

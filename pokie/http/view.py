@@ -321,6 +321,8 @@ class PokieAuthView(PokieView):
     def _hook_auth(
         self, method: str, *args: Any, **kwargs: Any
     ) -> Optional[ResponseReturnValue]:
+        if not hasattr(current_app, "login_manager"):
+            return self.denied()
         if not current_user.is_authenticated:
             return self.denied()
 

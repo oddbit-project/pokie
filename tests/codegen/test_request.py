@@ -191,6 +191,71 @@ class TestRequestGenerator:
         for name in tablespec_serial_names:
             assert name in cls.fields.keys()
 
+    def test_is_serial_with_serial_pk(self, pokie_db):
+        """Serial PK should be detected as serial"""
+        pg_spec = PgTableSpec(pokie_db)
+        assert pg_spec.is_serial("tablespec_serial", "id_tablespec", "public") is True
+
+    def test_is_serial_with_non_serial_pk(self, pokie_db):
+        """Non-serial (varchar) PK should not be detected as serial"""
+        pg_spec = PgTableSpec(pokie_db)
+        assert pg_spec.is_serial("tablespec_natural_pk", "code", "public") is False
+
+    def test_natural_pk_required(self, pokie_db):
+        """Non-auto PK should have 'required' validator"""
+        pg_spec = PgTableSpec(pokie_db)
+        spec = pg_spec.generate("tablespec_natural_pk")
+        generator = RequestGenerator()
+
+        # find the PK field (code)
+        pk_field = [f for f in spec.fields if f.pk][0]
+        assert pk_field.name == "code"
+        assert not pk_field.auto
+
+        name, validators, target = generator._field(pk_field)
+        assert name == "id"
+        assert "required" in validators
+
+    def test_default_fields_not_required(self, pokie_db):
+        """Fields with DEFAULT values should not be required"""
+        pg_spec = PgTableSpec(pokie_db)
+        spec = pg_spec.generate("tablespec_natural_pk")
+        generator = RequestGenerator()
+
+        fields_by_name = {f.name: f for f in spec.fields}
+
+        # status has DEFAULT 'active' - should not be required
+        name, validators, _ = generator._field(fields_by_name["status"])
+        assert "required" not in validators
+
+        # priority has DEFAULT 0 - should not be required
+        name, validators, _ = generator._field(fields_by_name["priority"])
+        assert "required" not in validators
+
+    def test_not_null_no_default_required(self, pokie_db):
+        """NOT NULL field without DEFAULT should be required"""
+        pg_spec = PgTableSpec(pokie_db)
+        spec = pg_spec.generate("tablespec_natural_pk")
+        generator = RequestGenerator()
+
+        fields_by_name = {f.name: f for f in spec.fields}
+
+        # name is NOT NULL without DEFAULT - should be required
+        name, validators, _ = generator._field(fields_by_name["name"])
+        assert "required" in validators
+
+    def test_nullable_not_required(self, pokie_db):
+        """Nullable field should not be required"""
+        pg_spec = PgTableSpec(pokie_db)
+        spec = pg_spec.generate("tablespec_natural_pk")
+        generator = RequestGenerator()
+
+        fields_by_name = {f.name: f for f in spec.fields}
+
+        # description is nullable - should not be required
+        name, validators, _ = generator._field(fields_by_name["description"])
+        assert "required" not in validators
+
     def _cleanup(self, s: str):
         for c in ["\n", " "]:
             s = s.replace(c, "")

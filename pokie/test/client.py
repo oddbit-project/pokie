@@ -15,12 +15,13 @@ class PokieResponse:
             return
 
         self.code = response.status_code
-        self.success = response.status_code == 200
+        self.success = 200 <= response.status_code < 300
 
         if response.data:
             try:
                 data = json.loads(response.data)
             except (json.JSONDecodeError, ValueError):
+                self.success = False
                 return
 
             if "data" in data.keys():

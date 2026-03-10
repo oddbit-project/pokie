@@ -14,14 +14,22 @@ It features a object-oriented design, borrowing from common patterns found in ot
 dependency injection, service location, factories and object composition. It also offers the following functionality:
 
 - Modular design;
-- Dependency registry; 
+- Dependency registry and factories;
+- Configuration via environment variables or JSON files;
 - CLI command support;
-- Jobs (objects invoked periodically to perform a task);
+- CORS and rate limiting via built-in factories;
+- OpenAPI 3.0 spec generation from registered routes;
+- Jobs with per-job intervals, retry/backoff, and timeouts;
+- Events and signal handlers;
+- Caching (Redis, in-memory);
 - Fixtures;
 - Unit testing support with pytest;
 - Code generation;
-- REST-oriented service design; 
+- Automatic REST endpoint generation;
+- REST-oriented service design;
 - Compatibility with Flask;
+- Forward-only SQL migrations;
+- PostgreSQL support;
 
 
 

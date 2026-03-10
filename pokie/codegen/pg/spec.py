@@ -45,7 +45,8 @@ class PgTableSpec:
         sql = "SELECT pg_get_serial_sequence(%s, %s)"
         with self.conn() as conn:
             with conn.cursor() as c:
-                return len(c.exec(sql, (namespec, field))) > 0
+                result = c.exec(sql, (namespec, field))
+                return len(result) > 0 and result[0][0] is not None
 
     def get_fk(self, table, schema) -> dict:
         result = {}
@@ -132,6 +133,7 @@ class PgTableSpec:
                 fk_column=None,
                 dtype=f.udt_name,
                 dtype_spec=type_spec,
+                has_default=f.default_value is not None,
             )
 
             if f.column in fks.keys():
