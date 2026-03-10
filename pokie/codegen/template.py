@@ -6,7 +6,7 @@ from typing import Optional
 class TemplateProcessor:
     def __init__(self, template_paths: list = None):
         if template_paths is None:
-            self.template_paths = template_paths
+            template_paths = []
         self.template_paths = template_paths
 
     def get_template_path(self, name: str) -> Optional[Path]:
@@ -14,7 +14,7 @@ class TemplateProcessor:
             d = Path(p)
             if d.exists() and d.is_dir():
                 for item in d.iterdir():
-                    if item.is_dir() and d.name == name:
+                    if item.is_dir() and item.name == name:
                         return item
         return None
 
@@ -34,12 +34,12 @@ class TemplateProcessor:
         if dest_path.exists() and not dest_path.is_dir():
             raise ValueError(
                 "TemplateProcessor::process() path '{}' is not a directory".format(
-                    str(src_path)
+                    str(dest_path)
                 )
             )
 
         if not dest_path.exists():
-            dest_path.mkdir()
+            dest_path.mkdir(parents=True)
         self._process_dir(src_path, dest_path, vars, tty)
 
     def _process_dir(self, src: Path, dest: Path, vars: dict, tty=None):
@@ -56,7 +56,7 @@ class TemplateProcessor:
                     tty.write("created '{}' file".format(str(dest_file)))
             elif f.is_dir():
                 new_dest = dest / Path(f.name)
-                new_dest.mkdir()
+                new_dest.mkdir(exist_ok=True)
                 if tty:
                     tty.write("created '{}' directory".format(str(new_dest)))
                 self._process_dir(f, new_dest, vars, tty)

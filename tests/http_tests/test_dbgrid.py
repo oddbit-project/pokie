@@ -179,3 +179,25 @@ class TestDbGrid:
         # sort success
         for clause in ["contactName:asc,contactTitle:desc,postalCode", "contactName"]:
             assert dbgridRequest.is_valid({"sort": clause}) is True
+
+    def test_search_parameter(self, dbgrid_request):
+        assert dbgrid_request.is_valid({"search": "hello"}) is True
+        data = dbgrid_request.dbgrid_parameters()
+        assert data["search_text"] == "hello"
+
+    def test_dbgrid_parameters_with_offset_limit(self, dbgrid_request):
+        assert dbgrid_request.is_valid({"offset": "5", "limit": "10"}) is True
+        data = dbgrid_request.dbgrid_parameters()
+        assert data["offset"] == 5
+        assert data["limit"] == 10
+
+    def test_dbgrid_parameters_auto_cap(self, dbgrid_request):
+        assert dbgrid_request.is_valid({}) is True
+        data = dbgrid_request.dbgrid_parameters(list_limit=50)
+        assert data["limit"] == 50
+
+    def test_normalize_without_camelcase(self, dbgrid_request):
+        assert dbgrid_request._normalize("contact_name") == "contact_name"
+
+    def test_normalize_with_camelcase(self, dbgridRequest):
+        assert dbgridRequest._normalize("contactName") == "contact_name"

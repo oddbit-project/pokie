@@ -40,6 +40,17 @@ class PokieView(MethodView):
     # mixin constructors, to be called at the end of __init__
     init_methods = []
 
+    # pre-dispatch hooks
+    # these are called before performing the actual dispatch, with the following interface:
+    # (method:str, *args: t.Any, **kwargs: t.Any) -> Optional[ResponseReturnValue]
+    # if they generate a response other than None, dispatch is aborted and that response is used
+    # Note: they are not chained - eg. the first one to return something aborts dispatching
+    dispatch_hooks = []
+
+    # pre-dispatch internal hooks
+    # these hooks are appended to the dispatch hooks to be executed lastly
+    internal_hooks = ["_hook_request"]
+
     def __init__(self, *args, **kwargs):
         self.di = current_app.di
         self.logger = current_app.logger
@@ -62,23 +73,15 @@ class PokieView(MethodView):
         # and validate it using the request_class data type
         self.request = None
 
-        # pre-dispatch hooks
-        # these are called before performing the actual dispatch, with the following interface:
-        # (method:str, *args: t.Any, **kwargs: t.Any) -> Optional[ResponseReturnValue]
-        # if they generate a response other than None, dispatch is aborted and that response is used
-        # Note: they are not chained - eg. the first one to return something aborts dispatching
-        self.dispatch_hooks = []
-
-        # pre-dispatch internal hooks
-        # these hooks are appended to the dispatch hooks to be executed lastly
-        self.internal_hooks = [
-            "_hook_request",
-        ]
+        # copy class-level hooks to instance level so _patch_view_class modifications are preserved
+        self.dispatch_hooks = list(type(self).dispatch_hooks)
+        self.internal_hooks = list(type(self).internal_hooks)
 
         # optional override of internal options
+        _missing = object()
         for name, value in kwargs.items():
-            attr = getattr(self, name, None)
-            if attr is not None and not callable(attr):
+            attr = getattr(self, name, _missing)
+            if attr is not _missing and not callable(attr):
                 setattr(self, name, value)
 
         # perform mixin initialization
@@ -108,8 +111,7 @@ class PokieView(MethodView):
         # unmarshall
         data = None
         if request.is_json:
-            if request.content_length is not None:
-                data = request.json
+            data = request.get_json(silent=True)
         else:
             # form-data
             data = request.form.items()
@@ -141,7 +143,7 @@ class PokieView(MethodView):
         handler = getattr(self, method, None)
 
         if method not in self.allow_methods:
-            return self.exception_handler(None)
+            return self.error("method not allowed")
 
         # If the request method is HEAD and we don't have a handler for it
         # retry with GET.
@@ -153,15 +155,17 @@ class PokieView(MethodView):
             handler = getattr(self, kwargs["_action_method_"], None)
             del kwargs["_action_method_"]
 
-        assert handler is not None, "Cannot resolve handler method for dispatch"
+        if handler is None:
+            raise RuntimeError("Cannot resolve handler method for dispatch")
 
         try:
             # run pre-dispatch hooks
-            hook_list = self.dispatch_hooks
+            hook_list = list(self.dispatch_hooks)
             hook_list.extend(self.internal_hooks)  # add system hooks
             for name in hook_list:
                 hook = getattr(self, name, None)
-                assert hook is not None, f"non-existing dispatch hook {name!r}"
+                if hook is None:
+                    raise RuntimeError(f"non-existing dispatch hook {name!r}")
                 pre = hook(method, *args, **kwargs)
                 if pre is not None:
                     return pre
@@ -181,7 +185,6 @@ class PokieView(MethodView):
         :param class_args: 
         :param class_kwargs: 
         :return: Callable
-        """ """
         """
         if name is None:
             name = ".".join([cls.__module__, cls.__name__, action_method]).replace(
@@ -194,17 +197,12 @@ class PokieView(MethodView):
             kwargs["_action_method_"] = action_method
             return current_app.ensure_sync(self.dispatch_request)(*args, **kwargs)
 
-        if cls.decorators:
+        if getattr(cls, "decorators", None):
             view.__name__ = name
             view.__module__ = cls.__module__
             for decorator in cls.decorators:
                 view = decorator(view)
 
-        # We attach the view class to the view function for two reasons:
-        # first of all it allows us to easily figure out what class-based
-        # view this thing came from, secondly it's also used for instantiating
-        # the view class so you can actually replace it with something else
-        # for testing purposes and debugging.
         view.view_class = cls  # type: ignore
         view.__name__ = name
         view.__doc__ = cls.__doc__
@@ -221,7 +219,7 @@ class PokieView(MethodView):
         """
         if e is not None:
             self.logger.exception(e)
-        return self.error("bad request")
+        return self.error("internal error", code=HTTP_INTERNAL_ERROR)
 
     def success(self, data=None, code: int = HTTP_OK):
         """

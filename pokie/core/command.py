@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 
 from rick.base import Di
@@ -24,5 +24,6 @@ class CliCommand(ABC, Injectable):
     def arguments(self, parser: ArgumentParser):
         pass
 
+    @abstractmethod
     def run(self, args) -> bool:
         pass

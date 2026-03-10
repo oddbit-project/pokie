@@ -12,6 +12,10 @@ class ArgParser(ArgumentParser):
         self.error_message = message
 
     def format_parameters(self):
+        """
+        Format only the parameter/argument sections (without usage, description, or epilog).
+        Unlike format_help(), this returns just the argument groups for concise display.
+        """
         formatter = self._get_formatter()
 
         # positionals, optionals and user-defined groups

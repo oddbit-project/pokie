@@ -15,14 +15,18 @@ It features an object-oriented design, borrowing from common patterns found in o
 dependency injection, service location, factories and object composition. It also offers the following functionality:
 
 - Modular design;
-- Dependency registry;
-- CLI command support;
+- Dependency registry and [factories](factories.md);
+- [Configuration](configuration.md) via environment variables or JSON files;
+- [CLI command](cli/commands.md) support;
+- [Events](events.md) and [signal handlers](signals.md);
+- [Caching](cache.md) (Redis, in-memory, dummy);
 - Jobs (objects invoked periodically to perform a task);
-- Fixtures;
-- Unit testing support with pytest;
-- Code generation;
-- Automatic endpoint generation;
-- REST-oriented service design;
+- [Fixtures](fixtures.md);
+- [Authentication and ACL](auth/authentication.md);
+- Unit testing support with [pytest](test/pytest.md);
+- [Code generation](codegen/codegen.md);
+- [Automatic endpoint generation](rest/auto.md);
+- REST-oriented [service design](rest/services.md);
 - Compatibility with Flask;
 - Forward-only SQL migrations;
 - PostgreSQL support;

@@ -161,14 +161,63 @@ class FilmView(PokieView):
         if method == 'get':
             return self.error('We are blocking GET requests via dispatch hooks')
         return None
-        
+
     def post(self):
-        
+
         print("submitted data:")
         #retrieve dict with all submitted values
         print(self.request.get_data())
 
         # return a standard JSON success response with code 200:
         # {"success":true,"message":""}
-        return self.success() 
+        return self.success()
 ```
+
+
+## PokieAuthView
+
+**PokieAuthView** extends **PokieView** with authentication and access control. It adds a pre-dispatch hook that
+checks if the current user is authenticated and, optionally, if the user has access to specific ACL resources.
+
+### Authentication Check
+
+All requests to a `PokieAuthView` require an authenticated user. If the user is not authenticated, the view returns
+HTTP 401:
+
+```python
+from pokie.http import PokieAuthView
+
+
+class ProtectedView(PokieAuthView):
+    def get(self):
+        # self.user is the current authenticated user
+        return self.success({"user_id": self.user.get_id()})
+```
+
+### ACL Resource Check
+
+The `acl` class attribute accepts a list of resource identifiers. If specified, the authenticated user must have access
+to all listed resources. If any resource check fails, the view returns HTTP 403:
+
+```python
+from pokie.http import PokieAuthView
+
+
+class AdminView(PokieAuthView):
+    # user must have access to both resources
+    acl = ["manage_users", "view_admin_panel"]
+
+    def get(self):
+        return self.success({"message": "admin area"})
+```
+
+If the `acl` list is empty (the default), no resource checks are performed and only authentication is required.
+
+### Properties
+
+| Attribute | Description |
+|-----------|-------------|
+| `acl` | List of resource identifiers to check (default: `[]`) |
+| `user` | The current authenticated user (`flask_login.current_user`) |
+
+The ACL integration is described in more detail in [Access Control](../auth/acl.md).

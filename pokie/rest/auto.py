@@ -1,5 +1,4 @@
 import secrets
-import token
 from typing import List, Optional
 
 from rick.base import Di
@@ -29,6 +28,8 @@ class Auto:
         allow_methods: list = None,
         base_cls: tuple = None,
         mixins: tuple = None,
+        prefix: str = "",
+        camel_case: bool = False,
         **kwargs
     ):
         """
@@ -45,6 +46,7 @@ class Auto:
         - If other base class is used, it must extend from PokieView;
 
         :param app: Flask object
+        :param slug: route slug
         :param dto_record: Record to use
         :param request_class: optional Request class
         :param service: optional service name
@@ -53,6 +55,8 @@ class Auto:
         :param allow_methods: optional list of http methods to allow
         :param base_cls: optional base class to use instead of RestView
         :param mixins: optional list of mixins to include
+        :param prefix: optional route prefix (e.g. "/api/v1")
+        :param camel_case: if True, field names and responses are camelCased
         :param kwargs: optional extra parameters
         :return:
         """
@@ -66,9 +70,10 @@ class Auto:
             allow_methods,
             base_cls,
             mixins,
+            camel_case=camel_case,
             **kwargs
         )
-        AutoRouter.resource(app, slug, view, id_type=id_type)
+        AutoRouter.resource(app, slug, view, id_type=id_type, prefix=prefix)
         return view
 
     @staticmethod
@@ -81,8 +86,31 @@ class Auto:
         allow_methods: list = None,
         base_cls: tuple = None,
         mixins: tuple = None,
+        slug: str = None,
+        id_type: str = None,
+        prefix: str = "",
         **kwargs
     ) -> PokieView:
+        """
+        Assemble a View class from a database table definition
+
+        A View class is generated programmatically by introspecting the database table schema.
+        If slug is provided, routes are automatically registered via AutoRouter.resource().
+
+        :param app: Flask object
+        :param table_name: database table name to introspect
+        :param schema: optional database schema name
+        :param search_fields: optional list of field names to perform search
+        :param camel_case: if True, field names are camelCased
+        :param allow_methods: optional list of http methods to allow
+        :param base_cls: optional base class to use instead of RestView
+        :param mixins: optional list of mixins to include
+        :param slug: optional route slug; if provided, routes are registered automatically
+        :param id_type: optional id type for the route parameter (e.g. "string", "int")
+        :param prefix: optional route prefix (e.g. "/api/v1")
+        :param kwargs: optional extra parameters
+        :return: generated View class
+        """
         if not schema:
             schema = PgInfo.SCHEMA_DEFAULT
 
@@ -127,12 +155,18 @@ class Auto:
             "request_class": request_class,
             "record_class": record_class,
             "search_fields": search_fields,
+            "camel_case": camel_case,
         }
         if allow_methods:
             cls_attrs["allow_methods"] = allow_methods
 
         cls = type("AutoView_{}".format(secrets.token_hex(8)), extends, cls_attrs)
-        return Auto._patch_view_class(cls, mixins)
+        cls = Auto._patch_view_class(cls, mixins)
+
+        if slug is not None:
+            AutoRouter.resource(app, slug, cls, id_type=id_type, prefix=prefix)
+
+        return cls
 
     @staticmethod
     def _view_factory(
@@ -144,6 +178,7 @@ class Auto:
         allow_methods: list = None,
         base_cls: tuple = None,
         mixins: tuple = None,
+        camel_case: bool = False,
         **kwargs
     ):
         if not base_cls:
@@ -162,10 +197,13 @@ class Auto:
         cls_attrs = {
             "record_class": dto_record,
             "search_fields": search_fields,
+            "camel_case": camel_case,
         }
         if not request_class:
             # no request_class provided, attempt to build one from dto_record
-            request_class = Auto._assemble_request_class(di, dto_record)
+            request_class = Auto._assemble_request_class(
+                di, dto_record, camel_case=camel_case
+            )
 
         if not request_class:
             raise ValueError(
@@ -187,13 +225,13 @@ class Auto:
         )
         if not issubclass(view_class, PokieView):
             raise ValueError(
-                "Automatic REST classing must use a base class inherited from RestView"
+                "Automatic REST classing must use a base class inherited from PokieView"
             )
         return Auto._patch_view_class(view_class, mixins)
 
     @staticmethod
     def _assemble_request_class(
-        di: Di, dto_record: BaseRecord
+        di: Di, dto_record: BaseRecord, camel_case: bool = False
     ) -> Optional[RequestRecord]:
         if getattr(dto_record, ATTR_RECORD_MAGIC) is True:
             table = getattr(dto_record, ATTR_TABLE)
@@ -203,7 +241,7 @@ class Auto:
             if table:
                 pg_spec = PgTableSpec(di.get(DI_DB))
                 spec = pg_spec.generate(table, schema)
-                return RequestGenerator().generate_class(spec)
+                return RequestGenerator().generate_class(spec, camelcase=camel_case)
         return None
 
     @staticmethod
@@ -216,9 +254,9 @@ class Auto:
         """
         for item in mixins:
             if getattr(item, "dispatch_hooks", None):
-                view_class.dispatch_hooks.extend(item.dispatch_hooks)
+                view_class.dispatch_hooks = list(view_class.dispatch_hooks) + list(item.dispatch_hooks)
             if getattr(item, "internal_hooks", None):
-                view_class.internal_hooks.extend(item.internal_hooks)
+                view_class.internal_hooks = list(view_class.internal_hooks) + list(item.internal_hooks)
             if getattr(item, "init_methods", None):
-                view_class.init_methods.extend(item.init_methods)
+                view_class.init_methods = list(view_class.init_methods) + list(item.init_methods)
         return view_class

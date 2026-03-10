@@ -6,8 +6,12 @@
 # To override the default one, just change the HTTP_ERROR_HANDLER config setting to point to a new custom class that
 # extends *Injectable*
 #
+import logging
+
 from rick.base import Di
 from rick.mixin import Injectable
+
+logger = logging.getLogger(__name__)
 
 from pokie.constants import (
     HTTP_BADREQ,
@@ -38,7 +42,7 @@ class HttpErrorHandler(Injectable):
             return self.error_404(_app, e)
 
         def wrapper_405(e):
-            return self.error_500(_app, e)
+            return self.error_405(_app, e)
 
         def wrapper_500(e):
             return self.error_500(_app, e)
@@ -50,6 +54,7 @@ class HttpErrorHandler(Injectable):
         _app.register_error_handler(500, wrapper_500)
 
     def error_400(self, _app, e):
+        logger.warning("HTTP 400: %s", e)
         r = self.response(
             error={"message": self.ERROR_400}, success=False, code=HTTP_BADREQ
         )
@@ -68,6 +73,7 @@ class HttpErrorHandler(Injectable):
         return r.assemble(_app)
 
     def error_500(self, _app, e):
+        logger.exception("HTTP 500: %s", e)
         r = self.response(
             error={"message": self.ERROR_500}, success=False, code=HTTP_INTERNAL_ERROR
         )

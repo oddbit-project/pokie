@@ -10,7 +10,7 @@ class TablespecSerialRequest(RequestRecord):
     fields = {
         'id': field(validators='id|numeric', bind='id'),
         'field_bigint': field(validators='numeric', bind='field_bigint'),
-        'field_bigserial': field(validators='required|numeric', bind='field_bigserial'),
+        'field_bigserial': field(validators='numeric', bind='field_bigserial'),
         'field_bit': field(validators='', bind='field_bit'),
         'field_varbit': field(validators='', bind='field_varbit'),
         'field_box': field(validators='', bind='field_box'),
@@ -37,7 +37,7 @@ class TablespecSerialRequest(RequestRecord):
         'field_polygon': field(validators='', bind='field_polygon'),
         'field_float4': field(validators='', bind='field_float4'),
         'field_int2': field(validators='numeric', bind='field_int2'),
-        'field_smallserial': field(validators='required|numeric', bind='field_smallserial'),
+        'field_smallserial': field(validators='numeric', bind='field_smallserial'),
         'field_text': field(validators='', bind='field_text'),
         'field_time': field(validators='', bind='field_time'),
         'field_timetz': field(validators='', bind='field_timetz'),
@@ -57,7 +57,7 @@ class TablespecSerialRequest(RequestRecord):
     fields = {
         'id': field(validators='id|numeric', bind='id'),
         'fieldBigint': field(validators='numeric', bind='field_bigint'),
-        'fieldBigserial': field(validators='required|numeric', bind='field_bigserial'),
+        'fieldBigserial': field(validators='numeric', bind='field_bigserial'),
         'fieldBit': field(validators='', bind='field_bit'),
         'fieldVarbit': field(validators='', bind='field_varbit'),
         'fieldBox': field(validators='', bind='field_box'),
@@ -84,7 +84,7 @@ class TablespecSerialRequest(RequestRecord):
         'fieldPolygon': field(validators='', bind='field_polygon'),
         'fieldFloat4': field(validators='', bind='field_float4'),
         'fieldInt2': field(validators='numeric', bind='field_int2'),
-        'fieldSmallserial': field(validators='required|numeric', bind='field_smallserial'),
+        'fieldSmallserial': field(validators='numeric', bind='field_smallserial'),
         'fieldText': field(validators='', bind='field_text'),
         'fieldTime': field(validators='', bind='field_time'),
         'fieldTimetz': field(validators='', bind='field_timetz'),
@@ -194,4 +194,4 @@ class TestRequestGenerator:
     def _cleanup(self, s: str):
         for c in ["\n", " "]:
             s = s.replace(c, "")
-        return c
+        return s

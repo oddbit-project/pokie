@@ -2,12 +2,19 @@ from typing import List
 
 from flask import request
 
+from flask.typing import ResponseReturnValue
 from pokie.http import DbGridRequest, PokieView
 from pokie.rest import RestService, RestServiceMixin
-from pokie.constants import DI_SERVICES
+from pokie.constants import DI_SERVICES, HTTP_BADREQ, HTTP_INTERNAL_ERROR
 
 
 class RestView(PokieView):
+    """
+    WARNING: RestView extends PokieView, which is unauthenticated by default.
+    All auto-generated endpoints are publicly accessible unless you subclass
+    PokieAuthView instead, or provide a PokieAuthView-based class.
+    """
+
     record_class = None
     search_fields = None  # type: List
     service_name = None
@@ -48,9 +55,8 @@ class RestView(PokieView):
             result = {"total": count, "items": data}
             return self.success(result)
         except Exception as e:
-            # exception may happen because of mismatched data type, such as matching strings to int fields
             self.logger.exception(e)
-            return self.error()
+            return self.error("internal error", code=HTTP_INTERNAL_ERROR)
 
     def post(self):
         """
@@ -58,14 +64,16 @@ class RestView(PokieView):
         :return:
         """
         record = self.request.bind(self.record_class)
-        self.svc.insert(record)
-        return self.success()
+        result = self.svc.insert(record)
+        return self.success({"id": result})
 
     def put(self, id_record):
         """
         Update Record
         :return:
         """
+        if not self.svc.exists(id_record):
+            return self.not_found()
         record = self.request.bind(self.record_class)
         self.svc.update(id_record, record)
         return self.success()
@@ -82,10 +90,17 @@ class RestView(PokieView):
         self.svc.delete(id_record)
         return self.success()
 
+    def exception_handler(self, e) -> ResponseReturnValue:
+        if e is not None:
+            self.logger.exception(e)
+        return self.error("bad request", code=HTTP_BADREQ)
+
     @property
     def svc(self) -> RestService:
         mgr = self.di.get(DI_SERVICES)
         if not self.service_name:
+            if self.record_class is None:
+                raise RuntimeError("RestView: record_class or service_name must be set")
             svc_name = "svc.rest.{}.{}".format(
                 self.__module__,
                 str(self.record_class.__name__).replace("Record", "", 1),
@@ -103,5 +118,5 @@ class RestView(PokieView):
 
         svc = mgr.get(self.service_name)
         if not isinstance(svc, RestServiceMixin):
-            raise RuntimeError("Service '{}' does not implement RestService mixin")
+            raise RuntimeError("Service '{}' does not implement RestService mixin".format(self.service_name))
         return svc

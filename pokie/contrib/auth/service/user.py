@@ -127,7 +127,7 @@ class UserService(Injectable):
             record.last_login = now
             self.cache.set(key, record, self.TTL)
 
-    def update_password(self, id_user: int, password_hash: str):
+    def update_password(self, id_user: int, password_hash: str) -> bool:
         """
         Update user password
         :param id_user:
@@ -136,6 +136,7 @@ class UserService(Injectable):
         """
         self.user_repository.update(UserRecord(id=id_user, password=password_hash))
         self.cache.remove(self.KEY_USER.format(id_user))
+        return True
 
     def add_user(self, record: UserRecord) -> int:
         """
@@ -163,8 +164,12 @@ class UserService(Injectable):
         :param record:
         :return:
         """
+        # fetch old record to invalidate username cache if changed
+        old_record = self.user_repository.fetch_pk(record.id)
         self.user_repository.update(record)
         self.cache.remove(self.KEY_USER.format(record.id))
+        if old_record:
+            self.cache.remove(self.KEY_USERNAME.format(old_record.username))
 
     def get_user_by_token(self, token: str) -> Optional[UserRecord]:
         """
@@ -226,16 +231,12 @@ class UserService(Injectable):
         if not record:
             return False
         key = self.KEY_TOKEN.format(record.token)
-        if record.expires:
-            if record.expires < datetime.now(timezone.utc).now():
-                self.cache.remove(key)
-
         if not record.active:
             return True
 
         record.active = False
         self.user_token_repository.update(record)
-        self.cache.set(key, record, self.TTL)
+        self.cache.remove(key)
         return True
 
     def remove_user_token(self, id_user_token: int):

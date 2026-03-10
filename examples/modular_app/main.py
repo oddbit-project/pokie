@@ -21,7 +21,7 @@ def build_pokie():
 
     # build app
     pokie_app = FlaskApplication(cfg)
-    flask_app = main.build(modules, factories)
+    flask_app = pokie_app.build(modules, factories)
     return pokie_app, flask_app
 
 main, app = build_pokie()

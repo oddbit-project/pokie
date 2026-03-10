@@ -166,7 +166,7 @@ def build_pokie():
     pokie_app = FlaskApplication(cfg)
     # bootstrap Pokie application
     # the returned object is a Flask application
-    flask_app = main.build(modules, factories)
+    flask_app = pokie_app.build(modules, factories)
     return pokie_app, flask_app
 
 

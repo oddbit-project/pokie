@@ -33,6 +33,10 @@ class DbGridRequest(RequestRecord):
     def _normalize(self, name) -> str:
         return humps.decamelize(name) if self.use_camel_case else name
 
+    def _record_fieldmap(self) -> dict:
+        """Access record field mapping; single point of access for internal attribute"""
+        return self.record._fieldmap
+
     def validator_match(self, data, t: Translator):
         match_fields = data.get(self.FIELD_MATCH, None)
         if match_fields is not None:
@@ -51,12 +55,13 @@ class DbGridRequest(RequestRecord):
                         )
                         return False
                     name = self._normalize(f[0])
-                    if name not in self.record._fieldmap.keys():
+                    fieldmap = self._record_fieldmap()
+                    if name not in fieldmap.keys():
                         self.add_error(
-                            self.FIELD_MATCH, t.t("invalid field name: {}").format(f)
+                            self.FIELD_MATCH, t.t("invalid field name: {}").format(f[0])
                         )
                         return False
-                    result[self.record._fieldmap[name]] = f[1]
+                    result[fieldmap[name]] = f[1]
 
                 # replace original dict with result
                 match_fields = result
@@ -67,42 +72,52 @@ class DbGridRequest(RequestRecord):
 
     def validator_sort(self, data, t: Translator):
         sort = data.get(self.FIELD_SORT, None)
+        result = None
 
         if sort is not None:
-            sort = sort.split(",")
-            result = {}
-            # convert field, field:desc -> db_field:asc, db_field:desc
-            for expr in sort:
-                expr = expr.split(":")
-                expr[0] = self._normalize(expr[0])
-                if expr[0] not in self.record._fieldmap.keys():
-                    self.add_error(
-                        self.FIELD_SORT,
-                        t.t("invalid sort field name: {}").format(expr[0]),
-                    )
-                    return False
-
-                name = self.record._fieldmap[expr[0]]
-
-                if len(expr) > 1:
-                    if expr[1].lower() not in ["asc", "desc"]:
+            # empty string is treated as no sort
+            if len(sort.strip()) == 0:
+                sort = None
+            else:
+                sort = sort.split(",")
+                result = {}
+                # convert field, field:desc -> db_field:asc, db_field:desc
+                for expr in sort:
+                    expr = [e.strip() for e in expr.split(":")]
+                    expr[0] = self._normalize(expr[0])
+                    fieldmap = self._record_fieldmap()
+                    if expr[0] not in fieldmap.keys():
                         self.add_error(
                             self.FIELD_SORT,
-                            t.t("invalid sort order: {}").format(expr[1]),
+                            t.t("invalid sort field name: {}").format(expr[0]),
                         )
                         return False
 
-                    result[name] = expr[1]
-                else:
-                    result[name] = "asc"
+                    name = fieldmap[expr[0]]
 
-        self.fields[self.FIELD_SORT].value = sort
+                    if len(expr) > 1:
+                        if expr[1].lower() not in ["asc", "desc"]:
+                            self.add_error(
+                                self.FIELD_SORT,
+                                t.t("invalid sort order: {}").format(expr[1]),
+                            )
+                            return False
+
+                        result[name] = expr[1].lower()
+                    else:
+                        result[name] = "asc"
+
+        self.fields[self.FIELD_SORT].value = result
         return True
 
     def validator_offset(self, data, t: Translator):
         offset = data.get(self.FIELD_OFFSET, None)
         if offset is not None:
-            offset = int(offset)
+            try:
+                offset = int(offset)
+            except (ValueError, TypeError):
+                self.add_error(self.FIELD_OFFSET, t.t("invalid offset value"))
+                return False
             if offset < 0:
                 self.add_error(self.FIELD_OFFSET, t.t("invalid offset value"))
                 return False
@@ -112,7 +127,11 @@ class DbGridRequest(RequestRecord):
     def validator_limit(self, data, t: Translator):
         limit = data.get(self.FIELD_LIMIT, None)
         if limit is not None:
-            limit = int(limit)
+            try:
+                limit = int(limit)
+            except (ValueError, TypeError):
+                self.add_error(self.FIELD_LIMIT, t.t("invalid limit value"))
+                return False
             if limit < 1:
                 self.add_error(self.FIELD_LIMIT, t.t("invalid limit value"))
                 return False
@@ -131,6 +150,13 @@ class DbGridRequest(RequestRecord):
         """
         offset = self.fields[self.FIELD_OFFSET].value
         limit = self.fields[self.FIELD_LIMIT].value
+
+        # ensure offset and limit are integers (RequestRecord.is_valid() may
+        # overwrite custom validator values with raw string data)
+        if offset is not None:
+            offset = int(offset)
+        if limit is not None:
+            limit = int(limit)
 
         # automatically cap records
         if offset is None and limit is None and list_limit > 0:

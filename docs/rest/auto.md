@@ -200,7 +200,7 @@ class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
 # to the actual web initialization routines, as it is done with modules
 def router(p: FlaskApplication):
     # Auto.view() will generate a view for the customers table
-    view = Auto.view(app, "customers", search_fields=["company_name", "contact_name"])
+    view = Auto.view(p.app, "customers", search_fields=["company_name", "contact_name"])
     # and AutoRouter.resouce() registers the following endpoints:
     # /customer                     HEAD,GET,OPTIONS
     # /customer/<string:id_record>  HEAD,GET,OPTIONS
@@ -263,6 +263,6 @@ class Module(BaseModule):
         # /customer                     OPTIONS,POST
         # /customer/<string:id_record>  PATCH,PUT,OPTIONS
         # /customer/<string:id_record>  DELETE,OPTIONS
-        AutoRouter.resource(p.app, "customer", view, id_type="string")
+        AutoRouter.resource(app, "customer", view, id_type="string")
         (...)
 ```

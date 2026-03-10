@@ -1,9 +1,10 @@
 from flask_login import login_user, logout_user
 from rick.event import EventManager
 
-from pokie.constants import DI_EVENTS
-from pokie.contrib.auth.constants import SVC_USER, SVC_AUTH, SVC_ACL
-from pokie.contrib.auth.service import UserService, AuthService, AclService
+from pokie.constants import DI_EVENTS, DI_SERVICES
+from pokie.contrib.auth.constants import SVC_USER, SVC_ACL
+from pokie.contrib.auth.service import UserService, AclService
+from pokie.contrib.auth.provider.session_provider import build_user_acl
 from pokie.http.view import PokieView, PokieAuthView
 from rick.form import field, RequestRecord
 
@@ -24,30 +25,24 @@ class LoginView(PokieView):
         pwd = self.request.get("password")
         remember = bool(self.request.get("remember"))
 
-        user = self.svc_auth().authenticate(username, pwd)
-        if user is None:
+        user_record = self.svc_user().authenticate(username, pwd)
+        if user_record is None:
             return self.error("invalid credentials")
 
-        user.password = None
+        user = build_user_acl(self.di, user_record)
 
-        result = self.svc_acl().get_user_acl_info(user.id)
-        result["user"] = user.asdict()
-
-        self.mgr_event().dispatch(self.di, "afterLogin", result)
+        self.mgr_event().dispatch(self.di, "afterLogin", user=user)
 
         # flask-login
-        login_user(user, bool(remember))
+        login_user(user, remember)
 
-        return self.success(result)
+        return self.success(user_record.asdict())
 
     def mgr_event(self) -> EventManager:
         return self.di.get(DI_EVENTS)
 
     def svc_user(self) -> UserService:
         return self.get_service(SVC_USER)
-
-    def svc_auth(self) -> AuthService:
-        return self.get_service(SVC_AUTH)
 
     def svc_acl(self) -> AclService:
         return self.get_service(SVC_ACL)

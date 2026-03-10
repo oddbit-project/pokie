@@ -25,7 +25,6 @@ class RestServiceMixin:
         limit: int = None,
         offset: int = None,
         sort_fields: dict = None,
-        search_filter: list = None,
     ):
         grid = DbGrid(self.repository, search_fields, DbGrid.SEARCH_ANY)
         return grid.run(
@@ -35,7 +34,6 @@ class RestServiceMixin:
             limit=limit,
             offset=offset,
             sort_fields=sort_fields,
-            search_fields=search_filter,
         )
 
     @property

@@ -31,7 +31,7 @@ def PgSqlFactory(_di: Di):
             "port": int(cfg.get(CFG_DB_PORT, 5432)),
             "user": cfg.get(CFG_DB_USER, "postgres"),
             "password": cfg.get(CFG_DB_PASSWORD, ""),
-            "sslmode": None if not cfg.get(CFG_DB_SSL, "1") else "require",
+            "sslmode": "require" if str(cfg.get(CFG_DB_SSL, "1")).lower() in ("1", "true", "yes") else None,
             "minconn": cfg.get(CFG_DB_MINPROCS, PokieConfig.DB_MINPROCS),
             "maxconn": cfg.get(CFG_DB_MAXPROCS, PokieConfig.DB_MAXPROCS),
         }

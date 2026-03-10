@@ -26,7 +26,7 @@ class UserTokenRepository(Repository):
             ]
         )
 
-    def prune(self, now) -> List[UserTokenRecord]:
+    def prune(self, now):
         return self.delete_where(
             [
                 (UserTokenRecord.expires, "<", now),

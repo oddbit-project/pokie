@@ -41,8 +41,8 @@ class ValidatorService(Injectable):
         :param schema:
         :return: str or None
         """
-        key = "{}.{}".format(table_name, schema)
-        name = self._cache_get(table_name)
+        key = "{}.{}".format(schema, table_name)
+        name = self._cache_get(key)
         if name is not None:
             return name
 

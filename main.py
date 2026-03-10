@@ -8,7 +8,6 @@ from pokie.core.factories.redis import RedisFactory
 class Config(EnvironmentConfig, PokieConfig):
     REDIS_SSL = "0"
     REDIS_PORT = 6379
-    REDIS_PASSWORD = "myRedisPassword"
     TEST_MANAGE_DB = True
     TEST_DB_SSL = False
 

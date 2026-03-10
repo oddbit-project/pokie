@@ -36,6 +36,8 @@ nav:
     - Architecture: tutorial/architecture.md
     - Scaffolding: tutorial/scaffolding.md
     - Tutorial: tutorial/tutorial.md
+    - Configuration: configuration.md
+    - Factories: factories.md
 
 - Views:
     - Pokie Views: http/views.md
@@ -48,14 +50,26 @@ nav:
     - REST Services: rest/services.md
     - Auto REST: rest/auto.md
 
-- Fixtures:
-     - Adding fixtures: fixtures.md
+- Authentication:
+    - Authentication: auth/authentication.md
+    - User Management: auth/users.md
+    - Access Control: auth/acl.md
+    - Auth CLI: auth/cli.md
+
+- Cache: cache.md
+
+- Events & Signals:
+    - Events: events.md
+    - Signal Handlers: signals.md
+
+- Fixtures: fixtures.md
 
 - Classes:
     - DbGridRequest: http/dbgridrequest.md
     - JSONResponse: http/json_response.md
+    - CamelCase Response: http/camelcase_json_response.md
 
-- Cli Operations:
+- CLI Operations:
     - Available Commands: cli/commands.md
 
 - Code Generation:

@@ -70,7 +70,7 @@ def pokie_factory():
     if pokie_ns not in sys.modules.keys():
         raise RuntimeError("Error: cannot find pokie namespace '{}'".format(pokie_ns))
 
-    app = getattr(sys.modules[pokie_ns], pokie_app)
+    app = getattr(sys.modules[pokie_ns], pokie_app, None)
     # validate object
     if app is None:
         raise RuntimeError(
@@ -80,7 +80,7 @@ def pokie_factory():
         )
 
     # validate factory if exists
-    factory = getattr(sys.modules[pokie_ns], pokie_factory)
+    factory = getattr(sys.modules[pokie_ns], pokie_factory, None)
     if factory is not None:
         if not callable(factory):
             raise RuntimeError("Error: attribute named 'build_pokie' is not callable")
@@ -157,6 +157,10 @@ def pokie_app(request, pokie_factory):
 
     # -- app context
     if not cfg.get(CFG_TEST_SHARE_CTX):
+        if factory is None:
+            raise RuntimeError(
+                "Error: factory function 'build_pokie' is required when CFG_TEST_SHARE_CTX is False"
+            )
         # if context isn't shared, create whole new application
         _, app = factory()
 
@@ -187,9 +191,10 @@ def pokie_app(request, pokie_factory):
             # discard old connection
             conn.close()
             # redo connection for drop purposes
-            conn = _db_connection(app)
-            mgr = PgManager(conn)
+            drop_conn = _db_connection(app)
+            mgr = PgManager(drop_conn)
             mgr.drop_database(test_db)
+            drop_conn.close()
 
 
 def _db_connection(app, db_name: str = None):
@@ -200,7 +205,7 @@ def _db_connection(app, db_name: str = None):
         "port": int(cfg.get(CFG_TEST_DB_PORT, 5432)),
         "user": cfg.get(CFG_TEST_DB_USER, "postgres"),
         "password": cfg.get(CFG_TEST_DB_PASSWORD, ""),
-        "sslmode": None if not cfg.get(CFG_TEST_DB_SSL, "1") else "require",
+        "sslmode": "require" if str(cfg.get(CFG_TEST_DB_SSL, "1")).lower() in ("1", "true", "yes") else None,
     }
     return PgConnection(**db_cfg)
 
@@ -212,8 +217,8 @@ def _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
         return None
 
     # first connection for administrative purposes
-    conn = _db_connection(app, None)
-    mgr = PgManager(conn)
+    admin_conn = _db_connection(app, None)
+    mgr = PgManager(admin_conn)
 
     db_exists = mgr.database_exists(test_db)
     if db_exists and not reuse_db:
@@ -222,6 +227,8 @@ def _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
 
     if not db_exists:
         mgr.create_database(test_db)
+
+    admin_conn.close()
 
     # actual final connection
     conn = _db_connection(app, test_db)

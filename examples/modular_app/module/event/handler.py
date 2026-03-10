@@ -5,11 +5,12 @@ class ExampleEventHandler(EventHandler):
 
     def my_event_name(self, _in=None, out=None):
         """
-        Sanple event handler
+        Sample event handler
         :param _in: entry object
         :param out: return object
         :return:
         """
 
-        # dummy operation
-        out = []
+        # example: append result to mutable output list
+        if out is not None:
+            out.append({"handler": "ExampleEventHandler", "status": "ok"})

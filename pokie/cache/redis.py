@@ -1,5 +1,3 @@
-import pickle
-
 from rick.base import Di
 from rick.mixin import Injectable
 from rick.resource.redis import RedisCache as BaseRedisCache

@@ -1,4 +1,3 @@
-import uuid
 from rick.resource.config import StrOrFile
 
 
@@ -6,17 +5,8 @@ class PokieConfig:
     # default HTTP Exception Handler - 404 and 500 exceptions
     HTTP_ERROR_HANDLER = "pokie.http.HttpErrorHandler"
 
-    # if true, all endpoints are authenticated by default
-    USE_AUTH = True
-
-    # Authentication provider
-    AUTH_PROVIDER = "JWTProvider"
-
-    # If true, ACL are loaded for users
-    AUTH_ACL = True
-
     # Secret key for flask-login hashing
-    AUTH_SECRET = uuid.uuid4().hex
+    AUTH_SECRET = ""
 
     # Enables cache on User and Acl Services
     AUTH_USE_CACHE = True
@@ -40,7 +30,7 @@ class PokieConfig:
     REDIS_PORT = 6379
     REDIS_PASSWORD = StrOrFile("")
     REDIS_DB = 0
-    REDIS_SSL = "1"
+    REDIS_SSL = True
 
     # Pytest Configuration
     TEST_DB_NAME = "pokie_test"  # test database parameters
