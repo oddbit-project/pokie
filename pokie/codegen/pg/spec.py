@@ -1,13 +1,14 @@
-from typing import Optional
+from contextlib import contextmanager
+from typing import Optional, Union
 
-from rick_db.backend.pg import PgConnection, ColumnRecord
+from rick_db.backend.pg import PgConnection, PgConnectionPool, ColumnRecord
 from rick_db.backend.pg.pginfo import PgInfo
 
 from pokie.codegen.spec import TableSpec, FieldSpec
 
 
 class PgTableSpec:
-    def __init__(self, conn: PgConnection):
+    def __init__(self, conn: Union[PgConnection, PgConnectionPool]):
         self.db = conn
         self.mgr = PgInfo(conn)
         self._tables = {}
@@ -28,11 +29,23 @@ class PgTableSpec:
             result[c.column] = c
         return result
 
+    @contextmanager
+    def conn(self):
+        if isinstance(self.db, PgConnectionPool):
+            try:
+                conn = self.db.getconn()
+                yield conn
+            finally:
+                self.db.putconn(conn)
+        else:
+            yield self.db
+
     def is_serial(self, table, field, schema) -> bool:
         namespec = "{}.{}".format(schema, table)
         sql = "SELECT pg_get_serial_sequence(%s, %s)"
-        with self.db.cursor() as c:
-            return len(c.exec(sql, (namespec, field))) > 0
+        with self.conn() as conn:
+            with conn.cursor() as c:
+                return len(c.exec(sql, (namespec, field))) > 0
 
     def get_fk(self, table, schema) -> dict:
         result = {}

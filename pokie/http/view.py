@@ -78,9 +78,10 @@ class PokieView(MethodView):
         self.internal_hooks = list(type(self).internal_hooks)
 
         # optional override of internal options
+        _missing = object()
         for name, value in kwargs.items():
-            attr = getattr(self, name, None)
-            if attr is not None and not callable(attr):
+            attr = getattr(self, name, _missing)
+            if attr is not _missing and not callable(attr):
                 setattr(self, name, value)
 
         # perform mixin initialization
@@ -110,8 +111,7 @@ class PokieView(MethodView):
         # unmarshall
         data = None
         if request.is_json:
-            if request.content_length is not None:
-                data = request.json
+            data = request.get_json(silent=True)
         else:
             # form-data
             data = request.form.items()
@@ -197,7 +197,7 @@ class PokieView(MethodView):
             kwargs["_action_method_"] = action_method
             return current_app.ensure_sync(self.dispatch_request)(*args, **kwargs)
 
-        if cls.decorators:
+        if getattr(cls, "decorators", None):
             view.__name__ = name
             view.__module__ = cls.__module__
             for decorator in cls.decorators:

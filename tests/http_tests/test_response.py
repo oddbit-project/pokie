@@ -58,6 +58,7 @@ class TestResponse:
 
     def test_dict(self, pokie_app, result_dict):
         obj = JsonResponse(result_dict)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -67,6 +68,7 @@ class TestResponse:
 
     def test_str(self, pokie_app, result_str):
         obj = JsonResponse(result_str)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -76,6 +78,7 @@ class TestResponse:
 
     def test_list(self, pokie_app, result_list):
         obj = JsonResponse(result_list)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -85,6 +88,7 @@ class TestResponse:
 
     def test_object(self, pokie_app, result_object):
         obj = JsonResponse(result_object)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -93,9 +97,18 @@ class TestResponse:
         )
 
     def test_compact(self, pokie_app, result_list):
-        # test debug mode
+        # compact=True should produce minified output
         obj = JsonResponse(result_list)
         pokie_app.json.compact = True
+        result = obj.assemble(pokie_app)
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":["item_1","item_2","item_3"]}'
+        )
+
+        # compact=False should produce pretty-printed output
+        obj = JsonResponse(result_list)
+        pokie_app.json.compact = False
         result = obj.assemble(pokie_app)
         assert (
             result.get_data(True)
@@ -130,6 +143,7 @@ class TestCamelCaseResponse:
 
     def test_dict(self, pokie_app, result_dict):
         obj = CamelCaseJsonResponse(result_dict)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -139,6 +153,7 @@ class TestCamelCaseResponse:
 
     def test_str(self, pokie_app, result_str):
         obj = CamelCaseJsonResponse(result_str)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -148,6 +163,7 @@ class TestCamelCaseResponse:
 
     def test_list(self, pokie_app, result_list):
         obj = CamelCaseJsonResponse(result_list)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -157,6 +173,7 @@ class TestCamelCaseResponse:
 
     def test_object(self, pokie_app, result_object):
         obj = CamelCaseJsonResponse(result_object)
+        pokie_app.json.compact = True
 
         result = obj.assemble(pokie_app)
         assert (
@@ -165,9 +182,18 @@ class TestCamelCaseResponse:
         )
 
     def test_compact(self, pokie_app, result_list):
-        # test debug mode
+        # compact=True should produce minified output
         obj = CamelCaseJsonResponse(result_list)
         pokie_app.json.compact = True
+        result = obj.assemble(pokie_app)
+        assert (
+            result.get_data(True)
+            == '{"success":true,"data":["item_1","item_2","item_3"]}'
+        )
+
+        # compact=False should produce pretty-printed output
+        obj = CamelCaseJsonResponse(result_list)
+        pokie_app.json.compact = False
         result = obj.assemble(pokie_app)
         assert (
             result.get_data(True)

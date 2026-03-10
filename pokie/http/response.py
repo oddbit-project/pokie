@@ -80,10 +80,10 @@ class JsonResponse(ResponseRendererInterface):
             data = {}
 
         # error always has 'error' object
-        if not success and error is None:
-            error = {"message": self.msg_default_error}
-        else:
-            if isinstance(error, Mapping):
+        if not success:
+            if error is None:
+                error = {"message": self.msg_default_error}
+            elif isinstance(error, Mapping):
                 if "message" not in error.keys():
                     error["message"] = self.msg_default_error
 
@@ -102,7 +102,7 @@ class JsonResponse(ResponseRendererInterface):
         indent = None
         separators = (",", ":")
 
-        if _app.json.compact or _app.debug:
+        if not _app.json.compact or _app.debug:
             indent = 2
             separators = (", ", ": ")
 
@@ -131,7 +131,7 @@ class CamelCaseJsonResponse(JsonResponse):
         indent = None
         separators = (",", ":")
 
-        if _app.json.compact or _app.debug:
+        if not _app.json.compact or _app.debug:
             indent = 2
             separators = (", ", ": ")
 
