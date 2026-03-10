@@ -69,7 +69,6 @@ This is useful for Docker secrets or other systems that mount credentials as fil
 |-----------|---------|-------------|
 | `HTTP_ERROR_HANDLER` | `"pokie.http.HttpErrorHandler"` | Default HTTP exception handler class |
 | `AUTH_SECRET` | `""` | Secret key for Flask-Login session hashing |
-| `AUTH_USE_CACHE` | `True` | Enable caching on User and ACL services |
 
 ### Database Settings (PostgreSQL)
 
@@ -94,6 +93,23 @@ This is useful for Docker secrets or other systems that mount credentials as fil
 | `REDIS_PASSWORD` | `StrOrFile("")` | Redis password |
 | `REDIS_DB` | `0` | Redis database number |
 | `REDIS_SSL` | `True` | Enforce SSL connection |
+
+### CORS Settings
+
+| Attribute | Default | Description |
+|-----------|---------|-------------|
+| `CORS_ORIGINS` | `"*"` | Allowed origins (comma-separated or `*` for all) |
+| `CORS_METHODS` | `"GET,POST,PUT,PATCH,DELETE,OPTIONS"` | Allowed HTTP methods |
+| `CORS_ALLOW_HEADERS` | `"Content-Type,Authorization"` | Allowed request headers |
+| `CORS_EXPOSE_HEADERS` | `""` | Response headers to expose to the browser |
+| `CORS_MAX_AGE` | `600` | Preflight cache duration in seconds |
+
+### Rate Limiting Settings
+
+| Attribute | Default | Description |
+|-----------|---------|-------------|
+| `RATE_LIMIT_DEFAULT` | `""` | Default rate limit (e.g. `"100/hour"`). Empty disables limiting. |
+| `RATE_LIMIT_STORAGE` | `"memory"` | Storage backend: `"memory"` or `"redis"` |
 
 ### Test Settings
 
@@ -132,6 +148,13 @@ All configuration keys used internally are defined in `pokie.constants`:
 | `CFG_REDIS_DB` | `redis_db` | Redis database |
 | `CFG_REDIS_SSL` | `redis_ssl` | Redis SSL |
 | `CFG_AUTH_SECRET` | `auth_secret` | Auth secret key |
+| `CFG_CORS_ORIGINS` | `cors_origins` | CORS allowed origins |
+| `CFG_CORS_METHODS` | `cors_methods` | CORS allowed methods |
+| `CFG_CORS_ALLOW_HEADERS` | `cors_allow_headers` | CORS allowed headers |
+| `CFG_CORS_EXPOSE_HEADERS` | `cors_expose_headers` | CORS exposed headers |
+| `CFG_CORS_MAX_AGE` | `cors_max_age` | CORS preflight cache (seconds) |
+| `CFG_RATE_LIMIT_DEFAULT` | `rate_limit_default` | Default rate limit |
+| `CFG_RATE_LIMIT_STORAGE` | `rate_limit_storage` | Rate limit storage backend |
 
 ## DI Container Keys
 
@@ -151,6 +174,7 @@ All DI container keys are defined in `pokie.constants`:
 | `DI_TTY` | `tty` | Console writer |
 | `DI_SIGNAL` | `signal` | Signal manager |
 | `DI_HTTP_ERROR_HANDLER` | `http_error_handler` | HTTP exception handler |
+| `DI_RATE_LIMITER` | `rate_limiter` | Flask-Limiter instance |
 
 ## Other Constants
 

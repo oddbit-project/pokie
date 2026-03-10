@@ -7,3 +7,4 @@ from .fixture import RunFixtureCmd, CheckFixtureCmd
 from .pytest import PyTestCmd
 from .module import ModuleListCmd
 from .route import RouteListCmd
+from .openapi import OpenApiGenCmd

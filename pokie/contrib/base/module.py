@@ -32,6 +32,8 @@ class Module(BaseModule):
         "fixture:check": "pokie.contrib.base.cli.CheckFixtureCmd",
         # tests
         "pytest": "pokie.contrib.base.cli.PyTestCmd",
+        # openapi
+        "openapi:generate": "pokie.contrib.base.cli.OpenApiGenCmd",
     }
 
     services = {

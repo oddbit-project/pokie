@@ -76,6 +76,18 @@ CFG_TEST_DB_REUSE = "test_db_reuse"
 CFG_TEST_SKIP_MIGRATIONS = "test_skip_migrations"
 CFG_TEST_SKIP_FIXTURES = "test_skip_fixtures"
 
+# CORS Configuration
+CFG_CORS_ORIGINS = "cors_origins"
+CFG_CORS_METHODS = "cors_methods"
+CFG_CORS_ALLOW_HEADERS = "cors_allow_headers"
+CFG_CORS_EXPOSE_HEADERS = "cors_expose_headers"
+CFG_CORS_MAX_AGE = "cors_max_age"
+
+# Rate Limiting Configuration
+CFG_RATE_LIMIT_DEFAULT = "rate_limit_default"
+CFG_RATE_LIMIT_STORAGE = "rate_limit_storage"
+DI_RATE_LIMITER = "rate_limiter"
+
 # Default TTLs
 TTL_1H = 3600
 TTL_1D = 86400

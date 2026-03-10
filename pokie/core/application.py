@@ -55,6 +55,7 @@ class FlaskApplication:
         self.initialized = False
         self._built = False
         self._cli_initialized = False
+        self._http_initialized = False
 
         self.pre_http_hooks = (
             []
@@ -238,17 +239,15 @@ class FlaskApplication:
 
     def init(self):
         """Initialize modules and run pre-HTTP hooks. Called on first HTTP request."""
+        if self._http_initialized:
+            return
         with self.lock:
-            was_initialized = self.initialized
+            if self._http_initialized:
+                return
             self._build_modules()
-            if not was_initialized:
-                # call pre-http hooks
-                for fn in self.pre_http_hooks:
-                    fn(self)
-                # replace init with no-op to avoid re-running hooks
-                def stub(**kwargs):
-                    pass
-                setattr(self, "init", stub)
+            for fn in self.pre_http_hooks:
+                fn(self)
+            self._http_initialized = True
 
     def http(self, **kwargs):
         self.app.run(**kwargs)
@@ -338,6 +337,8 @@ class FlaskApplication:
         return result
 
     def job_runner(self, single_run=False, silent=False):
+        from .job_runner import JobRunner
+
         # prepare job list
         job_list = []
         for module_name, jobs in self.get_jobs().items():
@@ -363,35 +364,19 @@ class FlaskApplication:
         # reverse job list so user module jobs run before system module jobs (e.g. IdleJob)
         job_list.reverse()
 
+        runner = JobRunner(job_list, tty=self.tty, silent=silent)
+
         if single_run:
-            # single run, runs all jobs once
-            for job in job_list:
-                job.run(self.di)
+            runner.run_once(self.di)
         else:
-            # continuous run, run jobs in loop
-            # abort method
             def abort_jobs(di, signal_no, stack_trace):
                 self.shutdown()
                 if not silent:
                     di.get(DI_TTY).write("\nCtrl+C pressed, exiting...")
                 exit(0)
 
-            if not silent:
-                self.tty.write("\nRunning jobs, press CTRL+C to abort...")
-
-            # register clean shutdown
-            self.di.get(DI_SIGNAL).add_handler(signal.SIGINT, abort_jobs)
-
-            while True:
-                for job in job_list:
-                    try:
-                        job.run(self.di)
-                    except Exception as e:
-                        if not silent:
-                            self.tty.error(
-                                "Job '{}' failed: {}".format(
-                                    type(job).__name__, e
-                                )
-                            )
-                # prevent busy-loop if no job provides its own sleep/idle
-                time.sleep(0.1)
+            runner.run_loop(
+                self.di,
+                signal_manager=self.di.get(DI_SIGNAL),
+                abort_callback=abort_jobs,
+            )

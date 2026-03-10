@@ -20,9 +20,10 @@ dependency injection, service location, factories and object composition. It als
 - [CLI command](cli/commands.md) support;
 - [Events](events.md) and [signal handlers](signals.md);
 - [Caching](cache.md) (Redis, in-memory, dummy);
-- Jobs (objects invoked periodically to perform a task);
+- [Jobs](jobs.md) with per-job intervals, retry/backoff, and timeouts;
+- CORS and rate limiting via built-in [factories](factories.md);
+- OpenAPI 3.0 spec generation from registered routes;
 - [Fixtures](fixtures.md);
-- [Authentication and ACL](auth/authentication.md);
 - Unit testing support with [pytest](test/pytest.md);
 - [Code generation](codegen/codegen.md);
 - [Automatic endpoint generation](rest/auto.md);

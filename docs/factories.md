@@ -60,6 +60,76 @@ from pokie.core.factories.cache import CacheFactory
 
 > Note: CacheFactory currently only supports Redis as the cache backend.
 
+### FlaskLoginFactory
+
+Initializes Flask-Login on the Flask application. Sets the application secret key from configuration and registers
+a default user loader that returns `None`. Applications using authentication should override the user loader with
+their own implementation.
+
+```python
+from pokie.core.factories.login import FlaskLoginFactory
+```
+
+**Configuration keys used:**
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `CFG_AUTH_SECRET` | `""` | Secret key for Flask-Login session hashing |
+
+**Required by:** `PokieAuthView` (for authentication and ACL checks).
+
+### CorsFactory
+
+Initializes [Flask-CORS](https://flask-cors.readthedocs.io/) on the Flask application, enabling Cross-Origin Resource
+Sharing headers on all responses.
+
+```python
+from pokie.core.factories.cors import CorsFactory
+```
+
+**Configuration keys used:**
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `CFG_CORS_ORIGINS` | `"*"` | Allowed origins (comma-separated or `*` for all) |
+| `CFG_CORS_METHODS` | `"GET,POST,PUT,PATCH,DELETE,OPTIONS"` | Allowed HTTP methods |
+| `CFG_CORS_ALLOW_HEADERS` | `"Content-Type,Authorization"` | Allowed request headers |
+| `CFG_CORS_EXPOSE_HEADERS` | `""` | Response headers to expose to the browser |
+| `CFG_CORS_MAX_AGE` | `600` | Preflight cache duration in seconds |
+
+### RateLimiterFactory
+
+Initializes [Flask-Limiter](https://flask-limiter.readthedocs.io/) on the Flask application. If `RATE_LIMIT_DEFAULT`
+is empty, the factory is a no-op and no rate limiting is applied.
+
+```python
+from pokie.core.factories.rate_limiter import RateLimiterFactory
+```
+
+**Configuration keys used:**
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `CFG_RATE_LIMIT_DEFAULT` | `""` | Default rate limit (e.g. `"100/hour"`, `"10/minute"`). Empty disables limiting. |
+| `CFG_RATE_LIMIT_STORAGE` | `"memory"` | Storage backend: `"memory"` or `"redis"` |
+
+When using `"redis"` storage, the factory reads Redis connection settings from the existing Redis configuration keys
+(`CFG_REDIS_HOST`, `CFG_REDIS_PORT`, `CFG_REDIS_PASSWORD`, `CFG_REDIS_DB`).
+
+**Registers:** `DI_RATE_LIMITER` as a `Limiter` instance (only when rate limiting is enabled).
+
+The limiter instance can be used for per-route rate limits:
+
+```python
+from pokie.constants import DI_RATE_LIMITER
+
+limiter = di.get(DI_RATE_LIMITER)
+
+@limiter.limit("5/minute")
+def my_expensive_endpoint():
+    ...
+```
+
 ## Using Factories
 
 Factories are passed to `FlaskApplication.build()` as a list:
@@ -69,6 +139,9 @@ from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.core.factories.redis import RedisFactory
 from pokie.core.factories.cache import CacheFactory
+from pokie.core.factories.login import FlaskLoginFactory
+from pokie.core.factories.cors import CorsFactory
+from pokie.core.factories.rate_limiter import RateLimiterFactory
 
 
 cfg = Config().build()
@@ -78,6 +151,9 @@ factories = [
     PgSqlFactory,
     RedisFactory,
     CacheFactory,
+    FlaskLoginFactory,
+    CorsFactory,
+    RateLimiterFactory,
 ]
 
 flask_app = pokie_app.build(modules, factories)

@@ -50,17 +50,13 @@ nav:
     - REST Services: rest/services.md
     - Auto REST: rest/auto.md
 
-- Authentication:
-    - Authentication: auth/authentication.md
-    - User Management: auth/users.md
-    - Access Control: auth/acl.md
-    - Auth CLI: auth/cli.md
-
 - Cache: cache.md
 
 - Events & Signals:
     - Events: events.md
     - Signal Handlers: signals.md
+
+- Jobs: jobs.md
 
 - Fixtures: fixtures.md
 

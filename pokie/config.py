@@ -8,9 +8,6 @@ class PokieConfig:
     # Secret key for flask-login hashing
     AUTH_SECRET = ""
 
-    # Enables cache on User and Acl Services
-    AUTH_USE_CACHE = True
-
     # cache table-related metadata (such as primary key info)
     # development should be false
     DB_CACHE_METADATA = False
@@ -47,3 +44,14 @@ class PokieConfig:
     TEST_DB_REUSE = False  # if true, database is not dropped/recreated
     TEST_SKIP_MIGRATIONS = False  # if true, migrations are not run when recreating db
     TEST_SKIP_FIXTURES = False  # if true, fixtures are not run when recreating db
+
+    # CORS Configuration
+    CORS_ORIGINS = "*"
+    CORS_METHODS = "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    CORS_ALLOW_HEADERS = "Content-Type,Authorization"
+    CORS_EXPOSE_HEADERS = ""
+    CORS_MAX_AGE = 600
+
+    # Rate Limiting Configuration
+    RATE_LIMIT_DEFAULT = ""  # empty = disabled. e.g. "100/hour"
+    RATE_LIMIT_STORAGE = "memory"  # "memory" or "redis"
