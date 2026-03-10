@@ -185,15 +185,16 @@ def pokie_app(request, pokie_factory):
     yield app
 
     # cleanup
+    conn = app.di.get(DI_DB)
+    if conn:
+        conn.close()
     if not reuse_db:
-        conn = app.di.get(DI_DB)
-        if conn:
-            # discard old connection
-            conn.close()
-            # redo connection for drop purposes
-            drop_conn = _db_connection(app)
+        # redo connection for drop purposes
+        drop_conn = _db_connection(app)
+        try:
             mgr = PgManager(drop_conn)
             mgr.drop_database(test_db)
+        finally:
             drop_conn.close()
 
 
@@ -205,7 +206,7 @@ def _db_connection(app, db_name: str = None):
         "port": int(cfg.get(CFG_TEST_DB_PORT, 5432)),
         "user": cfg.get(CFG_TEST_DB_USER, "postgres"),
         "password": cfg.get(CFG_TEST_DB_PASSWORD, ""),
-        "sslmode": "require" if str(cfg.get(CFG_TEST_DB_SSL, "1")).lower() in ("1", "true", "yes") else None,
+        "sslmode": "require" if str(cfg.get(CFG_TEST_DB_SSL, "1")).lower() in ("1", "true", "yes") else "disable",
     }
     return PgConnection(**db_cfg)
 
@@ -218,17 +219,18 @@ def _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
 
     # first connection for administrative purposes
     admin_conn = _db_connection(app, None)
-    mgr = PgManager(admin_conn)
+    try:
+        mgr = PgManager(admin_conn)
 
-    db_exists = mgr.database_exists(test_db)
-    if db_exists and not reuse_db:
-        mgr.drop_database(test_db)
-        db_exists = False
+        db_exists = mgr.database_exists(test_db)
+        if db_exists and not reuse_db:
+            mgr.drop_database(test_db)
+            db_exists = False
 
-    if not db_exists:
-        mgr.create_database(test_db)
-
-    admin_conn.close()
+        if not db_exists:
+            mgr.create_database(test_db)
+    finally:
+        admin_conn.close()
 
     # actual final connection
     conn = _db_connection(app, test_db)

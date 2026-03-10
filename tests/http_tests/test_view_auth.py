@@ -1,4 +1,4 @@
-from pokie.constants import HTTP_OK, HTTP_BADREQ, HTTP_NOAUTH, HTTP_NOT_FOUND
+from pokie.constants import HTTP_OK, HTTP_NOAUTH, HTTP_NOT_FOUND
 from pokie.test import PokieClient
 
 
@@ -6,7 +6,7 @@ class TestPokieAuthView:
     def test_unauthenticated_gets_401(self, pokie_app):
         with pokie_app.test_client() as client:
             client = PokieClient(client)
-            result = client.get("/auth/logout")
+            result = client.get("/views/protected")
             assert result.code == HTTP_NOAUTH
 
     def test_success_response_via_hook(self, pokie_app):
@@ -21,10 +21,3 @@ class TestPokieAuthView:
             client = PokieClient(client)
             result = client.get("/nonexistent/route")
             assert result.code == HTTP_NOT_FOUND
-
-    def test_wrong_http_method(self, pokie_app):
-        with pokie_app.test_client() as client:
-            client = PokieClient(client)
-            # /auth/login only accepts POST
-            result = client.get("/auth/login")
-            assert result.success is False

@@ -14,6 +14,7 @@ from pokie_test.views import (
     CustomResponseView,
     CamelCaseResponseView,
 )
+from pokie_test.views.auth_view import ProtectedView
 from pokie_test.views.dispatch_hook import HookView
 from pokie_test.views.northwind_customer import CustomerView
 
@@ -109,6 +110,12 @@ class Module(BaseModule):
             "/mycustomer/<string:id_customer>",
             methods=["GET"],
             view_func=CustomerController.view_method("view_customer"),
+        )
+
+        app.add_url_rule(
+            "/views/protected",
+            methods=["GET"],
+            view_func=ProtectedView.as_view("view_protected"),
         )
 
         app.add_url_rule(

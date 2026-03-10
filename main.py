@@ -2,6 +2,7 @@ from rick.resource.config import EnvironmentConfig
 from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
+from pokie.core.factories.login import FlaskLoginFactory
 from pokie.core.factories.redis import RedisFactory
 
 
@@ -18,12 +19,11 @@ def build_pokie():
 
     # modules to load & initialize
     modules = [
-        'pokie.contrib.auth',
         'pokie_test',  # default test module
     ]
 
     # factories to run
-    factories = [PgSqlFactory, RedisFactory, ]
+    factories = [PgSqlFactory, RedisFactory, FlaskLoginFactory, ]
 
     # build app
     pokie_app = FlaskApplication(cfg)

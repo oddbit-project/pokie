@@ -14,7 +14,7 @@ def build_pokie():
     cfg = Config().build()
 
     # modules to load & initialize
-    modules = ['pokie.contrib.auth', 'module']
+    modules = ['module']
 
     # factories to run
     factories = [PgSqlFactory, ]

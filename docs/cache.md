@@ -72,9 +72,3 @@ factories = [
 ```
 
 This registers a `RedisCache` instance as `DI_CACHE` in the DI container.
-
-## Cache in Auth Services
-
-The auth module uses caching for user and ACL lookups. This behavior is controlled by the `AUTH_USE_CACHE`
-configuration option (default: `True`). When enabled and `DI_CACHE` is available, the `UserService` and `AclService`
-use the registered cache. When disabled, a `DummyCache` is used as a transparent fallback.
