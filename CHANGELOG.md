@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased] - pre-1.0 refactoring
+## [0.9.7] - 2026-03-10
 
 ### Added
 - Flask 3.x compatibility
