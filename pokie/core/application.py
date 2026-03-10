@@ -1,7 +1,7 @@
 import os
 import sys
 import threading
-from argparse import ArgumentParser
+import time
 from typing import List
 
 from flask import Flask
@@ -53,6 +53,8 @@ class FlaskApplication:
         self.lock = threading.Lock()
         self.tty = ConsoleWriter()
         self.initialized = False
+        self._built = False
+        self._cli_initialized = False
 
         self.pre_http_hooks = (
             []
@@ -60,6 +62,9 @@ class FlaskApplication:
         self.pre_cli_hooks = (
             []
         )  # list of hooks to run before initializing cli operations
+        self.pre_shutdown_hooks = (
+            []
+        )  # list of hooks to run during graceful shutdown
 
     def build(self, module_list: list, factories: List = None) -> Flask:
         """
@@ -73,6 +78,9 @@ class FlaskApplication:
         :param factories: optional list of callables to be initialized with the application
         :return:
         """
+        if self._built:
+            raise RuntimeError("build(): application has already been built")
+
         if not factories:
             factories = []
 
@@ -98,6 +106,9 @@ class FlaskApplication:
                 factory(self.di)
 
         # load modules
+        # Note: module load order is significant; system modules are loaded first, followed by
+        # user modules in the order specified. Later modules can override services registered
+        # by earlier modules, which is the intended mechanism for customization.
         self.modules = {}
         module_list = [*self.system_modules, *module_list]
         for name in module_list:
@@ -105,12 +116,6 @@ class FlaskApplication:
                 "{}.{}.{}".format(name, self.module_file_name, self.module_class_name),
                 raise_exception=True,
             )
-            if cls is None:
-                raise RuntimeError(
-                    "build(): cannot load module '{}' - Module() class not found".format(
-                        name
-                    )
-                )
             if not issubclass(cls, BaseModule):
                 raise RuntimeError(
                     "build(): Class Module on '{}' must extend BaseModule".format(name)
@@ -138,11 +143,21 @@ class FlaskApplication:
 
         # parse events from modules
         evt_mgr = EventManager()
-        for _, module in self.modules.items():
+        for name, module in self.modules.items():
             module_events = getattr(module, "events", None)
             if isinstance(module_events, dict):
                 for evt_name, evt_details in module_events.items():
+                    if not isinstance(evt_details, dict):
+                        raise RuntimeError(
+                            "build(): invalid event structure for '{}' in module '{}'".format(evt_name, name)
+                        )
                     for priority, handlers in evt_details.items():
+                        if not isinstance(handlers, (list, tuple)):
+                            raise RuntimeError(
+                                "build(): event '{}' priority {} handlers must be a list in module '{}'".format(
+                                    evt_name, priority, name
+                                )
+                            )
                         for handler in handlers:
                             evt_mgr.add_handler(evt_name, handler, int(priority))
 
@@ -162,6 +177,7 @@ class FlaskApplication:
             self.di.add(DI_HTTP_ERROR_HANDLER, handler)
 
         self.app.wsgi_app = ModuleRunnerMiddleware(self.app.wsgi_app, self)
+        self._built = True
         return self.app
 
     def register_pre_http_hook(self, f):
@@ -190,56 +206,79 @@ class FlaskApplication:
         """
         self.pre_cli_hooks.append(f)
 
-    def init(self):
-        with self.lock:
-            if not self.initialized:
-                # initialize modules
-                for _, module in self.modules.items():
-                    module.build(self)
-                self.initialized = True
+    def register_pre_shutdown_hook(self, f):
+        """
+        Register a hook to be executed during graceful shutdown
 
+        the hook must have the following interface:
+
+        callable(app:FlaskApplication)
+
+        :param f:
+        :return:
+        """
+        self.pre_shutdown_hooks.append(f)
+
+    def shutdown(self):
+        """
+        Execute registered shutdown hooks for graceful cleanup
+        """
+        for fn in self.pre_shutdown_hooks:
+            fn(self)
+
+    def _build_modules(self):
+        """
+        Call build() on all registered modules. Idempotent.
+        Must be called under self.lock for thread safety.
+        """
+        if not self.initialized:
+            for _, module in self.modules.items():
+                module.build(self)
+            self.initialized = True
+
+    def init(self):
+        """Initialize modules and run pre-HTTP hooks. Called on first HTTP request."""
+        with self.lock:
+            was_initialized = self.initialized
+            self._build_modules()
+            if not was_initialized:
                 # call pre-http hooks
                 for fn in self.pre_http_hooks:
                     fn(self)
-
-            def stub(**kwargs):
-                pass
-
-            # instead of flag, we empty the method
-            setattr(self, "init", stub)
+                # replace init with no-op to avoid re-running hooks
+                def stub(**kwargs):
+                    pass
+                setattr(self, "init", stub)
 
     def http(self, **kwargs):
         self.app.run(**kwargs)
 
     def cli_runner(self, command: str, args: list = None, **kwargs) -> int:
-        # run pre-cli hooks
-        for fn in self.pre_cli_hooks:
-            fn(self)
+        # Note: module.build() is not called here because it is intended for HTTP
+        # initialization (route registration). CLI commands access services via the DI
+        # container, which is already populated during FlaskApplication.build().
+        # Use pre_cli_hooks for any CLI-specific initialization.
+
+        # run pre-cli hooks (once, on first cli_runner invocation)
+        if not self._cli_initialized:
+            for fn in self.pre_cli_hooks:
+                fn(self)
+            self._cli_initialized = True
 
         # either console or inline commands
         if args is None:
             args = []
 
+        # extract writer before passing remaining kwargs to argument parser
+        tty = kwargs.pop("writer", None) or self.di.get(DI_TTY)
+
         # parameter parser
         parser = ArgParser(**kwargs)
-
-        if "writer" in kwargs.keys():
-            tty = kwargs["writer"]
-        else:
-            tty = ConsoleWriter()
 
         # lookup handler
         for _, module in self.modules.items():
             if command in module.cmd.keys():
-                # load_class may raise ModuleNotFoundError if path not found
                 handler = load_class(module.cmd[command], raise_exception=True)
-
-                if not handler:
-                    raise RuntimeError(
-                        "cli(): handler class '{}' not found".format(
-                            module.cmd[command]
-                        )
-                    )
 
                 if not issubclass(handler, CliCommand):
                     raise RuntimeError(
@@ -305,28 +344,23 @@ class FlaskApplication:
             for job_name in jobs:
                 if not silent:
                     self.tty.write("Preparing job  '{}'...".format(job_name))
-                job = load_class(job_name)
-                if job is None:
-                    if not silent:
-                        raise ValueError(
-                            "Non-existing job class '{}' in module {}".format(
-                                job_name, module_name
-                            )
-                        )
-                    else:
+                try:
+                    job = load_class(job_name, raise_exception=True)
+                except Exception:
+                    if silent:
                         return False
+                    raise
                 if not issubclass(job, (Injectable, Runnable)):
-                    if not silent:
-                        raise RuntimeError(
-                            "Class '{}' must implement Injectable, Runnable interfaces".format(
-                                job_name
-                            )
-                        )
-                    else:
+                    if silent:
                         return False
+                    raise RuntimeError(
+                        "Class '{}' must implement Injectable, Runnable interfaces".format(
+                            job_name
+                        )
+                    )
                 job_list.append(job(self.di))
 
-        # run job list
+        # reverse job list so user module jobs run before system module jobs (e.g. IdleJob)
         job_list.reverse()
 
         if single_run:
@@ -337,6 +371,7 @@ class FlaskApplication:
             # continuous run, run jobs in loop
             # abort method
             def abort_jobs(di, signal_no, stack_trace):
+                self.shutdown()
                 if not silent:
                     di.get(DI_TTY).write("\nCtrl+C pressed, exiting...")
                 exit(0)
@@ -349,4 +384,14 @@ class FlaskApplication:
 
             while True:
                 for job in job_list:
-                    job.run(self.di)
+                    try:
+                        job.run(self.di)
+                    except Exception as e:
+                        if not silent:
+                            self.tty.error(
+                                "Job '{}' failed: {}".format(
+                                    type(job).__name__, e
+                                )
+                            )
+                # prevent busy-loop if no job provides its own sleep/idle
+                time.sleep(0.1)

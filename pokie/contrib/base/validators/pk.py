@@ -1,3 +1,5 @@
+import logging
+
 from rick.base import Di
 from rick.mixin import Translator
 from rick.validator import registry
@@ -5,6 +7,8 @@ from rick.validator import Rule
 
 from pokie.constants import DI_SERVICES
 from pokie.contrib.base.constants import SVC_VALIDATOR
+
+logger = logging.getLogger(__name__)
 
 # dependency injector
 _di = None
@@ -52,5 +56,6 @@ class DbPrimaryKey(Rule):
                 return True, ""
             return False, self.error_message(error_msg, translator)
 
-        except Exception:
+        except Exception as e:
+            logger.exception("DbPrimaryKey validation error for table '%s': %s", table_name, e)
             return False, self.error_message(error_msg, translator)

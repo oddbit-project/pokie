@@ -34,7 +34,7 @@ class TemplateProcessor:
         if dest_path.exists() and not dest_path.is_dir():
             raise ValueError(
                 "TemplateProcessor::process() path '{}' is not a directory".format(
-                    str(src_path)
+                    str(dest_path)
                 )
             )
 

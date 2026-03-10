@@ -188,8 +188,8 @@ class TestDbGrid:
     def test_dbgrid_parameters_with_offset_limit(self, dbgrid_request):
         assert dbgrid_request.is_valid({"offset": "5", "limit": "10"}) is True
         data = dbgrid_request.dbgrid_parameters()
-        assert data["offset"] == "5"
-        assert data["limit"] == "10"
+        assert data["offset"] == 5
+        assert data["limit"] == 10
 
     def test_dbgrid_parameters_auto_cap(self, dbgrid_request):
         assert dbgrid_request.is_valid({}) is True

@@ -53,7 +53,7 @@ class DbGridRequest(RequestRecord):
                     name = self._normalize(f[0])
                     if name not in self.record._fieldmap.keys():
                         self.add_error(
-                            self.FIELD_MATCH, t.t("invalid field name: {}").format(f)
+                            self.FIELD_MATCH, t.t("invalid field name: {}").format(f[0])
                         )
                         return False
                     result[self.record._fieldmap[name]] = f[1]
@@ -132,6 +132,13 @@ class DbGridRequest(RequestRecord):
         """
         offset = self.fields[self.FIELD_OFFSET].value
         limit = self.fields[self.FIELD_LIMIT].value
+
+        # ensure offset and limit are integers (RequestRecord.is_valid() may
+        # overwrite custom validator values with raw string data)
+        if offset is not None:
+            offset = int(offset)
+        if limit is not None:
+            limit = int(limit)
 
         # automatically cap records
         if offset is None and limit is None and list_limit > 0:

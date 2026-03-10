@@ -4,7 +4,7 @@ from flask import request
 
 from pokie.http import DbGridRequest, PokieView
 from pokie.rest import RestService, RestServiceMixin
-from pokie.constants import DI_SERVICES
+from pokie.constants import DI_SERVICES, HTTP_INTERNAL_ERROR
 
 
 class RestView(PokieView):
@@ -54,9 +54,8 @@ class RestView(PokieView):
             result = {"total": count, "items": data}
             return self.success(result)
         except Exception as e:
-            # exception may happen because of mismatched data type, such as matching strings to int fields
             self.logger.exception(e)
-            return self.error()
+            return self.error("internal error", code=HTTP_INTERNAL_ERROR)
 
     def post(self):
         """
@@ -64,14 +63,16 @@ class RestView(PokieView):
         :return:
         """
         record = self.request.bind(self.record_class)
-        self.svc.insert(record)
-        return self.success()
+        result = self.svc.insert(record)
+        return self.success({"id": result})
 
     def put(self, id_record):
         """
         Update Record
         :return:
         """
+        if not self.svc.exists(id_record):
+            return self.not_found()
         record = self.request.bind(self.record_class)
         self.svc.update(id_record, record)
         return self.success()

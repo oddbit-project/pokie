@@ -50,8 +50,8 @@ class RecordGenerator:
         :return: Record class
         """
 
-        class clsRecord:
-            pass
+        cls_name = "{}Record".format(snake_to_pascal(spec.table))
+        clsRecord = type(cls_name, (), {})
 
         for field in spec.fields:
             if field.pk is False:

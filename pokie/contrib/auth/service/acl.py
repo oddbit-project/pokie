@@ -36,7 +36,9 @@ class AclService(Injectable):
         if id_roles is not None:
             result = {}
             for id_role in id_roles:
-                result[id_role] = self.get_role(id_role)
+                role = self.get_role(id_role)
+                if role is not None:
+                    result[id_role] = role
             return result
 
         result = self.role_repository.map_result_id(
@@ -185,6 +187,7 @@ class AclService(Injectable):
         """
         self.role_repository.add_user_role(id_user, id_role)
         self.cache.remove(self.KEY_USER_ROLES.format(id_user))
+        self.cache.remove(self.KEY_USER_ROLE_IDS.format(id_user))
 
     def remove_user_role(self, id_user: int, id_role: int):
         """
@@ -195,6 +198,7 @@ class AclService(Injectable):
         """
         self.role_repository.remove_user_role(id_user, id_role)
         self.cache.remove(self.KEY_USER_ROLES.format(id_user))
+        self.cache.remove(self.KEY_USER_ROLE_IDS.format(id_user))
 
     def remove_role(self, id_role: int):
         """

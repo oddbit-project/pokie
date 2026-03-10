@@ -4,9 +4,6 @@ from rick.base import Di
 from rick.mixin import Injectable
 from rick.resource import CacheInterface
 
-from pokie.contrib.auth.dto import UserRecord
-
-
 class MemoryCache(CacheInterface, Injectable):
     """
     In-memory cache

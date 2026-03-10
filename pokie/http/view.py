@@ -143,7 +143,7 @@ class PokieView(MethodView):
         handler = getattr(self, method, None)
 
         if method not in self.allow_methods:
-            return self.exception_handler(None)
+            return self.error("method not allowed")
 
         # If the request method is HEAD and we don't have a handler for it
         # retry with GET.
@@ -155,7 +155,8 @@ class PokieView(MethodView):
             handler = getattr(self, kwargs["_action_method_"], None)
             del kwargs["_action_method_"]
 
-        assert handler is not None, "Cannot resolve handler method for dispatch"
+        if handler is None:
+            raise RuntimeError("Cannot resolve handler method for dispatch")
 
         try:
             # run pre-dispatch hooks
@@ -163,7 +164,8 @@ class PokieView(MethodView):
             hook_list.extend(self.internal_hooks)  # add system hooks
             for name in hook_list:
                 hook = getattr(self, name, None)
-                assert hook is not None, f"non-existing dispatch hook {name!r}"
+                if hook is None:
+                    raise RuntimeError(f"non-existing dispatch hook {name!r}")
                 pre = hook(method, *args, **kwargs)
                 if pre is not None:
                     return pre
@@ -201,11 +203,6 @@ class PokieView(MethodView):
             for decorator in cls.decorators:
                 view = decorator(view)
 
-        # We attach the view class to the view function for two reasons:
-        # first of all it allows us to easily figure out what class-based
-        # view this thing came from, secondly it's also used for instantiating
-        # the view class so you can actually replace it with something else
-        # for testing purposes and debugging.
         view.view_class = cls  # type: ignore
         view.__name__ = name
         view.__doc__ = cls.__doc__

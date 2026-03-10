@@ -30,7 +30,7 @@ class PokieConfig:
     REDIS_PORT = 6379
     REDIS_PASSWORD = StrOrFile("")
     REDIS_DB = 0
-    REDIS_SSL = "1"
+    REDIS_SSL = True
 
     # Pytest Configuration
     TEST_DB_NAME = "pokie_test"  # test database parameters

@@ -21,6 +21,9 @@ class SignalManager(Injectable):
     def _register_handler(self, signalnum: int):
         def wrap_signal(signal_no, stack_frame):
             for handler in self.handlers[signal_no]:
-                handler(self.get_di(), signal_no, stack_frame)
+                try:
+                    handler(self.get_di(), signal_no, stack_frame)
+                except Exception:
+                    pass  # ensure all handlers run even if one fails
 
         signal.signal(signalnum, wrap_signal)

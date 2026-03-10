@@ -1,4 +1,4 @@
-from example.module.constants import SVC_SAMPLE
+from module.constants import SVC_SAMPLE
 from pokie.core import BaseModule
 
 
@@ -48,7 +48,7 @@ class Module(BaseModule):
     # convention suggests the usage of snakecase (eg. some_event).
     #
     #
-    # events are refined as a two-level structure, containing zero or more events, and then handlers and priorities:
+    # events are defined as a two-level structure, containing zero or more events, and then handlers and priorities:
     # events = {
     #   'event_name': {
     #       numeric_priority: [path_to_handler, path_to_handler, ...]
@@ -82,7 +82,7 @@ class Module(BaseModule):
     # database operations, such as data migrations
     #
     fixtures = [
-        # 'full.path.to.fixture.class
+        # 'full.path.to.fixture.class'
     ]
 
     def build(self, parent=None):
@@ -90,4 +90,11 @@ class Module(BaseModule):
         # initialized, including the Service Manager, Event Manager and even registered factories
         #
         # All Flask-related routing calls should reside here
-        pass
+        from module.view import SampleView
+
+        app = parent.app
+        app.add_url_rule(
+            "/sample",
+            methods=["GET"],
+            view_func=SampleView.as_view("sample_index"),
+        )
