@@ -56,7 +56,7 @@ class TemplateProcessor:
                     tty.write("created '{}' file".format(str(dest_file)))
             elif f.is_dir():
                 new_dest = dest / Path(f.name)
-                new_dest.mkdir()
+                new_dest.mkdir(exist_ok=True)
                 if tty:
                     tty.write("created '{}' directory".format(str(new_dest)))
                 self._process_dir(f, new_dest, vars, tty)

@@ -191,9 +191,10 @@ def pokie_app(request, pokie_factory):
             # discard old connection
             conn.close()
             # redo connection for drop purposes
-            conn = _db_connection(app)
-            mgr = PgManager(conn)
+            drop_conn = _db_connection(app)
+            mgr = PgManager(drop_conn)
             mgr.drop_database(test_db)
+            drop_conn.close()
 
 
 def _db_connection(app, db_name: str = None):
@@ -204,7 +205,7 @@ def _db_connection(app, db_name: str = None):
         "port": int(cfg.get(CFG_TEST_DB_PORT, 5432)),
         "user": cfg.get(CFG_TEST_DB_USER, "postgres"),
         "password": cfg.get(CFG_TEST_DB_PASSWORD, ""),
-        "sslmode": None if not cfg.get(CFG_TEST_DB_SSL, "1") else "require",
+        "sslmode": "require" if str(cfg.get(CFG_TEST_DB_SSL, "1")).lower() in ("1", "true", "yes") else None,
     }
     return PgConnection(**db_cfg)
 

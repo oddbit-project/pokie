@@ -75,33 +75,37 @@ class DbGridRequest(RequestRecord):
         result = None
 
         if sort is not None:
-            sort = sort.split(",")
-            result = {}
-            # convert field, field:desc -> db_field:asc, db_field:desc
-            for expr in sort:
-                expr = expr.split(":")
-                expr[0] = self._normalize(expr[0])
-                fieldmap = self._record_fieldmap()
-                if expr[0] not in fieldmap.keys():
-                    self.add_error(
-                        self.FIELD_SORT,
-                        t.t("invalid sort field name: {}").format(expr[0]),
-                    )
-                    return False
-
-                name = fieldmap[expr[0]]
-
-                if len(expr) > 1:
-                    if expr[1].lower() not in ["asc", "desc"]:
+            # empty string is treated as no sort
+            if len(sort.strip()) == 0:
+                sort = None
+            else:
+                sort = sort.split(",")
+                result = {}
+                # convert field, field:desc -> db_field:asc, db_field:desc
+                for expr in sort:
+                    expr = [e.strip() for e in expr.split(":")]
+                    expr[0] = self._normalize(expr[0])
+                    fieldmap = self._record_fieldmap()
+                    if expr[0] not in fieldmap.keys():
                         self.add_error(
                             self.FIELD_SORT,
-                            t.t("invalid sort order: {}").format(expr[1]),
+                            t.t("invalid sort field name: {}").format(expr[0]),
                         )
                         return False
 
-                    result[name] = expr[1]
-                else:
-                    result[name] = "asc"
+                    name = fieldmap[expr[0]]
+
+                    if len(expr) > 1:
+                        if expr[1].lower() not in ["asc", "desc"]:
+                            self.add_error(
+                                self.FIELD_SORT,
+                                t.t("invalid sort order: {}").format(expr[1]),
+                            )
+                            return False
+
+                        result[name] = expr[1].lower()
+                    else:
+                        result[name] = "asc"
 
         self.fields[self.FIELD_SORT].value = result
         return True

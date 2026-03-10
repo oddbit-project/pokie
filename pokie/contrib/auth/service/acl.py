@@ -159,6 +159,15 @@ class AclService(Injectable):
             self.cache.set(key, record, self.TTL)
         return record.id
 
+    def _invalidate_role_users(self, id_role: int):
+        """
+        Invalidate per-user caches for all users assigned to a role
+        :param id_role:
+        """
+        for id_user in self.list_role_user_id(id_role):
+            self.cache.remove(self.KEY_USER_ROLES.format(id_user))
+            self.cache.remove(self.KEY_USER_ROLE_IDS.format(id_user))
+
     def add_role_resource(self, id_role: int, id_resource: int):
         """
         Add Acl Resource to Role
@@ -169,6 +178,7 @@ class AclService(Injectable):
         self.role_repository.add_role_resource(id_role, id_resource)
         self.cache.remove(self.KEY_ROLE.format(id_role))
         self.cache.remove(self.KEY_ROLE_RESOURCE.format(id_role))
+        self._invalidate_role_users(id_role)
 
     def list_role_user_id(self, id_role: int) -> List[int]:
         """
@@ -227,6 +237,7 @@ class AclService(Injectable):
         """
         self.role_repository.truncate_resources(id_role)
         self.cache.remove(self.KEY_ROLE_RESOURCE.format(id_role))
+        self._invalidate_role_users(id_role)
 
     def truncate_role_users(self, id_role: int):
         """
@@ -259,6 +270,7 @@ class AclService(Injectable):
         """
         self.role_repository.remove_role_resource(id_role, id_resource)
         self.cache.remove(self.KEY_ROLE_RESOURCE.format(id_role))
+        self._invalidate_role_users(id_role)
 
     @property
     def role_repository(self):

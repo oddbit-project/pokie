@@ -18,17 +18,21 @@ class PokieResponse:
         self.success = response.status_code == 200
 
         if response.data:
-            data = json.loads(response.data)
+            try:
+                data = json.loads(response.data)
+            except (json.JSONDecodeError, ValueError):
+                return
 
             if "data" in data.keys():
                 self.data = data["data"]
 
             if "error" in data.keys():
                 self.error = data["error"]
-                if "message" in self.error.keys():
-                    self.error_message = self.error["message"]
-                if "formError" in self.error.keys():
-                    self.form_error = self.error["formError"]
+                if isinstance(self.error, dict):
+                    if "message" in self.error.keys():
+                        self.error_message = self.error["message"]
+                    if "formError" in self.error.keys():
+                        self.form_error = self.error["formError"]
 
 
 class AuthInterface:

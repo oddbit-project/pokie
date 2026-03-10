@@ -164,8 +164,12 @@ class UserService(Injectable):
         :param record:
         :return:
         """
+        # fetch old record to invalidate username cache if changed
+        old_record = self.user_repository.fetch_pk(record.id)
         self.user_repository.update(record)
         self.cache.remove(self.KEY_USER.format(record.id))
+        if old_record:
+            self.cache.remove(self.KEY_USERNAME.format(old_record.username))
 
     def get_user_by_token(self, token: str) -> Optional[UserRecord]:
         """

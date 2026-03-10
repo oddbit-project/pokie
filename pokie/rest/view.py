@@ -2,9 +2,10 @@ from typing import List
 
 from flask import request
 
+from flask.typing import ResponseReturnValue
 from pokie.http import DbGridRequest, PokieView
 from pokie.rest import RestService, RestServiceMixin
-from pokie.constants import DI_SERVICES, HTTP_INTERNAL_ERROR
+from pokie.constants import DI_SERVICES, HTTP_BADREQ, HTTP_INTERNAL_ERROR
 
 
 class RestView(PokieView):
@@ -88,6 +89,11 @@ class RestView(PokieView):
 
         self.svc.delete(id_record)
         return self.success()
+
+    def exception_handler(self, e) -> ResponseReturnValue:
+        if e is not None:
+            self.logger.exception(e)
+        return self.error("bad request", code=HTTP_BADREQ)
 
     @property
     def svc(self) -> RestService:

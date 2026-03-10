@@ -28,6 +28,6 @@ def RedisFactory(_di: Di):
             "port": int(cfg.get(CFG_REDIS_PORT, 6379)),
             "password": cfg.get(CFG_REDIS_PASSWORD, None),
             "db": int(cfg.get(CFG_REDIS_DB, 0)),
-            "ssl": True if cfg.get(CFG_REDIS_SSL, None) == "1" else False,
+            "ssl": str(cfg.get(CFG_REDIS_SSL, "")).lower() in ("1", "true", "yes"),
         }
         return redis.Redis(**redis_cfg)

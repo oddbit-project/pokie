@@ -219,7 +219,7 @@ class PokieView(MethodView):
         """
         if e is not None:
             self.logger.exception(e)
-        return self.error("bad request")
+        return self.error("internal error", code=HTTP_INTERNAL_ERROR)
 
     def success(self, data=None, code: int = HTTP_OK):
         """

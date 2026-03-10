@@ -64,7 +64,7 @@ class DbInitCmd(DbCliCommand):
                 self.tty.write(self.tty.colorizer.green("success"))
                 return True
             else:
-                self.tty.write(self.tty.colorizer.green("error: " + result.error))
+                self.tty.write(self.tty.colorizer.red("error: " + result.error))
                 return False
 
         self.tty.write("migration manager already installed")

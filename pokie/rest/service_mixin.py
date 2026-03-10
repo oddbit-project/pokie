@@ -34,7 +34,6 @@ class RestServiceMixin:
             limit=limit,
             offset=offset,
             sort_fields=sort_fields,
-            search_fields=search_fields,
         )
 
     @property
