@@ -89,13 +89,14 @@ TEST_SKIP_FIXTURES values.
 Note: fixtures depend on the predefined values for the different DI constants as specified on the *pokie.constants*
 file.
 
-| Fixture      | Description           |
-|--------------|-----------------------|
-| pokie_app    | Pokie Flask object    |
-| pokie_config | Pokie Config object   |
-| pokie_di     | Pokie Di object       |
-| pokie_db     | Pokie Database client |
-| pokie_client | Flask test client     | 
+| Fixture               | Description             |
+|-----------------------|-------------------------|
+| pokie_app             | Pokie Flask object      |
+| pokie_config          | Pokie Config object     |
+| pokie_di              | Pokie Di object         |
+| pokie_db              | Pokie Database client   |
+| pokie_client          | Flask test client       |
+| pokie_service_manager | Pokie Service Manager   |
 
 ## Writing Tests
 

@@ -11,6 +11,6 @@ def signal_handler(di, signalnum, stack_trace):
 mgr = di.get(DI_SIGNAL) # type: pokie.core.SignalManager
 
 # register custom handler
-mgr.add_handler(signal.SIGINT, signal_handler())
+mgr.add_handler(signal.SIGINT, signal_handler)
 
 ```
