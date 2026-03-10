@@ -1,5 +1,5 @@
 from rick.base import Di
-from rick.resource.redis import RedisCache
+from pokie.cache.redis import RedisCache
 
 from pokie.constants import DI_CACHE
 

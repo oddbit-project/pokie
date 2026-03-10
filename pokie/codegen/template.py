@@ -39,7 +39,7 @@ class TemplateProcessor:
             )
 
         if not dest_path.exists():
-            dest_path.mkdir()
+            dest_path.mkdir(parents=True)
         self._process_dir(src_path, dest_path, vars, tty)
 
     def _process_dir(self, src: Path, dest: Path, vars: dict, tty=None):

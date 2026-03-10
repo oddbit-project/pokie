@@ -70,7 +70,7 @@ def pokie_factory():
     if pokie_ns not in sys.modules.keys():
         raise RuntimeError("Error: cannot find pokie namespace '{}'".format(pokie_ns))
 
-    app = getattr(sys.modules[pokie_ns], pokie_app)
+    app = getattr(sys.modules[pokie_ns], pokie_app, None)
     # validate object
     if app is None:
         raise RuntimeError(
@@ -80,7 +80,7 @@ def pokie_factory():
         )
 
     # validate factory if exists
-    factory = getattr(sys.modules[pokie_ns], pokie_factory)
+    factory = getattr(sys.modules[pokie_ns], pokie_factory, None)
     if factory is not None:
         if not callable(factory):
             raise RuntimeError("Error: attribute named 'build_pokie' is not callable")
@@ -157,6 +157,10 @@ def pokie_app(request, pokie_factory):
 
     # -- app context
     if not cfg.get(CFG_TEST_SHARE_CTX):
+        if factory is None:
+            raise RuntimeError(
+                "Error: factory function 'build_pokie' is required when CFG_TEST_SHARE_CTX is False"
+            )
         # if context isn't shared, create whole new application
         _, app = factory()
 
@@ -212,8 +216,8 @@ def _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
         return None
 
     # first connection for administrative purposes
-    conn = _db_connection(app, None)
-    mgr = PgManager(conn)
+    admin_conn = _db_connection(app, None)
+    mgr = PgManager(admin_conn)
 
     db_exists = mgr.database_exists(test_db)
     if db_exists and not reuse_db:
@@ -222,6 +226,8 @@ def _init_db(app, test_db, reuse_db, skip_migrations, skip_fixtures):
 
     if not db_exists:
         mgr.create_database(test_db)
+
+    admin_conn.close()
 
     # actual final connection
     conn = _db_connection(app, test_db)

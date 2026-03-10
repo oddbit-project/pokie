@@ -46,7 +46,7 @@ class TestSignalManager:
     def test_non_callable_raises(self):
         di = Di()
         mgr = SignalManager(di)
-        with pytest.raises(AssertionError):
+        with pytest.raises(TypeError):
             mgr.add_handler(signal.SIGUSR1, "not_callable")
 
     def test_non_int_signal_raises(self):
@@ -56,7 +56,7 @@ class TestSignalManager:
         def handler(di, sig, frame):
             pass
 
-        with pytest.raises(AssertionError):
+        with pytest.raises(TypeError):
             mgr.add_handler("not_int", handler)
 
     def test_register_handler_calls_signal(self):

@@ -13,7 +13,7 @@ class Config(EnvironmentConfig, PokieConfig):
     TEST_DB_SSL = False
 
 
-def main(args=None):
+def main():
     # patch base module to only allow some commands
     allowed_cmds = [
         "list",

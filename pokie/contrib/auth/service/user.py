@@ -227,16 +227,12 @@ class UserService(Injectable):
         if not record:
             return False
         key = self.KEY_TOKEN.format(record.token)
-        if record.expires and record.expires < datetime.now(timezone.utc):
-            self.cache.remove(key)
-            return True
-
         if not record.active:
             return True
 
         record.active = False
         self.user_token_repository.update(record)
-        self.cache.set(key, record, self.TTL)
+        self.cache.remove(key)
         return True
 
     def remove_user_token(self, id_user_token: int):

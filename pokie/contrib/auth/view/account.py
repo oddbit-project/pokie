@@ -31,7 +31,7 @@ class LoginView(PokieView):
 
         user = build_user_acl(self.di, user_record)
 
-        self.mgr_event().dispatch(self.di, "afterLogin", user)
+        self.mgr_event().dispatch(self.di, "afterLogin", user=user)
 
         # flask-login
         login_user(user, remember)

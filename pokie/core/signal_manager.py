@@ -1,6 +1,9 @@
+import logging
 import signal
 from rick.mixin import Injectable
 from rick.base import Di
+
+logger = logging.getLogger(__name__)
 
 
 class SignalManager(Injectable):
@@ -9,10 +12,12 @@ class SignalManager(Injectable):
         self.handlers = {}
 
     def add_handler(self, signalnum: int, handler: callable):
-        assert callable(handler) is True
-        assert isinstance(signalnum, int)
+        if not callable(handler):
+            raise TypeError("add_handler(): handler must be callable")
+        if not isinstance(signalnum, int):
+            raise TypeError("add_handler(): signalnum must be an integer")
 
-        if signalnum in self.handlers.keys():
+        if signalnum in self.handlers:
             self.handlers[signalnum].append(handler)
         else:
             self.handlers[signalnum] = [handler]
@@ -23,7 +28,7 @@ class SignalManager(Injectable):
             for handler in self.handlers[signal_no]:
                 try:
                     handler(self.get_di(), signal_no, stack_frame)
-                except Exception:
-                    pass  # ensure all handlers run even if one fails
+                except Exception as e:
+                    logger.exception("Signal handler %s failed: %s", handler, e)
 
         signal.signal(signalnum, wrap_signal)

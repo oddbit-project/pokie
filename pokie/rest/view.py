@@ -93,6 +93,8 @@ class RestView(PokieView):
     def svc(self) -> RestService:
         mgr = self.di.get(DI_SERVICES)
         if not self.service_name:
+            if self.record_class is None:
+                raise RuntimeError("RestView: record_class or service_name must be set")
             svc_name = "svc.rest.{}.{}".format(
                 self.__module__,
                 str(self.record_class.__name__).replace("Record", "", 1),

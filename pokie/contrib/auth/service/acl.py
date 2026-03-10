@@ -238,6 +238,7 @@ class AclService(Injectable):
         self.role_repository.truncate_users(id_role)
         for id_user in user_list:
             self.cache.remove(self.KEY_USER_ROLES.format(id_user))
+            self.cache.remove(self.KEY_USER_ROLE_IDS.format(id_user))
 
     def truncate_role(self, id_role: int):
         """
