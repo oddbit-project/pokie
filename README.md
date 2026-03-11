@@ -6,22 +6,22 @@
 [![license](https://img.shields.io/pypi/l/pokie.svg)](https://git.oddbit.org/OddBit/pokie/src/branch/master/LICENSE)
 
 
-Pokie is an API-oriented modular web framework built on top of [Flask](https://github.com/pallets/flask/),
+Pokie is an REST web framework built on top of [Flask](https://github.com/pallets/flask/),
 [Rick](https://git.oddbit.org/OddBit/rick) and [Rick-db](https://git.oddbit.org/OddBit/rick_db) libraries, following three-layer and clean architecture
 design principles.
 
-It features a object-oriented design, borrowing from common patterns found in other languages, such as
+It features an object-oriented design, borrowing from common patterns found in other languages, such as
 dependency injection, service location, factories and object composition. It also offers the following functionality:
 
 - Modular design;
 - Dependency registry and factories;
 - Configuration via environment variables or JSON files;
 - CLI command support;
+- Events and signal handlers;
+- Caching (Redis, in-memory, dummy);
+- Jobs with per-job intervals, retry/backoff, and timeouts;
 - CORS and rate limiting via built-in factories;
 - OpenAPI 3.0 spec generation from registered routes;
-- Jobs with per-job intervals, retry/backoff, and timeouts;
-- Events and signal handlers;
-- Caching (Redis, in-memory);
 - Fixtures;
 - Unit testing support with pytest;
 - Code generation;
@@ -35,7 +35,74 @@ dependency injection, service location, factories and object composition. It als
 
 For detailed information, please check the [Documentation](https://oddbit-project.github.io/pokie/)
 
-# TL; DR; tutorial
+## Automatic REST from Database Tables
+
+Generate full CRUD endpoints directly from a database table — no DTO, no RequestRecord, no service class needed:
+
+```python
+from pokie.core import BaseModule
+from pokie.http import AutoRouter
+from pokie.rest.auto import Auto
+
+
+class Module(BaseModule):
+    name = "my_module"
+
+    def build(self, parent=None):
+        app = parent.app
+
+        # generate a full REST view from the "customers" table
+        view = Auto.view(app, "customers")
+        AutoRouter.resource(app, "customer", view, id_type="string")
+```
+
+This introspects the `customers` table at startup and registers:
+
+| URL                             | Method       | Operation     |
+|---------------------------------|--------------|---------------|
+| `/customer`                     | GET          | List records  |
+| `/customer/<string:id_record>`  | GET          | Get by id     |
+| `/customer`                     | POST         | Create        |
+| `/customer/<string:id_record>`  | PUT, PATCH   | Update        |
+| `/customer/<string:id_record>`  | DELETE        | Delete        |
+
+Listing supports server-side pagination, sorting, filtering and free-text search out of the box via
+query parameters (`offset`, `limit`, `sort`, `match`, `search`).
+
+## Automatic REST from DTO Records
+
+For more control, use `Auto.rest()` with a DTO Record — Pokie generates the RequestRecord and service automatically:
+
+```python
+from rick_db import fieldmapper
+from pokie.core import BaseModule
+from pokie.rest.auto import Auto
+
+
+@fieldmapper(tablename="customers", pk="customer_id")
+class CustomerRecord:
+    id = "customer_id"
+    company_name = "company_name"
+    contact_name = "contact_name"
+
+
+class Module(BaseModule):
+    name = "my_module"
+
+    def build(self, parent=None):
+        Auto.rest(
+            parent.app,
+            "customer",
+            CustomerRecord,
+            search_fields=[CustomerRecord.company_name, CustomerRecord.contact_name],
+            id_type="string",
+        )
+```
+
+Both approaches can be incrementally customized — add a custom RequestRecord for input validation, a custom
+service for business logic, or a custom base class for authentication.
+
+## Getting Started
 
 1. Create the application entrypoint, called *main.py*:
 
@@ -47,27 +114,20 @@ from pokie.core.factories.pgsql import PgSqlFactory
 
 
 class Config(EnvironmentConfig, PokieConfig):
-    # @todo: add your config options or overrides here
     pass
 
 
 def build_pokie():
-    # load configuration from ENV
     cfg = Config().build()
 
-    # modules to load & initialize
     modules = [
-        # @ todo: add your modules here
-
+        # add your modules here
     ]
 
-    # factories to run
     factories = [
         PgSqlFactory,
-        # @todo: add additional factories here
     ]
 
-    # build app
     pokie_app = FlaskApplication(cfg)
     flask_app = pokie_app.build(modules, factories)
     return pokie_app, flask_app
@@ -79,29 +139,24 @@ if __name__ == '__main__':
     main.cli()
 ```
 
-2. Use our application to scaffold a module:
+2. Scaffold a module:
 
 ```shell
 $ python3 main.py codegen:module my_module_name .
 ```
 
-3. Add your newly created module to the module list on *main.py*:
+3. Add the module to the module list on *main.py*:
 
 ```python
-    (...)
-    # modules to load & initialize
     modules = [
-        'my_module_name',  # our newly created module
-        
+        'my_module_name',
     ]
-    (...)
 ```
 
 4. Implement the desired logic in the module
 
 
-
-# Running tests with tox
+## Running tests with tox
 
 1. Install tox & tox-docker:
 ```shell
@@ -112,4 +167,3 @@ $ pip install -r requirements-test.txt
 ```shell
 $ tox [-e py<XX>]
 ```
- 

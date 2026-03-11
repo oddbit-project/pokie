@@ -33,7 +33,7 @@ class TokenAuthView(PokieView):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # get hardcoded auth key from a config value
-        self.auth_token = self.di.get(DI_CONFIG).GET("auth_token", None)
+        self.auth_token = self.di.get(DI_CONFIG).get("auth_token", None)
         # add auth hook 
         self.dispatch_hooks.append("_hook_token_auth")
 

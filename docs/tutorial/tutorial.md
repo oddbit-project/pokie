@@ -61,11 +61,10 @@ Minimal Pokie environment-based configuration example:
 
 ```python
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import PokieConfig
+from pokie.config import PokieConfig
 
 
 # minimal Pokie environment-based configuration
-# Pokie's defaults come from BaseConfigTemplate
 class Config(EnvironmentConfig, PokieConfig):
     pass
 
