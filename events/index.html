@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://github.com/oddbit-project/pokie/codegen/codegen/">
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/events/">
       
       
-        <link rel="prev" href="../../cli/commands/">
+        <link rel="prev" href="../cache/">
       
       
-        <link rel="next" href="../../test/pytest/">
+        <link rel="next" href="../signals/">
       
       
         
       
       
-      <link rel="icon" href="../../img/pokie_logo_small.png">
+      <link rel="icon" href="../img/pokie_logo_small.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
-        <title>Code Generation - Pokie</title>
+        <title>Events - Pokie</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#code-generation" class="md-skip">
+        <a href="#events" class="md-skip">
           Skip to content
         </a>
       
@@ -94,9 +94,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href=".." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="../../img/pokie_logo_small.png" alt="logo">
+  <img src="../img/pokie_logo_small.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Code Generation
+              Events
             
           </span>
         </div>
@@ -231,9 +231,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href=".." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="../../img/pokie_logo_small.png" alt="logo">
+  <img src="../img/pokie_logo_small.png" alt="logo">
 
     </a>
     Pokie
@@ -260,7 +260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -334,7 +334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/architecture/" class="md-nav__link">
+      <a href="../tutorial/architecture/" class="md-nav__link">
         
   
   
@@ -362,7 +362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/scaffolding/" class="md-nav__link">
+      <a href="../tutorial/scaffolding/" class="md-nav__link">
         
   
   
@@ -390,7 +390,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/tutorial/" class="md-nav__link">
+      <a href="../tutorial/tutorial/" class="md-nav__link">
         
   
   
@@ -418,7 +418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
         
   
   
@@ -446,7 +446,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../factories/" class="md-nav__link">
+      <a href="../factories/" class="md-nav__link">
         
   
   
@@ -528,7 +528,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/views/" class="md-nav__link">
+      <a href="../http/views/" class="md-nav__link">
         
   
   
@@ -556,7 +556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/rest/" class="md-nav__link">
+      <a href="../http/rest/" class="md-nav__link">
         
   
   
@@ -584,7 +584,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/error_handler/" class="md-nav__link">
+      <a href="../http/error_handler/" class="md-nav__link">
         
   
   
@@ -612,7 +612,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/extending_views/" class="md-nav__link">
+      <a href="../http/extending_views/" class="md-nav__link">
         
   
   
@@ -694,7 +694,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/rest/" class="md-nav__link">
+      <a href="../http/rest/" class="md-nav__link">
         
   
   
@@ -722,7 +722,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rest/services/" class="md-nav__link">
+      <a href="../rest/services/" class="md-nav__link">
         
   
   
@@ -750,7 +750,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rest/auto/" class="md-nav__link">
+      <a href="../rest/auto/" class="md-nav__link">
         
   
   
@@ -785,7 +785,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cache/" class="md-nav__link">
+      <a href="../cache/" class="md-nav__link">
         
   
   
@@ -809,18 +809,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -841,7 +843,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -856,10 +858,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../events/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Events
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -875,6 +904,115 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#event-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Registration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Handlers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Event Handlers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#class-based-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Class-Based Handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-based-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function-Based Handlers
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dispatching-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dispatching Events
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dispatching Events">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dispatchdi-event_name-kwargs-bool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        dispatch(di, event_name, **kwargs) -&gt; bool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventmanager-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EventManager API
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -887,7 +1025,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../signals/" class="md-nav__link">
+      <a href="../signals/" class="md-nav__link">
         
   
   
@@ -922,7 +1060,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jobs/" class="md-nav__link">
+      <a href="../jobs/" class="md-nav__link">
         
   
   
@@ -949,7 +1087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fixtures/" class="md-nav__link">
+      <a href="../fixtures/" class="md-nav__link">
         
   
   
@@ -1023,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/dbgridrequest/" class="md-nav__link">
+      <a href="../http/dbgridrequest/" class="md-nav__link">
         
   
   
@@ -1051,7 +1189,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/json_response/" class="md-nav__link">
+      <a href="../http/json_response/" class="md-nav__link">
         
   
   
@@ -1079,7 +1217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/camelcase_json_response/" class="md-nav__link">
+      <a href="../http/camelcase_json_response/" class="md-nav__link">
         
   
   
@@ -1161,7 +1299,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/commands/" class="md-nav__link">
+      <a href="../cli/commands/" class="md-nav__link">
         
   
   
@@ -1193,20 +1331,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
           <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
@@ -1227,7 +1363,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1242,37 +1378,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Code Generation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../codegen/codegen/" class="md-nav__link">
         
   
   
@@ -1288,126 +1397,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#cli-code-generation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CLI Code Generation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="CLI Code Generation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#generating-dto-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating DTO Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-request-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Request Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-module-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Module Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Application
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#runtime-code-generation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Runtime Code Generation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Runtime Code Generation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#recordgenerator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RecordGenerator
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#requestgenerator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RequestGenerator
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1474,7 +1463,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../test/pytest/" class="md-nav__link">
+      <a href="../test/pytest/" class="md-nav__link">
         
   
   
@@ -1529,22 +1518,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cli-code-generation" class="md-nav__link">
+  <a href="#event-registration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLI Code Generation
+        Event Registration
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CLI Code Generation">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#event-handlers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Event Handlers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Event Handlers">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#generating-dto-records" class="md-nav__link">
+  <a href="#class-based-handlers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generating DTO Records
+        Class-Based Handlers
       
     </span>
   </a>
@@ -1552,32 +1552,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#generating-request-records" class="md-nav__link">
+  <a href="#function-based-handlers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generating Request Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-module-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Module Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Application
+        Function-Based Handlers
       
     </span>
   </a>
@@ -1590,33 +1568,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#runtime-code-generation" class="md-nav__link">
+  <a href="#dispatching-events" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Runtime Code Generation
+        Dispatching Events
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Runtime Code Generation">
+    <nav class="md-nav" aria-label="Dispatching Events">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#recordgenerator" class="md-nav__link">
+  <a href="#dispatchdi-event_name-kwargs-bool" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RecordGenerator
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#requestgenerator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RequestGenerator
+        dispatch(di, event_name, **kwargs) -&gt; bool
       
     </span>
   </a>
@@ -1625,6 +1592,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventmanager-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EventManager API
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1648,195 +1626,99 @@
   
 
 
-<h1 id="code-generation">Code Generation<a class="headerlink" href="#code-generation" title="Permanent link">&para;</a></h1>
-<p>Pokie provides code generation mechanisms that can produce either source code files or runtime classes. Source code
-generation is available via CLI commands, while runtime generation is used internally by the
-<a href="../../rest/auto/">Auto REST</a> system.</p>
-<h2 id="cli-code-generation">CLI Code Generation<a class="headerlink" href="#cli-code-generation" title="Permanent link">&para;</a></h2>
-<h3 id="generating-dto-records">Generating DTO Records<a class="headerlink" href="#generating-dto-records" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:dto</code> command generates RickDb Record classes from database table schemas:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:dto<span class="w"> </span>&lt;table&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>table</code></td>
-<td>Table name, <code>schema.table</code>, or <code>*</code> for all tables</td>
-</tr>
-<tr>
-<td><code>-f</code>, <code>--file</code></td>
-<td>Write output to file (prints to stdout if omitted)</td>
-</tr>
-<tr>
-<td><code>-c</code>, <code>--camelcase</code></td>
-<td>Use camelCase attribute names</td>
-</tr>
-</tbody>
-</table>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:dto<span class="w"> </span>customers
-</code></pre></div>
-<p>Generated output:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
+<h1 id="events">Events<a class="headerlink" href="#events" title="Permanent link">&para;</a></h1>
+<p>Pokie includes an event system for decoupled communication between modules. Events are dispatched by name and handled
+by registered handlers, with support for priority-based execution ordering.</p>
+<h2 id="event-registration">Event Registration<a class="headerlink" href="#event-registration" title="Permanent link">&para;</a></h2>
+<p>Events are registered in a module's <code>events</code> dictionary. The structure maps event names to priority levels, and each
+priority level contains a list of handler class paths:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModule</span>
 
 
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;customer_id&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">CustomersRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;customer_id&#39;</span>
-    <span class="n">company_name</span> <span class="o">=</span> <span class="s1">&#39;company_name&#39;</span>
-    <span class="n">contact_name</span> <span class="o">=</span> <span class="s1">&#39;contact_name&#39;</span>
-    <span class="n">contact_title</span> <span class="o">=</span> <span class="s1">&#39;contact_title&#39;</span>
-    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span>
-</code></pre></div>
-<p>To generate all tables in a schema:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:dto<span class="w"> </span><span class="s2">&quot;public.*&quot;</span><span class="w"> </span>-f<span class="w"> </span>dto/records.py
-</code></pre></div>
-<p>The primary key field is always mapped to <code>id</code> in the generated class.</p>
-<h3 id="generating-request-records">Generating Request Records<a class="headerlink" href="#generating-request-records" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:request</code> command generates Rick RequestRecord classes for input validation:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:request<span class="w"> </span>&lt;table&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
-</code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>table</code></td>
-<td>Table name, <code>schema.table</code>, or <code>*</code> for all tables</td>
-</tr>
-<tr>
-<td><code>-f</code>, <code>--file</code></td>
-<td>Write output to file (prints to stdout if omitted)</td>
-</tr>
-<tr>
-<td><code>-c</code>, <code>--camelcase-names</code></td>
-<td>Use camelCase field names</td>
-</tr>
-</tbody>
-</table>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:request<span class="w"> </span>customers
-</code></pre></div>
-<p>Generated output:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick.form</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestRecord</span><span class="p">,</span> <span class="n">field</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Module</span><span class="p">(</span><span class="n">BaseModule</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;my_module&quot;</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;My module&quot;</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">CustomersRequest</span><span class="p">(</span><span class="n">RequestRecord</span><span class="p">):</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="s1">&#39;id|numeric&#39;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;company_name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="s1">&#39;required|maxlen:100&#39;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;company_name&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;contact_name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="s1">&#39;maxlen:100&#39;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;contact_name&#39;</span><span class="p">),</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;afterLogin&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_module.event.LoginLogger&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;afterOrderCreate&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_module.event.SendConfirmationEmail&quot;</span><span class="p">],</span>
+            <span class="mi">20</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;my_module.event.UpdateInventory&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
     <span class="p">}</span>
 </code></pre></div>
-<p>Validators are automatically determined from column properties and data types:</p>
+<p>Lower priority numbers execute first. Handlers within the same priority level are executed in list order.</p>
+<h2 id="event-handlers">Event Handlers<a class="headerlink" href="#event-handlers" title="Permanent link">&para;</a></h2>
+<p>There are two types of event handlers: class-based and function-based.</p>
+<h3 id="class-based-handlers">Class-Based Handlers<a class="headerlink" href="#class-based-handlers" title="Permanent link">&para;</a></h3>
+<p>Class-based handlers extend <code>EventHandler</code> from Rick and define a method with the same name as the event:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">EventHandler</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LoginLogger</span><span class="p">(</span><span class="n">EventHandler</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">afterLogin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User logged in: </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The handler class is instantiated with the DI container on each dispatch. The event method receives the keyword
+arguments passed to <code>dispatch()</code>.</p>
+<h3 id="function-based-handlers">Function-Based Handlers<a class="headerlink" href="#function-based-handlers" title="Permanent link">&para;</a></h3>
+<p>Function-based handlers are simple callables that receive <code>event_name</code> as an additional keyword argument:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">on_login</span><span class="p">(</span><span class="n">event_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Event </span><span class="si">{</span><span class="n">event_name</span><span class="si">}</span><span class="s2">: user </span><span class="si">{</span><span class="n">user</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="dispatching-events">Dispatching Events<a class="headerlink" href="#dispatching-events" title="Permanent link">&para;</a></h2>
+<p>Events are dispatched via the <code>EventManager</code>, accessible through the DI container:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DI_EVENTS</span>
+
+<span class="n">evt_mgr</span> <span class="o">=</span> <span class="n">di</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DI_EVENTS</span><span class="p">)</span>
+<span class="n">evt_mgr</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">di</span><span class="p">,</span> <span class="s2">&quot;afterLogin&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="dispatchdi-event_name-kwargs-bool">dispatch(di, event_name, **kwargs) -&gt; bool<a class="headerlink" href="#dispatchdi-event_name-kwargs-bool" title="Permanent link">&para;</a></h3>
+<p>Dispatches an event by name. Returns <code>True</code> if the event was dispatched (handlers exist), <code>False</code> if no handlers are
+registered for the event.</p>
+<p>Handlers are executed synchronously in priority order. If an event has no registered handlers, the dispatch is a no-op.</p>
+<p><strong>Circular dependency protection:</strong> If a handler dispatches the same event that is currently being processed, a
+<code>RuntimeError</code> is raised.</p>
+<h2 id="eventmanager-api">EventManager API<a class="headerlink" href="#eventmanager-api" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Column Property</th>
-<th>Validators</th>
+<th>Method</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Auto-increment (serial/identity) PK</td>
-<td><code>id</code></td>
+<td><code>add_handler(event_name, handler, priority=100)</code></td>
+<td>Register a handler (dotted class path string)</td>
 </tr>
 <tr>
-<td>Non-auto PK (e.g. varchar, uuid)</td>
-<td><code>required</code></td>
+<td><code>remove_handler(event_name, handler)</code></td>
+<td>Remove a handler. Returns <code>True</code> if found.</td>
 </tr>
 <tr>
-<td>NOT NULL, non-auto, no DEFAULT</td>
-<td><code>required</code></td>
+<td><code>get_events()</code></td>
+<td>List all registered event names</td>
 </tr>
 <tr>
-<td>NOT NULL with DEFAULT value</td>
-<td><em>(none — DB provides the default)</em></td>
+<td><code>dispatch(di, event_name, **kwargs)</code></td>
+<td>Dispatch an event</td>
 </tr>
 <tr>
-<td>Nullable columns</td>
-<td><em>(none)</em></td>
+<td><code>purge()</code></td>
+<td>Remove all events and handlers</td>
 </tr>
 <tr>
-<td>Foreign key columns</td>
-<td><code>pk:{schema}.{table},{column}</code></td>
+<td><code>load_handlers(src)</code></td>
+<td>Load handlers from a config dict (used during module loading)</td>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th>Column Type</th>
-<th>Validators</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>int2</code>, <code>int4</code>, <code>int8</code></td>
-<td><code>numeric</code></td>
-</tr>
-<tr>
-<td><code>numeric</code></td>
-<td><code>decimal</code></td>
-</tr>
-<tr>
-<td><code>bool</code></td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>timestamp</code>, <code>timestamptz</code>, <code>date</code></td>
-<td><code>iso8601</code></td>
-</tr>
-<tr>
-<td>Columns with max length</td>
-<td><code>maxlen:{n}</code></td>
-</tr>
-</tbody>
-</table>
-<p>The primary key field is always named <code>id</code> in the generated RequestRecord, regardless of the actual column name.
-Natural (non-auto-increment) primary keys are marked as <code>required</code>, since the application must provide the value.
-Columns with database DEFAULT values are never marked as <code>required</code>, even if they are NOT NULL, because the database
-will supply the default when the value is omitted.</p>
-<h3 id="generating-module-structure">Generating Module Structure<a class="headerlink" href="#generating-module-structure" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:module</code> command creates a module directory from a built-in template:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:module<span class="w"> </span>my_module<span class="w"> </span>.
-</code></pre></div>
-<p>This creates a directory <code>my_module/</code> with the standard Pokie module layout including <code>module.py</code>, <code>__init__.py</code>, and
-subdirectories for cli, dto, service, view, etc.</p>
-<h3 id="generating-application">Generating Application<a class="headerlink" href="#generating-application" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:app</code> command creates a complete Pokie application with a module and entry point:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:app<span class="w"> </span>my_app<span class="w"> </span>.
-</code></pre></div>
-<p>This generates both a module structure and a <code>main.py</code> entry point.</p>
-<h2 id="runtime-code-generation">Runtime Code Generation<a class="headerlink" href="#runtime-code-generation" title="Permanent link">&para;</a></h2>
-<p>The code generation system is also used at runtime by <code>Auto.rest()</code> and <code>Auto.view()</code> to dynamically create Record
-and RequestRecord classes from database table schemas. This is handled by two generator classes:</p>
-<h3 id="recordgenerator">RecordGenerator<a class="headerlink" href="#recordgenerator" title="Permanent link">&para;</a></h3>
-<p>Generates RickDb Record classes from a <code>TableSpec</code>:</p>
-<ul>
-<li><code>generate_source(spec, camelcase=False)</code> - Returns Python source code as a string</li>
-<li><code>generate_class(spec, camelcase=False)</code> - Returns a dynamically created Record class</li>
-</ul>
-<h3 id="requestgenerator">RequestGenerator<a class="headerlink" href="#requestgenerator" title="Permanent link">&para;</a></h3>
-<p>Generates Rick RequestRecord classes from a <code>TableSpec</code>:</p>
-<ul>
-<li><code>generate_source(spec, camelcase=False)</code> - Returns Python source code as a string</li>
-<li><code>generate_class(spec, camelcase=False)</code> - Returns a dynamically created RequestRecord class</li>
-</ul>
-<p>These generators are used internally and typically do not need to be called directly. See
-<a href="../../rest/auto/">Auto REST</a> for the high-level API.</p>
-<blockquote>
-<p>Note: Database code generation is only supported with PostgreSQL.</p>
-</blockquote>
 
 
 
@@ -1904,10 +1786,10 @@ and RequestRecord classes from database table schemas. This is handled by two ge
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

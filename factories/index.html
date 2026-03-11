@@ -10,31 +10,31 @@
       
       
       
-        <link rel="canonical" href="https://github.com/oddbit-project/pokie/codegen/codegen/">
+        <link rel="canonical" href="https://github.com/oddbit-project/pokie/factories/">
       
       
-        <link rel="prev" href="../../cli/commands/">
+        <link rel="prev" href="../configuration/">
       
       
-        <link rel="next" href="../../test/pytest/">
+        <link rel="next" href="../http/views/">
       
       
         
       
       
-      <link rel="icon" href="../../img/pokie_logo_small.png">
+      <link rel="icon" href="../img/pokie_logo_small.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
-        <title>Code Generation - Pokie</title>
+        <title>Factories - Pokie</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
       
       
 
@@ -53,7 +53,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#code-generation" class="md-skip">
+        <a href="#factories" class="md-skip">
           Skip to content
         </a>
       
@@ -94,9 +94,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href=".." title="Pokie" class="md-header__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="../../img/pokie_logo_small.png" alt="logo">
+  <img src="../img/pokie_logo_small.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Code Generation
+              Factories
             
           </span>
         </div>
@@ -231,9 +231,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
+    <a href=".." title="Pokie" class="md-nav__button md-logo" aria-label="Pokie" data-md-component="logo">
       
-  <img src="../../img/pokie_logo_small.png" alt="logo">
+  <img src="../img/pokie_logo_small.png" alt="logo">
 
     </a>
     Pokie
@@ -260,7 +260,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href=".." class="md-nav__link">
         
   
   
@@ -284,18 +284,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -316,7 +318,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -334,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/architecture/" class="md-nav__link">
+      <a href="../tutorial/architecture/" class="md-nav__link">
         
   
   
@@ -362,7 +364,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/scaffolding/" class="md-nav__link">
+      <a href="../tutorial/scaffolding/" class="md-nav__link">
         
   
   
@@ -390,7 +392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorial/tutorial/" class="md-nav__link">
+      <a href="../tutorial/tutorial/" class="md-nav__link">
         
   
   
@@ -418,7 +420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../configuration/" class="md-nav__link">
+      <a href="../configuration/" class="md-nav__link">
         
   
   
@@ -443,10 +445,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../factories/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Factories
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -462,6 +491,131 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#built-in-factories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in Factories
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Built-in Factories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pgsqlfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PgSqlFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redisfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RedisFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cachefactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CacheFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flaskloginfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FlaskLoginFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#corsfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CorsFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ratelimiterfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RateLimiterFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#using-factories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using Factories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-custom-factories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Custom Factories
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -528,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/views/" class="md-nav__link">
+      <a href="../http/views/" class="md-nav__link">
         
   
   
@@ -556,7 +710,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/rest/" class="md-nav__link">
+      <a href="../http/rest/" class="md-nav__link">
         
   
   
@@ -584,7 +738,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/error_handler/" class="md-nav__link">
+      <a href="../http/error_handler/" class="md-nav__link">
         
   
   
@@ -612,7 +766,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/extending_views/" class="md-nav__link">
+      <a href="../http/extending_views/" class="md-nav__link">
         
   
   
@@ -694,7 +848,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/rest/" class="md-nav__link">
+      <a href="../http/rest/" class="md-nav__link">
         
   
   
@@ -722,7 +876,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rest/services/" class="md-nav__link">
+      <a href="../rest/services/" class="md-nav__link">
         
   
   
@@ -750,7 +904,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../rest/auto/" class="md-nav__link">
+      <a href="../rest/auto/" class="md-nav__link">
         
   
   
@@ -785,7 +939,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cache/" class="md-nav__link">
+      <a href="../cache/" class="md-nav__link">
         
   
   
@@ -859,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../events/" class="md-nav__link">
+      <a href="../events/" class="md-nav__link">
         
   
   
@@ -887,7 +1041,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../signals/" class="md-nav__link">
+      <a href="../signals/" class="md-nav__link">
         
   
   
@@ -922,7 +1076,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../jobs/" class="md-nav__link">
+      <a href="../jobs/" class="md-nav__link">
         
   
   
@@ -949,7 +1103,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../fixtures/" class="md-nav__link">
+      <a href="../fixtures/" class="md-nav__link">
         
   
   
@@ -1023,7 +1177,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/dbgridrequest/" class="md-nav__link">
+      <a href="../http/dbgridrequest/" class="md-nav__link">
         
   
   
@@ -1051,7 +1205,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/json_response/" class="md-nav__link">
+      <a href="../http/json_response/" class="md-nav__link">
         
   
   
@@ -1079,7 +1233,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../http/camelcase_json_response/" class="md-nav__link">
+      <a href="../http/camelcase_json_response/" class="md-nav__link">
         
   
   
@@ -1161,7 +1315,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cli/commands/" class="md-nav__link">
+      <a href="../cli/commands/" class="md-nav__link">
         
   
   
@@ -1193,20 +1347,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
         
           
           <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
@@ -1227,7 +1379,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_11">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1242,37 +1394,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Code Generation
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../codegen/codegen/" class="md-nav__link">
         
   
   
@@ -1288,126 +1413,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#cli-code-generation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CLI Code Generation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="CLI Code Generation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#generating-dto-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating DTO Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-request-records" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Request Records
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-module-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Module Structure
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-application" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generating Application
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#runtime-code-generation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Runtime Code Generation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Runtime Code Generation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#recordgenerator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RecordGenerator
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#requestgenerator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RequestGenerator
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1474,7 +1479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../test/pytest/" class="md-nav__link">
+      <a href="../test/pytest/" class="md-nav__link">
         
   
   
@@ -1529,22 +1534,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#cli-code-generation" class="md-nav__link">
+  <a href="#built-in-factories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLI Code Generation
+        Built-in Factories
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="CLI Code Generation">
+    <nav class="md-nav" aria-label="Built-in Factories">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#generating-dto-records" class="md-nav__link">
+  <a href="#pgsqlfactory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generating DTO Records
+        PgSqlFactory
       
     </span>
   </a>
@@ -1552,10 +1557,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#generating-request-records" class="md-nav__link">
+  <a href="#redisfactory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generating Request Records
+        RedisFactory
       
     </span>
   </a>
@@ -1563,10 +1568,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#generating-module-structure" class="md-nav__link">
+  <a href="#cachefactory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generating Module Structure
+        CacheFactory
       
     </span>
   </a>
@@ -1574,10 +1579,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#generating-application" class="md-nav__link">
+  <a href="#flaskloginfactory" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Generating Application
+        FlaskLoginFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#corsfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CorsFactory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ratelimiterfactory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RateLimiterFactory
       
     </span>
   </a>
@@ -1590,41 +1617,24 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#runtime-code-generation" class="md-nav__link">
+  <a href="#using-factories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Runtime Code Generation
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Runtime Code Generation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#recordgenerator" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        RecordGenerator
+        Using Factories
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#requestgenerator" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#writing-custom-factories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        RequestGenerator
+        Writing Custom Factories
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1648,195 +1658,272 @@
   
 
 
-<h1 id="code-generation">Code Generation<a class="headerlink" href="#code-generation" title="Permanent link">&para;</a></h1>
-<p>Pokie provides code generation mechanisms that can produce either source code files or runtime classes. Source code
-generation is available via CLI commands, while runtime generation is used internally by the
-<a href="../../rest/auto/">Auto REST</a> system.</p>
-<h2 id="cli-code-generation">CLI Code Generation<a class="headerlink" href="#cli-code-generation" title="Permanent link">&para;</a></h2>
-<h3 id="generating-dto-records">Generating DTO Records<a class="headerlink" href="#generating-dto-records" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:dto</code> command generates RickDb Record classes from database table schemas:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:dto<span class="w"> </span>&lt;table&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
+<h1 id="factories">Factories<a class="headerlink" href="#factories" title="Permanent link">&para;</a></h1>
+<p>Factories are callable functions that initialize and register resources in the Dependency Injection (DI) container.
+They are executed during application build, before modules are loaded.</p>
+<h2 id="built-in-factories">Built-in Factories<a class="headerlink" href="#built-in-factories" title="Permanent link">&para;</a></h2>
+<h3 id="pgsqlfactory">PgSqlFactory<a class="headerlink" href="#pgsqlfactory" title="Permanent link">&para;</a></h3>
+<p>Registers a PostgreSQL connection pool as <code>DI_DB</code>. The connection is lazily created on first access.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.pgsql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlFactory</span>
 </code></pre></div>
+<p><strong>Configuration keys used:</strong></p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Key</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>table</code></td>
-<td>Table name, <code>schema.table</code>, or <code>*</code> for all tables</td>
+<td><code>CFG_DB_NAME</code></td>
+<td><code>"postgres"</code></td>
+<td>Database name</td>
 </tr>
 <tr>
-<td><code>-f</code>, <code>--file</code></td>
-<td>Write output to file (prints to stdout if omitted)</td>
+<td><code>CFG_DB_HOST</code></td>
+<td><code>"localhost"</code></td>
+<td>Database host</td>
 </tr>
 <tr>
-<td><code>-c</code>, <code>--camelcase</code></td>
-<td>Use camelCase attribute names</td>
+<td><code>CFG_DB_PORT</code></td>
+<td><code>5432</code></td>
+<td>Database port</td>
+</tr>
+<tr>
+<td><code>CFG_DB_USER</code></td>
+<td><code>"postgres"</code></td>
+<td>Database user</td>
+</tr>
+<tr>
+<td><code>CFG_DB_PASSWORD</code></td>
+<td><code>""</code></td>
+<td>Database password</td>
+</tr>
+<tr>
+<td><code>CFG_DB_SSL</code></td>
+<td><code>True</code></td>
+<td>If true, uses <code>sslmode=require</code></td>
+</tr>
+<tr>
+<td><code>CFG_DB_MINPROCS</code></td>
+<td><code>5</code></td>
+<td>Minimum connection pool size</td>
+</tr>
+<tr>
+<td><code>CFG_DB_MAXPROCS</code></td>
+<td><code>15</code></td>
+<td>Maximum connection pool size</td>
 </tr>
 </tbody>
 </table>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:dto<span class="w"> </span>customers
+<p><strong>Registers:</strong> <code>DI_DB</code> as a <code>PgConnectionPool</code> instance (from RickDb).</p>
+<h3 id="redisfactory">RedisFactory<a class="headerlink" href="#redisfactory" title="Permanent link">&para;</a></h3>
+<p>Registers a Redis client as <code>DI_REDIS</code>. The connection is lazily created on first access.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.redis</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedisFactory</span>
 </code></pre></div>
-<p>Generated output:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick_db</span><span class="w"> </span><span class="kn">import</span> <span class="n">fieldmapper</span>
-
-
-<span class="nd">@fieldmapper</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s1">&#39;customers&#39;</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="s1">&#39;customer_id&#39;</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">CustomersRecord</span><span class="p">:</span>
-    <span class="nb">id</span> <span class="o">=</span> <span class="s1">&#39;customer_id&#39;</span>
-    <span class="n">company_name</span> <span class="o">=</span> <span class="s1">&#39;company_name&#39;</span>
-    <span class="n">contact_name</span> <span class="o">=</span> <span class="s1">&#39;contact_name&#39;</span>
-    <span class="n">contact_title</span> <span class="o">=</span> <span class="s1">&#39;contact_title&#39;</span>
-    <span class="n">address</span> <span class="o">=</span> <span class="s1">&#39;address&#39;</span>
-</code></pre></div>
-<p>To generate all tables in a schema:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:dto<span class="w"> </span><span class="s2">&quot;public.*&quot;</span><span class="w"> </span>-f<span class="w"> </span>dto/records.py
-</code></pre></div>
-<p>The primary key field is always mapped to <code>id</code> in the generated class.</p>
-<h3 id="generating-request-records">Generating Request Records<a class="headerlink" href="#generating-request-records" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:request</code> command generates Rick RequestRecord classes for input validation:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:request<span class="w"> </span>&lt;table&gt;<span class="w"> </span><span class="o">[</span>options<span class="o">]</span>
-</code></pre></div>
+<p><strong>Configuration keys used:</strong></p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Key</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>table</code></td>
-<td>Table name, <code>schema.table</code>, or <code>*</code> for all tables</td>
+<td><code>CFG_REDIS_HOST</code></td>
+<td><code>"localhost"</code></td>
+<td>Redis host</td>
 </tr>
 <tr>
-<td><code>-f</code>, <code>--file</code></td>
-<td>Write output to file (prints to stdout if omitted)</td>
+<td><code>CFG_REDIS_PORT</code></td>
+<td><code>6379</code></td>
+<td>Redis port</td>
 </tr>
 <tr>
-<td><code>-c</code>, <code>--camelcase-names</code></td>
-<td>Use camelCase field names</td>
+<td><code>CFG_REDIS_PASSWORD</code></td>
+<td><code>None</code></td>
+<td>Redis password</td>
+</tr>
+<tr>
+<td><code>CFG_REDIS_DB</code></td>
+<td><code>0</code></td>
+<td>Redis database number</td>
+</tr>
+<tr>
+<td><code>CFG_REDIS_SSL</code></td>
+<td><code>False</code></td>
+<td>Enable SSL</td>
 </tr>
 </tbody>
 </table>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:request<span class="w"> </span>customers
+<p><strong>Registers:</strong> <code>DI_REDIS</code> as a <code>redis.Redis</code> instance.</p>
+<h3 id="cachefactory">CacheFactory<a class="headerlink" href="#cachefactory" title="Permanent link">&para;</a></h3>
+<p>Registers a Redis-based cache as <code>DI_CACHE</code>. Requires <code>RedisFactory</code> to be loaded first.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheFactory</span>
 </code></pre></div>
-<p>Generated output:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick.form</span><span class="w"> </span><span class="kn">import</span> <span class="n">RequestRecord</span><span class="p">,</span> <span class="n">field</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">CustomersRequest</span><span class="p">(</span><span class="n">RequestRecord</span><span class="p">):</span>
-    <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="s1">&#39;id|numeric&#39;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;company_name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="s1">&#39;required|maxlen:100&#39;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;company_name&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;contact_name&#39;</span><span class="p">:</span> <span class="n">field</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="s1">&#39;maxlen:100&#39;</span><span class="p">,</span> <span class="n">bind</span><span class="o">=</span><span class="s1">&#39;contact_name&#39;</span><span class="p">),</span>
-    <span class="p">}</span>
-</code></pre></div>
-<p>Validators are automatically determined from column properties and data types:</p>
-<table>
-<thead>
-<tr>
-<th>Column Property</th>
-<th>Validators</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Auto-increment (serial/identity) PK</td>
-<td><code>id</code></td>
-</tr>
-<tr>
-<td>Non-auto PK (e.g. varchar, uuid)</td>
-<td><code>required</code></td>
-</tr>
-<tr>
-<td>NOT NULL, non-auto, no DEFAULT</td>
-<td><code>required</code></td>
-</tr>
-<tr>
-<td>NOT NULL with DEFAULT value</td>
-<td><em>(none — DB provides the default)</em></td>
-</tr>
-<tr>
-<td>Nullable columns</td>
-<td><em>(none)</em></td>
-</tr>
-<tr>
-<td>Foreign key columns</td>
-<td><code>pk:{schema}.{table},{column}</code></td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th>Column Type</th>
-<th>Validators</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>int2</code>, <code>int4</code>, <code>int8</code></td>
-<td><code>numeric</code></td>
-</tr>
-<tr>
-<td><code>numeric</code></td>
-<td><code>decimal</code></td>
-</tr>
-<tr>
-<td><code>bool</code></td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>timestamp</code>, <code>timestamptz</code>, <code>date</code></td>
-<td><code>iso8601</code></td>
-</tr>
-<tr>
-<td>Columns with max length</td>
-<td><code>maxlen:{n}</code></td>
-</tr>
-</tbody>
-</table>
-<p>The primary key field is always named <code>id</code> in the generated RequestRecord, regardless of the actual column name.
-Natural (non-auto-increment) primary keys are marked as <code>required</code>, since the application must provide the value.
-Columns with database DEFAULT values are never marked as <code>required</code>, even if they are NOT NULL, because the database
-will supply the default when the value is omitted.</p>
-<h3 id="generating-module-structure">Generating Module Structure<a class="headerlink" href="#generating-module-structure" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:module</code> command creates a module directory from a built-in template:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:module<span class="w"> </span>my_module<span class="w"> </span>.
-</code></pre></div>
-<p>This creates a directory <code>my_module/</code> with the standard Pokie module layout including <code>module.py</code>, <code>__init__.py</code>, and
-subdirectories for cli, dto, service, view, etc.</p>
-<h3 id="generating-application">Generating Application<a class="headerlink" href="#generating-application" title="Permanent link">&para;</a></h3>
-<p>The <code>codegen:app</code> command creates a complete Pokie application with a module and entry point:</p>
-<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python<span class="w"> </span>main.py<span class="w"> </span>codegen:app<span class="w"> </span>my_app<span class="w"> </span>.
-</code></pre></div>
-<p>This generates both a module structure and a <code>main.py</code> entry point.</p>
-<h2 id="runtime-code-generation">Runtime Code Generation<a class="headerlink" href="#runtime-code-generation" title="Permanent link">&para;</a></h2>
-<p>The code generation system is also used at runtime by <code>Auto.rest()</code> and <code>Auto.view()</code> to dynamically create Record
-and RequestRecord classes from database table schemas. This is handled by two generator classes:</p>
-<h3 id="recordgenerator">RecordGenerator<a class="headerlink" href="#recordgenerator" title="Permanent link">&para;</a></h3>
-<p>Generates RickDb Record classes from a <code>TableSpec</code>:</p>
-<ul>
-<li><code>generate_source(spec, camelcase=False)</code> - Returns Python source code as a string</li>
-<li><code>generate_class(spec, camelcase=False)</code> - Returns a dynamically created Record class</li>
-</ul>
-<h3 id="requestgenerator">RequestGenerator<a class="headerlink" href="#requestgenerator" title="Permanent link">&para;</a></h3>
-<p>Generates Rick RequestRecord classes from a <code>TableSpec</code>:</p>
-<ul>
-<li><code>generate_source(spec, camelcase=False)</code> - Returns Python source code as a string</li>
-<li><code>generate_class(spec, camelcase=False)</code> - Returns a dynamically created RequestRecord class</li>
-</ul>
-<p>These generators are used internally and typically do not need to be called directly. See
-<a href="../../rest/auto/">Auto REST</a> for the high-level API.</p>
+<p><strong>Registers:</strong> <code>DI_CACHE</code> as a <code>RedisCache</code> instance.</p>
 <blockquote>
-<p>Note: Database code generation is only supported with PostgreSQL.</p>
+<p>Note: CacheFactory currently only supports Redis as the cache backend.</p>
 </blockquote>
+<h3 id="flaskloginfactory">FlaskLoginFactory<a class="headerlink" href="#flaskloginfactory" title="Permanent link">&para;</a></h3>
+<p>Initializes Flask-Login on the Flask application. Sets the application secret key from configuration and registers
+a default user loader that returns <code>None</code>. Applications using authentication should override the user loader with
+their own implementation.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.login</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlaskLoginFactory</span>
+</code></pre></div>
+<p><strong>Configuration keys used:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CFG_AUTH_SECRET</code></td>
+<td><code>""</code></td>
+<td>Secret key for Flask-Login session hashing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Required by:</strong> <code>PokieAuthView</code> (for authentication and ACL checks).</p>
+<h3 id="corsfactory">CorsFactory<a class="headerlink" href="#corsfactory" title="Permanent link">&para;</a></h3>
+<p>Initializes <a href="https://flask-cors.readthedocs.io/">Flask-CORS</a> on the Flask application, enabling Cross-Origin Resource
+Sharing headers on all responses.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.cors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CorsFactory</span>
+</code></pre></div>
+<p><strong>Configuration keys used:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CFG_CORS_ORIGINS</code></td>
+<td><code>"*"</code></td>
+<td>Allowed origins (comma-separated or <code>*</code> for all)</td>
+</tr>
+<tr>
+<td><code>CFG_CORS_METHODS</code></td>
+<td><code>"GET,POST,PUT,PATCH,DELETE,OPTIONS"</code></td>
+<td>Allowed HTTP methods</td>
+</tr>
+<tr>
+<td><code>CFG_CORS_ALLOW_HEADERS</code></td>
+<td><code>"Content-Type,Authorization"</code></td>
+<td>Allowed request headers</td>
+</tr>
+<tr>
+<td><code>CFG_CORS_EXPOSE_HEADERS</code></td>
+<td><code>""</code></td>
+<td>Response headers to expose to the browser</td>
+</tr>
+<tr>
+<td><code>CFG_CORS_MAX_AGE</code></td>
+<td><code>600</code></td>
+<td>Preflight cache duration in seconds</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ratelimiterfactory">RateLimiterFactory<a class="headerlink" href="#ratelimiterfactory" title="Permanent link">&para;</a></h3>
+<p>Initializes <a href="https://flask-limiter.readthedocs.io/">Flask-Limiter</a> on the Flask application. If <code>RATE_LIMIT_DEFAULT</code>
+is empty, the factory is a no-op and no rate limiting is applied.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.rate_limiter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateLimiterFactory</span>
+</code></pre></div>
+<p><strong>Configuration keys used:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CFG_RATE_LIMIT_DEFAULT</code></td>
+<td><code>""</code></td>
+<td>Default rate limit (e.g. <code>"100/hour"</code>, <code>"10/minute"</code>). Empty disables limiting.</td>
+</tr>
+<tr>
+<td><code>CFG_RATE_LIMIT_STORAGE</code></td>
+<td><code>"memory"</code></td>
+<td>Storage backend: <code>"memory"</code> or <code>"redis"</code></td>
+</tr>
+</tbody>
+</table>
+<p>When using <code>"redis"</code> storage, the factory reads Redis connection settings from the existing Redis configuration keys
+(<code>CFG_REDIS_HOST</code>, <code>CFG_REDIS_PORT</code>, <code>CFG_REDIS_PASSWORD</code>, <code>CFG_REDIS_DB</code>).</p>
+<p><strong>Registers:</strong> <code>DI_RATE_LIMITER</code> as a <code>Limiter</code> instance (only when rate limiting is enabled).</p>
+<p>The limiter instance can be used for per-route rate limits:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">DI_RATE_LIMITER</span>
+
+<span class="n">limiter</span> <span class="o">=</span> <span class="n">di</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">DI_RATE_LIMITER</span><span class="p">)</span>
+
+<span class="nd">@limiter</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="s2">&quot;5/minute&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_expensive_endpoint</span><span class="p">():</span>
+    <span class="o">...</span>
+</code></pre></div>
+<h2 id="using-factories">Using Factories<a class="headerlink" href="#using-factories" title="Permanent link">&para;</a></h2>
+<p>Factories are passed to <code>FlaskApplication.build()</code> as a list:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlaskApplication</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.pgsql</span><span class="w"> </span><span class="kn">import</span> <span class="n">PgSqlFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.redis</span><span class="w"> </span><span class="kn">import</span> <span class="n">RedisFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.cache</span><span class="w"> </span><span class="kn">import</span> <span class="n">CacheFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.login</span><span class="w"> </span><span class="kn">import</span> <span class="n">FlaskLoginFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.cors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CorsFactory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pokie.core.factories.rate_limiter</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateLimiterFactory</span>
+
+
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+<span class="n">pokie_app</span> <span class="o">=</span> <span class="n">FlaskApplication</span><span class="p">(</span><span class="n">cfg</span><span class="p">)</span>
+
+<span class="n">factories</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">PgSqlFactory</span><span class="p">,</span>
+    <span class="n">RedisFactory</span><span class="p">,</span>
+    <span class="n">CacheFactory</span><span class="p">,</span>
+    <span class="n">FlaskLoginFactory</span><span class="p">,</span>
+    <span class="n">CorsFactory</span><span class="p">,</span>
+    <span class="n">RateLimiterFactory</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">flask_app</span> <span class="o">=</span> <span class="n">pokie_app</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">modules</span><span class="p">,</span> <span class="n">factories</span><span class="p">)</span>
+</code></pre></div>
+<p>Factories are executed in the order they are listed. If a factory depends on a resource registered by another
+factory, the dependency must appear first in the list.</p>
+<h2 id="writing-custom-factories">Writing Custom Factories<a class="headerlink" href="#writing-custom-factories" title="Permanent link">&para;</a></h2>
+<p>A factory is any callable that accepts a <code>Di</code> instance. Use <code>_di.add()</code> for direct registration or <code>@_di.register()</code>
+for lazy initialization:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Di</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">MyServiceFactory</span><span class="p">(</span><span class="n">_di</span><span class="p">:</span> <span class="n">Di</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Example factory with lazy initialization</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@_di</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;my_service&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_factory</span><span class="p">(</span><span class="n">_di</span><span class="p">:</span> <span class="n">Di</span><span class="p">):</span>
+        <span class="c1"># this code runs only when di.get(&quot;my_service&quot;) is first called</span>
+        <span class="k">return</span> <span class="n">MyService</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">_di</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">))</span>
+</code></pre></div>
+<p>For simple resources that don't need lazy initialization:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rick.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Di</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">MySimpleFactory</span><span class="p">(</span><span class="n">_di</span><span class="p">:</span> <span class="n">Di</span><span class="p">):</span>
+    <span class="n">_di</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;my_resource&quot;</span><span class="p">,</span> <span class="n">MyResource</span><span class="p">())</span>
+</code></pre></div>
 
 
 
@@ -1904,10 +1991,10 @@ and RequestRecord classes from database table schemas. This is handled by two ge
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["search.suggest", "search.highlight", "content.tabs.link"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
