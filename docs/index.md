@@ -32,8 +32,6 @@ dependency injection, service location, factories and object composition. It als
 - Forward-only SQL migrations;
 - PostgreSQL support;
 
-> Note: Pokie is still under heavy development and should not be considered stable or production-ready.
-
 ## TL; DR; tutorial
 
 1. Create the application entrypoint, called *main.py*:

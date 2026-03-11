@@ -25,7 +25,7 @@ table referenced by the DTO Record. The generated View class can also extend eit
 
 *Auto.rest(app: object, slug: str, dto_record: object, request_class: RequestRecord = None, service: str = None,
         id_type: str = None, search_fields: list = None, allow_methods: list = None, base_cls: tuple = None,
-        mixins: tuple = None,  \*\*kwargs)*
+        mixins: tuple = None, prefix: str = "", camel_case: bool = False, \*\*kwargs)*
 
 | Parameter     | Type                                                                         | Description                                                                                  |
 |---------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
@@ -39,6 +39,8 @@ table referenced by the DTO Record. The generated View class can also extend eit
 | allow_methods | list                                                                         | If specified, will only allow the specified http methods                                     |
 | base_cls      | class                                                                        | Optional base class to use instead of *pokie.rest.RestView*                                  |
 | mixins        | tuple                                                                        | Optional tuple with additional mixins                                                        |
+| prefix        | str                                                                          | Optional route prefix (e.g. `"/api/v1"`)                                                    |
+| camel_case    | bool                                                                         | If True, field names and responses are camelCased                                            |
 
 
 ### Usage example
@@ -48,7 +50,7 @@ A complete minimal application to expose a database table called *customers* as 
 ```python
 from rick_db import fieldmapper
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import PokieConfig, PgConfigTemplate
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.rest.auto import Auto
@@ -70,7 +72,7 @@ class CustomerRecord:
 
 
 # config parameters, injectable from ENV vars
-class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     pass
 
 
@@ -163,19 +165,23 @@ traditional Flask route registration mechanisms.
 ### Method signature
 
 *Auto.view(app: object, table_name: str, schema: str = None, search_fields: List = None, camel_case: bool = False,
-        allow_methods: list = None, base_cls: tuple = None, mixins: tuple = None, \*\*kwargs) -> PokieView:*
+        allow_methods: list = None, base_cls: tuple = None, mixins: tuple = None, slug: str = None,
+        id_type: str = None, prefix: str = "", \*\*kwargs) -> PokieView:*
 
 
 | Parameter     | Type  | Description                                                                                  |
 |---------------|-------|----------------------------------------------------------------------------------------------|
 | app           | Flask | Flask object                                                                                 |
 | table_name    | str   | Database table name to use                                                                   |
-| schema        | str   | Optional database  schema                                                                    |
+| schema        | str   | Optional database schema                                                                     |
 | search_fields | list  | Optional list of fields to perform text search; if omitted, all varchar/text fields are used |
 | camel_case    | bool  | If true, dict keys are camelCased                                                            |
 | allow_methods | list  | If specified, will only allow the specified http methods                                     |
 | base_cls      | class | Optional base class to use instead of *pokie.rest.RestView*                                  |
 | mixins        | tuple | Optional tuple with additional mixins                                                        |
+| slug          | str   | Optional route slug; if provided, routes are registered automatically via AutoRouter         |
+| id_type       | str   | Optional id type for the route parameter (e.g. `"string"`, `"int"`)                         |
+| prefix        | str   | Optional route prefix (e.g. `"/api/v1"`)                                                    |
 
 ### Usage example
 
@@ -183,7 +189,7 @@ A complete minimal application to expose a database table called *customers* as 
 
 ```python
 from rick.resource.config import EnvironmentConfig
-from pokie.config.template import PokieConfig, PgConfigTemplate
+from pokie.config import PokieConfig
 from pokie.core import FlaskApplication
 from pokie.core.factories.pgsql import PgSqlFactory
 from pokie.http import AutoRouter
@@ -191,7 +197,7 @@ from pokie.rest.auto import Auto
 
 
 # config parameters, injectable from ENV vars
-class Config(EnvironmentConfig, PokieConfig, PgConfigTemplate):
+class Config(EnvironmentConfig, PokieConfig):
     pass
 
 

@@ -69,7 +69,7 @@ The typical usage scenario is as a regular RequestObject within a specific view 
 ```python
 from pokie.constants import DEFAULT_LIST_SIZE
 from pokie.http import PokieView
-from pokie.rest import DbGridRequest
+from pokie.http import DbGridRequest
 from flask import request
 
 
@@ -87,7 +87,7 @@ class MyView(PokieView):
             # self.svc is a RestServiceMixin object
 
             count, data = self.svc.list(
-                **dbgrid_request.dbgrid_parameters(
+                **req.dbgrid_parameters(
                     DEFAULT_LIST_SIZE,  # apply default LIMIT clause
                     [MyDbRecord.name, ]  # limit free text search to the "name" field
                 )
