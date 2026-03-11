@@ -6,22 +6,22 @@
 [![license](https://img.shields.io/pypi/l/pokie.svg)](https://git.oddbit.org/OddBit/pokie/src/branch/master/LICENSE)
 
 
-Pokie is an API-oriented modular web framework built on top of [Flask](https://github.com/pallets/flask/),
+Pokie is an REST web framework built on top of [Flask](https://github.com/pallets/flask/),
 [Rick](https://git.oddbit.org/OddBit/rick) and [Rick-db](https://git.oddbit.org/OddBit/rick_db) libraries, following three-layer and clean architecture
 design principles.
 
-It features a object-oriented design, borrowing from common patterns found in other languages, such as
+It features an object-oriented design, borrowing from common patterns found in other languages, such as
 dependency injection, service location, factories and object composition. It also offers the following functionality:
 
 - Modular design;
 - Dependency registry and factories;
 - Configuration via environment variables or JSON files;
 - CLI command support;
+- Events and signal handlers;
+- Caching (Redis, in-memory, dummy);
+- Jobs with per-job intervals, retry/backoff, and timeouts;
 - CORS and rate limiting via built-in factories;
 - OpenAPI 3.0 spec generation from registered routes;
-- Jobs with per-job intervals, retry/backoff, and timeouts;
-- Events and signal handlers;
-- Caching (Redis, in-memory);
 - Fixtures;
 - Unit testing support with pytest;
 - Code generation;
