@@ -5,7 +5,7 @@ from rick.form import RequestRecord, field
 from rick.mixin import Translator
 import humps
 
-from pokie.constants import DEFAULT_LIST_SIZE
+from pokie.constants import DEFAULT_LIST_SIZE, MAX_LIST_SIZE
 
 
 class DbGridRequest(RequestRecord):
@@ -134,6 +134,12 @@ class DbGridRequest(RequestRecord):
                 return False
             if limit < 1:
                 self.add_error(self.FIELD_LIMIT, t.t("invalid limit value"))
+                return False
+            if limit > MAX_LIST_SIZE:
+                self.add_error(
+                    self.FIELD_LIMIT,
+                    t.t("limit exceeds maximum of {}").format(MAX_LIST_SIZE),
+                )
                 return False
 
         self.fields[self.FIELD_LIMIT].value = limit

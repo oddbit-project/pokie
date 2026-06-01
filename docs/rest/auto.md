@@ -21,11 +21,16 @@ This mechanism enables the automatic creation of a [RestView](../http/rest.md) o
 a database object. It will automatically generate a *Request* object if none is specified, based on the existing database
 table referenced by the DTO Record. The generated View class can also extend either a custom base class or a set of mixins.
 
+> **Security:** Generated endpoints **require authentication by default** (`auth=True`); a [PokieAuthView](../http/rest.md)
+> is composed into the view, so anonymous requests receive `401`. Pass an `acl` list to require specific permissions, or
+> set `auth=False` to expose the endpoints publicly. Authentication requires a configured login manager (e.g. via
+> `FlaskLoginFactory`).
+
 ### Method signature
 
 *Auto.rest(app: object, slug: str, dto_record: object, request_class: RequestRecord = None, service: str = None,
         id_type: str = None, search_fields: list = None, allow_methods: list = None, base_cls: tuple = None,
-        mixins: tuple = None, prefix: str = "", camel_case: bool = False, \*\*kwargs)*
+        mixins: tuple = None, prefix: str = "", camel_case: bool = False, auth: bool = True, acl: list = None, \*\*kwargs)*
 
 | Parameter     | Type                                                                         | Description                                                                                  |
 |---------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
@@ -41,6 +46,8 @@ table referenced by the DTO Record. The generated View class can also extend eit
 | mixins        | tuple                                                                        | Optional tuple with additional mixins                                                        |
 | prefix        | str                                                                          | Optional route prefix (e.g. `"/api/v1"`)                                                    |
 | camel_case    | bool                                                                         | If True, field names and responses are camelCased                                            |
+| auth          | bool                                                                         | If True (default), endpoints require authentication (*PokieAuthView* is composed into the view); set `auth=False` for public access |
+| acl           | list                                                                         | Optional list of acl keys required to access the endpoints; only used when `auth` is True    |
 
 
 ### Usage example
@@ -90,7 +97,8 @@ def router(p: FlaskApplication):
               "customer",  # the base slug
               CustomerRecord,  # the DTO to use
               search_fields=[CustomerRecord.company_name, CustomerRecord.contact_name],  # fields to allow text search
-              id_type="string"  # type of id_record to use
+              id_type="string",  # type of id_record to use
+              auth=False  # public endpoints; omit (or auth=True) to require authentication
               )
 
 
@@ -150,7 +158,8 @@ class Module(BaseModule):
                   CustomerRecord,  # the DTO to use
                   # fields to allow text search
                   search_fields=[CustomerRecord.company_name, CustomerRecord.contact_name],
-                  id_type="string"  # type of id_record to use
+                  id_type="string",  # type of id_record to use
+                  auth=False  # public endpoints; omit (or auth=True) to require authentication
                   )
         (...)
 ```
@@ -166,7 +175,7 @@ traditional Flask route registration mechanisms.
 
 *Auto.view(app: object, table_name: str, schema: str = None, search_fields: List = None, camel_case: bool = False,
         allow_methods: list = None, base_cls: tuple = None, mixins: tuple = None, slug: str = None,
-        id_type: str = None, prefix: str = "", \*\*kwargs) -> PokieView:*
+        id_type: str = None, prefix: str = "", auth: bool = True, acl: list = None, \*\*kwargs) -> PokieView:*
 
 
 | Parameter     | Type  | Description                                                                                  |
@@ -182,6 +191,8 @@ traditional Flask route registration mechanisms.
 | slug          | str   | Optional route slug; if provided, routes are registered automatically via AutoRouter         |
 | id_type       | str   | Optional id type for the route parameter (e.g. `"string"`, `"int"`)                         |
 | prefix        | str   | Optional route prefix (e.g. `"/api/v1"`)                                                    |
+| auth          | bool  | If True (default), endpoints require authentication (*PokieAuthView* is composed into the view); set `auth=False` for public access |
+| acl           | list  | Optional list of acl keys required to access the endpoints; only used when `auth` is True    |
 
 ### Usage example
 
@@ -206,7 +217,8 @@ class Config(EnvironmentConfig, PokieConfig):
 # to the actual web initialization routines, as it is done with modules
 def router(p: FlaskApplication):
     # Auto.view() will generate a view for the customers table
-    view = Auto.view(p.app, "customers", search_fields=["company_name", "contact_name"])
+    # auth=False exposes the endpoints publicly; omit it (or auth=True) to require authentication
+    view = Auto.view(p.app, "customers", search_fields=["company_name", "contact_name"], auth=False)
     # and AutoRouter.resouce() registers the following endpoints:
     # /customer                     HEAD,GET,OPTIONS
     # /customer/<string:id_record>  HEAD,GET,OPTIONS
@@ -262,7 +274,8 @@ class Module(BaseModule):
         app = parent.app
 
         # Auto.view() will generate a view for the customers table
-        view = Auto.view(app, "customers", search_fields=["company_name", "contact_name"])
+        # auth=False exposes the endpoints publicly; omit it (or auth=True) to require authentication
+        view = Auto.view(app, "customers", search_fields=["company_name", "contact_name"], auth=False)
         # and AutoRouter.resouce() registers the following endpoints:
         # /customer                     HEAD,GET,OPTIONS
         # /customer/<string:id_record>  HEAD,GET,OPTIONS

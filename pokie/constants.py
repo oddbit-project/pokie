@@ -1,5 +1,5 @@
 # Version
-POKIE_VERSION = ["1", "0", "0"]
+POKIE_VERSION = ["1", "1", "0"]
 
 
 def get_version():
@@ -55,6 +55,9 @@ CFG_AUTH_SECRET = "auth_secret"
 
 # default list size for DBGrid Operations
 DEFAULT_LIST_SIZE = 100
+
+# maximum list size for DBGrid Operations (upper bound for client-supplied limit)
+MAX_LIST_SIZE = 1000
 
 
 # unit testing constants

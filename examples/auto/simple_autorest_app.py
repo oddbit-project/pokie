@@ -40,7 +40,8 @@ def router(p: FlaskApplication):
               "customer",  # the base slug
               CustomerRecord,  # the DTO to use
               search_fields=[CustomerRecord.company_name, CustomerRecord.contact_name],  # fields to allow text search
-              id_type="string"  # type of id_record to use
+              id_type="string",  # type of id_record to use
+              auth=False  # public endpoints; default auth=True requires authentication
               )
 
 

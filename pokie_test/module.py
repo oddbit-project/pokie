@@ -144,7 +144,11 @@ class Module(BaseModule):
 
         # Auto Rest - category
         Auto.rest(
-            app, "catalog/category", CategoryRecord, search_fields=[CategoryRecord.name]
+            app,
+            "catalog/category",
+            CategoryRecord,
+            search_fields=[CategoryRecord.name],
+            auth=False,
         )
 
         # Auto Rest with custom RequestRecord class
@@ -154,6 +158,7 @@ class Module(BaseModule):
             ShipperRecord,
             ShipperRequest,
             search_fields=[ShipperRecord.name],
+            auth=False,
         )
 
         # Auto Rest with custom RequestRecord and custom service
@@ -168,6 +173,7 @@ class Module(BaseModule):
                 UsStatesRecord.abbr,
                 UsStatesRecord.region,
             ],
+            auth=False,
         )
 
         # Auto Rest with custom base Class
@@ -181,16 +187,25 @@ class Module(BaseModule):
                 TerritoriesRecord.id,
                 TerritoriesRecord.territory_description,
             ],
+            auth=False,
         )
 
         # Auto View - suppliers
-        view = Auto.view(app, "suppliers")
+        view = Auto.view(app, "suppliers", auth=False)
         AutoRouter.resource(app, "catalog/supplier", view)
 
         # Auto View - products
-        view = Auto.view(app, "products")
+        view = Auto.view(app, "products", auth=False)
         AutoRouter.resource(app, "catalog/product", view)
 
         # Auto View - tablespec
-        view = Auto.view(app, "tablespec_serial")
+        view = Auto.view(app, "tablespec_serial", auth=False)
         AutoRouter.resource(app, "tablespec", view)
+
+        # Auto Rest with default authentication (auth=True): endpoints require login
+        Auto.rest(
+            app,
+            "secure/category",
+            CategoryRecord,
+            search_fields=[CategoryRecord.name],
+        )

@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, development ]
+  pull_request:
+    branches: [ master ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14" ]
+
+    services:
+      postgres:
+        image: postgres:14-alpine
+        env:
+          POSTGRES_USER: pokieUser
+          POSTGRES_PASSWORD: somePassword
+          POSTGRES_DB: test_pokie
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U pokieUser -d test_pokie"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: bitnami/redis:latest
+        env:
+          REDIS_PASSWORD: myRedisPassword
+          REDIS_AOF_ENABLED: "no"
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli -a myRedisPassword ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      TEST_DB_HOST: localhost
+      TEST_DB_PORT: 5432
+      TEST_DB_NAME: test_pokie
+      TEST_DB_USER: pokieUser
+      TEST_DB_PASSWORD: somePassword
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: myRedisPassword
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install . -r requirements-dev.txt
+      - name: Run test suite (PostgreSQL + Redis)
+        run: python main.py pytest
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install lint tools
+        run: pip install flake8 black
+      - name: flake8 (real errors)
+        run: flake8 --select=E9,F63,F7,F82,F811 pokie
+      - name: black --check (advisory)
+        # Advisory only: the codebase predates full black conformance. Emit a
+        # clean notice on drift instead of a failing/red step annotation.
+        run: |
+          black --check --diff pokie \
+            || echo "::notice title=black::formatting drift detected (advisory; run 'black pokie')"
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Build sdist + wheel
+        run: |
+          pip install build
+          python -m build
+
+  security:
+    name: Vulnerability + SAST
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . pip-audit bandit
+      - name: pip-audit (dependency CVEs)
+        # editable self-install is skipped; dependencies are still audited and
+        # the step fails on any known CVE.
+        run: pip-audit --skip-editable --desc
+      - name: bandit (SAST, advisory)
+        # Advisory: the only medium finding is the test-only MemoryCache pickle.
+        # Emit a notice on findings instead of failing the pipeline.
+        run: |
+          bandit -r pokie -ll -x tests \
+            || echo "::notice title=bandit::SAST findings detected (advisory)"
+
+  ci-success:
+    name: CI Success
+    runs-on: ubuntu-latest
+    needs: [ test, lint, build, security ]
+    if: always()
+    steps:
+      - name: Verify all jobs passed
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: |
+          echo "One or more required jobs failed."
+          exit 1
+      - name: Success
+        run: echo "All CI jobs passed."
