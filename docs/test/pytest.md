@@ -166,8 +166,8 @@ Example tox.ini:
 ```ini
 [tox]
 envlist =
-    py39
     py310
+    py311
 
 [testenv]
 deps = -rrequirements-dev.txt

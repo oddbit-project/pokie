@@ -21,3 +21,19 @@ class TestPokieAuthView:
             client = PokieClient(client)
             result = client.get("/nonexistent/route")
             assert result.code == HTTP_NOT_FOUND
+
+
+class TestAutoRestAuth:
+    def test_auth_true_denies_anonymous(self, pokie_app):
+        # Auto.rest(..., auth=True) (the default) requires authentication
+        with pokie_app.test_client() as client:
+            client = PokieClient(client)
+            result = client.get("/secure/category")
+            assert result.code == HTTP_NOAUTH
+
+    def test_auth_false_allows_anonymous(self, pokie_app):
+        # Auto.rest(..., auth=False) keeps endpoints public
+        with pokie_app.test_client() as client:
+            client = PokieClient(client)
+            result = client.get("/catalog/category")
+            assert result.code == HTTP_OK

@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.0] - 2026-06-01
+
+### Security
+- `Auto.rest()` / `Auto.view()` now require authentication by default (`auth=True`), composing `PokieAuthView` into the generated view; pass `auth=False` for public access and `acl=[...]` to require specific permissions
+- `CorsFactory` no longer enables cross-origin access by default: `CORS_ORIGINS` defaults to `""` (was `"*"`); set explicit origins to enable CORS
+- `DbGridRequest` now rejects `limit` values above `MAX_LIST_SIZE` (1000) to prevent unbounded result sets
+- `RedisFactory` defaults TLS to enabled when `REDIS_SSL` is unset, aligning with `PgSqlFactory`
+- `RateLimiterFactory` URL-encodes the Redis password in the storage URI
+- `RequestGenerator` validates field and foreign-key identifiers before interpolating them into generated source
+
+### Changed
+- **Breaking:** auto-generated REST endpoints are authenticated by default; existing callers that relied on public access must pass `auth=False`
+- **Breaking:** `CORS_ORIGINS` default changed from `"*"` to `""` (CORS disabled unless configured)
+- Updated dependencies to latest: `rick-db>=2.2.2`, `rick>=0.8.3`, `Werkzeug>=3.1.8`, `Flask-Login>=0.6.3`, `setuptools>=82.0.1`, `tabulate>=0.10.0`, `redis>=8.0.0`, `flask-cors>=6.0.2`, `flask-limiter>=4.1.1`
+- Reworked CI pipeline (`ci.yml`): test matrix (py3.10–3.14) with PostgreSQL + Redis service containers, plus lint, build, vulnerability (pip-audit) and SAST (bandit) jobs
+- SBOM workflow now generates CycloneDX + SPDX SBOMs, scans with Grype, signs with Cosign, and uploads to Dependency-Track and the GitHub release
+- Dropped Python 3.8/3.9 from package classifiers (already required `>=3.10`)
+
 ## [1.0.0] - 2026-03-10
 
 ### Added

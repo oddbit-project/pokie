@@ -65,6 +65,7 @@ class TestCorsFactory:
             assert "Access-Control-Allow-Methods" in resp.headers
 
     def test_cors_defaults(self):
+        # with no origins configured, CORS is disabled (no cross-origin access)
         cfg = Container({})
         di = Di()
         app = Flask(__name__)
@@ -80,4 +81,4 @@ class TestCorsFactory:
         with app.test_client() as client:
             resp = client.get("/test", headers={"Origin": "http://example.com"})
             assert resp.status_code == 200
-            assert "Access-Control-Allow-Origin" in resp.headers
+            assert "Access-Control-Allow-Origin" not in resp.headers

@@ -11,9 +11,11 @@ from pokie.constants import DI_SERVICES, HTTP_BADREQ, HTTP_INTERNAL_ERROR
 
 class RestView(PokieView):
     """
-    WARNING: RestView extends PokieView, which is unauthenticated by default.
-    All auto-generated endpoints are publicly accessible unless you subclass
-    PokieAuthView instead, or provide a PokieAuthView-based class.
+    Note: RestView extends PokieView, which is unauthenticated. When generating
+    endpoints via Auto.rest()/Auto.view(), authentication is enforced by default
+    (auth=True composes PokieAuthView into the view); pass auth=False for public
+    access. If you instantiate RestView directly, it remains unauthenticated unless
+    you also extend PokieAuthView.
     """
 
     record_class = None

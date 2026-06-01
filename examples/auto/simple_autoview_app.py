@@ -21,7 +21,7 @@ def router(p: FlaskApplication):
     # /customer/<string:id_record>  PATCH,PUT,OPTIONS
     # /customer/<string:id_record>  DELETE,OPTIONS
     Auto.view(p.app, "customers", search_fields=["company_name", "contact_name"],
-              slug="customer", id_type="string")
+              slug="customer", id_type="string", auth=False)
 
 
 def build_pokie():

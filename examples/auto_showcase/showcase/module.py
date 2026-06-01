@@ -20,11 +20,14 @@ class Module(BaseModule):
         app = parent.app
 
         # 1. Basic Auto.rest() — auto-generated RequestRecord, search
+        # Note: auth=False makes these endpoints public; the default (auth=True)
+        # requires authentication via PokieAuthView.
         Auto.rest(
             app,
             "article",
             ArticleRecord,
             search_fields=[ArticleRecord.title, ArticleRecord.author_name],
+            auth=False,
         )
 
         # 2. Custom RequestRecord
@@ -34,6 +37,7 @@ class Module(BaseModule):
             ShipperRecord,
             ShipperRequest,
             search_fields=[ShipperRecord.company_name],
+            auth=False,
         )
 
         # 3. Custom service
@@ -43,6 +47,7 @@ class Module(BaseModule):
             ProductRecord,
             service=SVC_PRODUCT,
             search_fields=[ProductRecord.product_name],
+            auth=False,
         )
 
         # 4. Read-only with custom base class + string ID
@@ -53,6 +58,7 @@ class Module(BaseModule):
             base_cls=ReadOnlyView,
             id_type="string",
             search_fields=[CustomerRecord.company_name, CustomerRecord.contact_name],
+            auth=False,
         )
 
         # 5. Prefixed API versioning
@@ -62,6 +68,7 @@ class Module(BaseModule):
             ArticleRecord,
             search_fields=[ArticleRecord.title],
             prefix="/api/v1",
+            auth=False,
         )
 
         # 6. CamelCase responses
@@ -71,6 +78,7 @@ class Module(BaseModule):
             ArticleRecord,
             search_fields=[ArticleRecord.title, ArticleRecord.author_name],
             camel_case=True,
+            auth=False,
         )
 
         # 7. Mixin composition (audit logging)
@@ -80,6 +88,7 @@ class Module(BaseModule):
             ArticleRecord,
             search_fields=[ArticleRecord.title],
             mixins=(AuditMixin,),
+            auth=False,
         )
 
         # 8. List limit via kwargs
@@ -89,14 +98,15 @@ class Module(BaseModule):
             ArticleRecord,
             search_fields=[ArticleRecord.title],
             list_limit=10,
+            auth=False,
         )
 
         # 9. Auto.view() from DB table + manual registration
-        view = Auto.view(app, "suppliers")
+        view = Auto.view(app, "suppliers", auth=False)
         AutoRouter.resource(app, "supplier", view)
 
         # 10. Auto.view() with slug (auto-registration)
-        Auto.view(app, "categories", slug="category")
+        Auto.view(app, "categories", slug="category", auth=False)
 
         # 11. Controller-style routing
         AutoRouter.controller(

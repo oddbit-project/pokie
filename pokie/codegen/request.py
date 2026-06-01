@@ -1,7 +1,17 @@
+import re
+
 from rick.util.string import snake_to_camel, snake_to_pascal
 from rick.form import RequestRecord, field
 from pokie.codegen.spec import FieldSpec, TableSpec
 from pokie.codegen.textfile import TextBuffer
+
+# valid SQL/Python identifier pattern for codegen interpolation
+_IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+
+def _check_identifier(value: str):
+    if value is None or not _IDENTIFIER_RE.match(str(value)):
+        raise ValueError("RequestGenerator: invalid identifier '{}'".format(value))
 
 
 class RequestGenerator:
@@ -26,6 +36,7 @@ class RequestGenerator:
         """
         validators = []
         if not f.pk:
+            _check_identifier(f.name)
             name = f.name if camelcase is False else snake_to_camel(f.name)
             target = f.name
 
@@ -52,6 +63,9 @@ class RequestGenerator:
 
         # add foreign key lookup
         if f.fk:
+            _check_identifier(f.fk_schema)
+            _check_identifier(f.fk_table)
+            _check_identifier(f.fk_column)
             validators.append(
                 "pk:{}.{},{}".format(f.fk_schema, f.fk_table, f.fk_column)
             )

@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -41,7 +42,9 @@ def RateLimiterFactory(_di: Di):
         password = cfg.get(CFG_REDIS_PASSWORD, "")
         db = int(cfg.get(CFG_REDIS_DB, 0))
         if password:
-            storage_uri = "redis://:{}@{}:{}/{}".format(password, host, port, db)
+            storage_uri = "redis://:{}@{}:{}/{}".format(
+                quote(password, safe=""), host, port, db
+            )
         else:
             storage_uri = "redis://{}:{}/{}".format(host, port, db)
     else:

@@ -20,7 +20,10 @@ def CorsFactory(_di: Di):
     cfg = _di.get(DI_CONFIG)
     app = _di.get(DI_FLASK)
 
-    origins = cfg.get(CFG_CORS_ORIGINS, "*")
+    origins = cfg.get(CFG_CORS_ORIGINS, "")
+    if not origins:
+        # no origins configured; do not enable cross-origin access
+        return
     methods_str = cfg.get(CFG_CORS_METHODS, "GET,POST,PUT,PATCH,DELETE,OPTIONS")
     methods = [m.strip() for m in methods_str.split(",")]
     allow_headers_str = cfg.get(CFG_CORS_ALLOW_HEADERS, "Content-Type,Authorization")

@@ -10,7 +10,7 @@ import pokie.codegen.pg
 from pokie.codegen import RequestGenerator
 from pokie.codegen.pg import PgTableSpec
 from pokie.constants import DI_DB
-from pokie.http import PokieView, AutoRouter
+from pokie.http import PokieView, PokieAuthView, AutoRouter
 
 from pokie.rest import RestView
 
@@ -30,6 +30,8 @@ class Auto:
         mixins: tuple = None,
         prefix: str = "",
         camel_case: bool = False,
+        auth: bool = True,
+        acl: list = None,
         **kwargs
     ):
         """
@@ -57,6 +59,10 @@ class Auto:
         :param mixins: optional list of mixins to include
         :param prefix: optional route prefix (e.g. "/api/v1")
         :param camel_case: if True, field names and responses are camelCased
+        :param auth: if True (default), generated endpoints require authentication
+            (PokieAuthView is composed into the view); set auth=False for public access
+        :param acl: optional list of acl keys required to access the endpoints;
+            only used when auth is True
         :param kwargs: optional extra parameters
         :return:
         """
@@ -71,6 +77,8 @@ class Auto:
             base_cls,
             mixins,
             camel_case=camel_case,
+            auth=auth,
+            acl=acl,
             **kwargs
         )
         AutoRouter.resource(app, slug, view, id_type=id_type, prefix=prefix)
@@ -89,6 +97,8 @@ class Auto:
         slug: str = None,
         id_type: str = None,
         prefix: str = "",
+        auth: bool = True,
+        acl: list = None,
         **kwargs
     ) -> PokieView:
         """
@@ -108,6 +118,10 @@ class Auto:
         :param slug: optional route slug; if provided, routes are registered automatically
         :param id_type: optional id type for the route parameter (e.g. "string", "int")
         :param prefix: optional route prefix (e.g. "/api/v1")
+        :param auth: if True (default), generated endpoints require authentication
+            (PokieAuthView is composed into the view); set auth=False for public access
+        :param acl: optional list of acl keys required to access the endpoints;
+            only used when auth is True
         :param kwargs: optional extra parameters
         :return: generated View class
         """
@@ -160,6 +174,7 @@ class Auto:
         if allow_methods:
             cls_attrs["allow_methods"] = allow_methods
 
+        extends, cls_attrs = Auto._compose_auth(extends, cls_attrs, auth, acl)
         cls = type("AutoView_{}".format(secrets.token_hex(8)), extends, cls_attrs)
         cls = Auto._patch_view_class(cls, mixins)
 
@@ -179,6 +194,8 @@ class Auto:
         base_cls: tuple = None,
         mixins: tuple = None,
         camel_case: bool = False,
+        auth: bool = True,
+        acl: list = None,
         **kwargs
     ):
         if not base_cls:
@@ -220,6 +237,7 @@ class Auto:
             cls_attrs["allow_methods"] = allow_methods
 
         cls_attrs = {**cls_attrs, **kwargs}
+        extends, cls_attrs = Auto._compose_auth(extends, cls_attrs, auth, acl)
         view_class = type(
             "AutoRestClass_{}".format(secrets.token_hex(8)), extends, cls_attrs
         )
@@ -243,6 +261,29 @@ class Auto:
                 spec = pg_spec.generate(table, schema)
                 return RequestGenerator().generate_class(spec, camelcase=camel_case)
         return None
+
+    @staticmethod
+    def _compose_auth(extends: tuple, cls_attrs: dict, auth: bool, acl: list):
+        """
+        Enforce authentication on a generated view when auth is True.
+
+        If none of the base classes already extend PokieAuthView, it is added so
+        the generated endpoints require authentication. When acl is provided, it is
+        set as the view's acl list.
+
+        :param extends: tuple of base classes for the generated view
+        :param cls_attrs: class attribute dict for the generated view
+        :param auth: if True, ensure authentication is enforced
+        :param acl: optional list of acl keys required to access the endpoints
+        :return: (extends, cls_attrs) tuple
+        """
+        if not auth:
+            return extends, cls_attrs
+        if not any(issubclass(c, PokieAuthView) for c in extends):
+            extends = extends + (PokieAuthView,)
+        if acl is not None:
+            cls_attrs["acl"] = acl
+        return extends, cls_attrs
 
     @staticmethod
     def _patch_view_class(view_class, mixins):

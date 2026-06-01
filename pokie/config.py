@@ -46,7 +46,7 @@ class PokieConfig:
     TEST_SKIP_FIXTURES = False  # if true, fixtures are not run when recreating db
 
     # CORS Configuration
-    CORS_ORIGINS = "*"
+    CORS_ORIGINS = ""  # empty = no cross-origin access; set explicit origins to enable
     CORS_METHODS = "GET,POST,PUT,PATCH,DELETE,OPTIONS"
     CORS_ALLOW_HEADERS = "Content-Type,Authorization"
     CORS_EXPOSE_HEADERS = ""
