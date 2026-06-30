@@ -24,6 +24,7 @@ class JobState:
     consecutive_failures: int = 0
     total_failures: int = 0
     backoff_until: float = 0.0  # monotonic timestamp; skip until this time
+    pending_thread: object = None  # in-flight worker from a timed-out run, if any
 
 
 class JobRunner:
@@ -47,6 +48,13 @@ class JobRunner:
             self.states.append(state)
 
     def _should_run(self, state: JobState, now: float) -> bool:
+        # skip if a prior timed-out invocation is still running (cannot be killed
+        # in Python); avoids concurrent re-entry and thread pile-up
+        if state.pending_thread is not None:
+            if state.pending_thread.is_alive():
+                return False
+            state.pending_thread = None
+
         # check interval
         if state.interval > 0 and now < state.last_run + state.interval:
             return False
@@ -72,14 +80,17 @@ class JobRunner:
                 result["error"] = e
 
         thread = threading.Thread(target=target, daemon=True)
+        state.pending_thread = thread
         thread.start()
         thread.join(timeout=state.timeout)
 
         if thread.is_alive():
+            # leave pending_thread set so _should_run skips this job until it finishes
             raise TimeoutError(
                 "Job '{}' timed out after {}s".format(state.name, state.timeout)
             )
 
+        state.pending_thread = None
         if result["error"] is not None:
             raise result["error"]
 

@@ -260,9 +260,11 @@ class FlaskApplication:
 
         # run pre-cli hooks (once, on first cli_runner invocation)
         if not self._cli_initialized:
-            for fn in self.pre_cli_hooks:
-                fn(self)
-            self._cli_initialized = True
+            with self.lock:
+                if not self._cli_initialized:
+                    for fn in self.pre_cli_hooks:
+                        fn(self)
+                    self._cli_initialized = True
 
         # either console or inline commands
         if args is None:
