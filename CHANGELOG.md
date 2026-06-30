@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.1] - 2026-06-30
+
+### Fixed
+- `JobRunner` no longer re-enters a job whose previous run timed out while its (un-killable) worker thread is still running; at most one in-flight worker per job, preventing concurrent execution against the shared connection pool and thread pile-up
+- `DbPrimaryKey` validator resolves the DI container from the active application context, falling back to the module global only outside a request context; concurrent requests across multiple `FlaskApplication` instances no longer clobber a shared global
+- `FlaskApplication.cli_runner` guards first-run hook initialization with the application lock (double-checked)
+- `MemoryCache` operations are protected with an `RLock`, fixing `KeyError`/TOCTOU races on concurrent access and expiry
+- `SignalManager` locks handler registration and uses copy-on-write handler lists so signal dispatch iterates a stable snapshot
+
+### Changed
+- Updated `rick` to `>=0.8.5` for thread-safe `Di`/`MapLoader` resolution (single-lock cold start, build-once under concurrent first access)
+
 ## [1.1.0] - 2026-06-01
 
 ### Security
