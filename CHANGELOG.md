@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+- Declare the PostgreSQL driver: `rick-db[pgsql-binary]` rather than bare `rick-db`. `pokie.contrib.base.cli.db` imports `rick_db.backend.pg` unconditionally and rick-db keeps psycopg2 behind an extra, so nothing installed it — `pip install pokie` then any CLI command (`list` included, since it loads every registered command class) raised `ModuleNotFoundError: No module named 'psycopg2'`. This is also why the CI test matrix has failed on every push since 1.1.0
+
 ## [1.1.1] - 2026-06-30
 
 ### Fixed
