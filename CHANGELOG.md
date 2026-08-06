@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Fixed
+- Declare the PostgreSQL driver: `rick-db[pgsql-binary]` rather than bare `rick-db`. `pokie.contrib.base.cli.db` imports `rick_db.backend.pg` unconditionally and rick-db keeps psycopg2 behind an extra, so nothing installed it — `pip install pokie` then any CLI command (`list` included, since it loads every registered command class) raised `ModuleNotFoundError: No module named 'psycopg2'`. This is also why the CI test matrix has failed on every push since 1.1.0
 - CLI command resolution follows module load order, so a command declared by an application module now overrides one declared by an earlier module — the same precedence services already use. `cli_runner()` dispatched to the **first** module declaring a command while `list`/`help` described the **last**, so an overridden command was documented by one class and executed by another; and since `system_modules` (`pokie.contrib.base`) always load first, its commands could not be overridden at all
 
 ### Added

@@ -1,4 +1,4 @@
-rick-db>=2.2.2
+rick-db[pgsql-binary]>=2.2.2
 rick>=0.8.5
 rick-mailer>=1.1.1
 Flask>=3.1.3
