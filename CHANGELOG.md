@@ -8,6 +8,9 @@
 ### Added
 - `FlaskApplication.get_command_map()` and `FlaskApplication.resolve_command()` — the single source of truth for command-name to handler resolution. `BaseCommand.get_cmd_map()` delegates to it, so listing, help and execution cannot disagree
 
+### Changed
+- The test suite provisions its own PostgreSQL and Redis with testcontainers, so `python main.py pytest` needs only Docker — no local PostgreSQL and no credentials in `env.sh`. Set `POKIE_TEST_CONTAINERS=0` to use services you provide instead (`TEST_DB_*` / `REDIS_*`), which is what CI and tox do since both already start their own. `testcontainers[postgres,redis]` is a dev dependency; without it installed the suite falls back to the environment as before
+
 ## [1.1.1] - 2026-06-30
 
 ### Fixed

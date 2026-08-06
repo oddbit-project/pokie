@@ -54,6 +54,9 @@ jobs:
       REDIS_HOST: localhost
       REDIS_PORT: 6379
       REDIS_PASSWORD: myRedisPassword
+      # the `services:` block above already provides both; the suite otherwise
+      # starts its own containers for local runs (see tests/conftest.py)
+      POKIE_TEST_CONTAINERS: "0"
 
     steps:
       - uses: actions/checkout@v6
