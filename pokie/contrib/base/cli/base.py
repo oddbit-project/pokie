@@ -16,33 +16,30 @@ class BaseCommand(CliCommand):
         return self.get_di().get(DI_APP).modules
 
     def get_cmd_map(self) -> dict:
-        result = {}
-        for _, module in self.get_modules().items():
-            for cmd, cmd_class in module.cmd.items():
-                result[cmd] = cmd_class
-        return result
+        # delegated so listing, help and execution can never disagree on which
+        # class handles a command that more than one module declares
+        return self.get_di().get(DI_APP).get_command_map()
 
     def run(self, args) -> bool:
         di = self.get_di()
         color = AnsiColor()
         self.tty.write("Available commands:\n")
-        for _, module in di.get(DI_APP).modules.items():
-            for cmd, cmd_path in module.cmd.items():
-                cls = load_class(cmd_path)
-                if not cls:
-                    raise RuntimeError(
-                        "Error: class '{}' not found while listing available CLI commands".format(
-                            cmd_path
-                        )
+        for cmd, cmd_path in self.get_cmd_map().items():
+            cls = load_class(cmd_path)
+            if not cls:
+                raise RuntimeError(
+                    "Error: class '{}' not found while listing available CLI commands".format(
+                        cmd_path
                     )
-                if not issubclass(cls, CliCommand):
-                    raise RuntimeError(
-                        "Error: class '{}' does not extend CliCommand".format(cmd_path)
-                    )
-                obj = cls(di)
-                self.tty.write(
-                    "{} \t {}".format(color.green(cmd), color.white(obj.description))
                 )
+            if not issubclass(cls, CliCommand):
+                raise RuntimeError(
+                    "Error: class '{}' does not extend CliCommand".format(cmd_path)
+                )
+            obj = cls(di)
+            self.tty.write(
+                "{} \t {}".format(color.green(cmd), color.white(obj.description))
+            )
 
         return True
 
