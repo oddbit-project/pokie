@@ -21,8 +21,18 @@ python main.py pytest tests/core/test_job_runner.py -v
 python main.py pytest -k "test_cors"
 ```
 
-Tests require a running PostgreSQL instance. The test plugin automatically creates/drops the
-`pokie_test` database. Configuration comes from environment variables (see `env.sh`).
+Tests require **Docker**, nothing else: `tests/conftest.py` starts PostgreSQL and Redis with
+testcontainers for the session, and the test plugin creates/drops the `pokie_test` database
+inside it. No local PostgreSQL, no credentials in `env.sh`.
+
+To point the suite at services you provide instead, set `POKIE_TEST_CONTAINERS=0` and supply
+`TEST_DB_*` / `REDIS_*` — which is what CI (`.github/workflows/ci.yml`) and tox (`tox.ini`,
+via tox-docker) do, since both already start their own. The credentials are identical either
+way, so no test can depend on which mechanism provisioned it.
+
+Note `pokie_app` is an **autouse** fixture, so every test builds the application and gets a
+freshly migrated database; a broken database configuration fails the whole suite, not just the
+database-backed part of it.
 
 Do NOT run tests with bare `pytest` - always use `python main.py pytest` which loads the
 Pokie test plugin that provides fixtures (`pokie_app`, `pokie_di`, `pokie_db`,
@@ -70,6 +80,12 @@ deserialization via `RequestRecord`, and `JsonResponse` for consistent API respo
 
 ### CLI Commands
 Extend `CliCommand`. Register in module's `cmd` dict as `"command:name": "path.to.Class"`.
+
+Command names resolve in **module load order, last one wins** — the same precedence as
+services — so an application module can override a command declared by an earlier module,
+including the `pokie.contrib.base` commands (system modules always load first). Resolution
+goes through `FlaskApplication.get_command_map()` / `resolve_command()`; use those rather
+than walking `modules[*].cmd` yourself, or listing and execution will disagree.
 
 ### Tests
 - Test classes: `class TestXxx:` with `def test_xxx(self, fixture):` methods

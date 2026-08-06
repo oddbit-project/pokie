@@ -4,6 +4,13 @@
 
 ### Fixed
 - Declare the PostgreSQL driver: `rick-db[pgsql-binary]` rather than bare `rick-db`. `pokie.contrib.base.cli.db` imports `rick_db.backend.pg` unconditionally and rick-db keeps psycopg2 behind an extra, so nothing installed it — `pip install pokie` then any CLI command (`list` included, since it loads every registered command class) raised `ModuleNotFoundError: No module named 'psycopg2'`. This is also why the CI test matrix has failed on every push since 1.1.0
+- CLI command resolution follows module load order, so a command declared by an application module now overrides one declared by an earlier module — the same precedence services already use. `cli_runner()` dispatched to the **first** module declaring a command while `list`/`help` described the **last**, so an overridden command was documented by one class and executed by another; and since `system_modules` (`pokie.contrib.base`) always load first, its commands could not be overridden at all
+
+### Added
+- `FlaskApplication.get_command_map()` and `FlaskApplication.resolve_command()` — the single source of truth for command-name to handler resolution. `BaseCommand.get_cmd_map()` delegates to it, so listing, help and execution cannot disagree
+
+### Changed
+- The test suite provisions its own PostgreSQL and Redis with testcontainers, so `python main.py pytest` needs only Docker — no local PostgreSQL and no credentials in `env.sh`. Set `POKIE_TEST_CONTAINERS=0` to use services you provide instead (`TEST_DB_*` / `REDIS_*`), which is what CI and tox do since both already start their own. `testcontainers[postgres,redis]` is a dev dependency; without it installed the suite falls back to the environment as before
 
 ## [1.1.1] - 2026-06-30
 
