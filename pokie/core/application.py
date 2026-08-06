@@ -2,7 +2,7 @@ import os
 import sys
 import threading
 import time
-from typing import List
+from typing import List, Optional
 
 from flask import Flask
 from rick.base import Di, Container, MapLoader
@@ -260,9 +260,11 @@ class FlaskApplication:
 
         # run pre-cli hooks (once, on first cli_runner invocation)
         if not self._cli_initialized:
-            for fn in self.pre_cli_hooks:
-                fn(self)
-            self._cli_initialized = True
+            with self.lock:
+                if not self._cli_initialized:
+                    for fn in self.pre_cli_hooks:
+                        fn(self)
+                    self._cli_initialized = True
 
         # either console or inline commands
         if args is None:
@@ -275,36 +277,61 @@ class FlaskApplication:
         parser = ArgParser(**kwargs)
 
         # lookup handler
-        for _, module in self.modules.items():
-            if command in module.cmd.keys():
-                handler = load_class(module.cmd[command], raise_exception=True)
+        handler_path = self.resolve_command(command)
+        if handler_path is None:
+            # command not found
+            tty.error("error executing '{}': command not found".format(command))
+            return self.CLI_CMD_NOT_FOUND
 
-                if not issubclass(handler, CliCommand):
-                    raise RuntimeError(
-                        "cli(): command handler does not extend CliCommand"
-                    )
+        handler = load_class(handler_path, raise_exception=True)
 
-                handler = handler(self.di, writer=tty)  # type: CliCommand
-                if not handler.skipargs:  # skipargs controls usage of argparser
-                    handler.arguments(parser)
-                    args = parser.parse_args(args)
-                    if parser.failed:
-                        # invalid/insufficient args
-                        tty.error(parser.error_message)
-                        parser.print_help(tty.stderr)
-                        return self.CLI_CMD_FAILED
-                else:
-                    # skipargs is true, all argparsing is ignored
-                    # this allow for custom cli arg handling
-                    args = None
+        if not issubclass(handler, CliCommand):
+            raise RuntimeError("cli(): command handler does not extend CliCommand")
 
-                if handler.run(args):
-                    return self.CLI_CMD_SUCCESS
+        handler = handler(self.di, writer=tty)  # type: CliCommand
+        if not handler.skipargs:  # skipargs controls usage of argparser
+            handler.arguments(parser)
+            args = parser.parse_args(args)
+            if parser.failed:
+                # invalid/insufficient args
+                tty.error(parser.error_message)
+                parser.print_help(tty.stderr)
                 return self.CLI_CMD_FAILED
+        else:
+            # skipargs is true, all argparsing is ignored
+            # this allow for custom cli arg handling
+            args = None
 
-        # command not found
-        tty.error("error executing '{}': command not found".format(command))
-        return self.CLI_CMD_NOT_FOUND
+        if handler.run(args):
+            return self.CLI_CMD_SUCCESS
+        return self.CLI_CMD_FAILED
+
+    def get_command_map(self) -> dict:
+        """
+        Map of cli command name -> handler class path, across every module
+
+        Modules are traversed in load order and later entries REPLACE earlier ones,
+        so an application module can override a command declared by a system module
+        (system modules are always loaded first, see build()). That is the same
+        precedence services use, and the mechanism intended for customization.
+
+        This is also the map 'list' and 'help' have always been built from; before,
+        cli_runner() resolved a command by taking the FIRST module declaring it, so
+        an overridden command was described by one class and executed by another.
+        :return: dict
+        """
+        result = {}
+        for _, module in self.modules.items():
+            result.update(module.cmd)
+        return result
+
+    def resolve_command(self, command: str) -> Optional[str]:
+        """
+        Resolve a cli command name to its handler class path
+        :param command: command name
+        :return: class path, or None if the command does not exist
+        """
+        return self.get_command_map().get(command, None)
 
     def cli(self, **kwargs):
         """

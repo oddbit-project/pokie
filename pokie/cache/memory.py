@@ -1,4 +1,5 @@
 import pickle
+import threading
 import time
 
 from rick.base import Di
@@ -19,6 +20,7 @@ class MemoryCache(CacheInterface, Injectable):
         self.cache = {}
         self.expiry = {}
         self.prefix = ""
+        self._lock = threading.RLock()
 
     def set_prefix(self, prefix):
         self.prefix = prefix if prefix else ""
@@ -29,38 +31,43 @@ class MemoryCache(CacheInterface, Injectable):
     def _is_expired(self, key):
         if key in self.expiry:
             if time.monotonic() >= self.expiry[key]:
-                del self.cache[key]
+                self.cache.pop(key, None)
                 del self.expiry[key]
                 return True
         return False
 
     def get(self, key):
         key = self._key(key)
-        if key not in self.cache or self._is_expired(key):
-            return None
-        return pickle.loads(self.cache.get(key))
+        with self._lock:
+            if key not in self.cache or self._is_expired(key):
+                return None
+            return pickle.loads(self.cache.get(key))
 
     def set(self, key, value, ttl=None):
         key = self._key(key)
-        self.cache[key] = pickle.dumps(value)
-        if ttl and ttl > 0:
-            self.expiry[key] = time.monotonic() + ttl
-        elif key in self.expiry:
-            del self.expiry[key]
+        with self._lock:
+            self.cache[key] = pickle.dumps(value)
+            if ttl and ttl > 0:
+                self.expiry[key] = time.monotonic() + ttl
+            elif key in self.expiry:
+                del self.expiry[key]
 
     def has(self, key):
         key = self._key(key)
-        if self._is_expired(key):
-            return False
-        return key in self.cache
+        with self._lock:
+            if self._is_expired(key):
+                return False
+            return key in self.cache
 
     def remove(self, key):
         key = self._key(key)
-        if key in self.cache:
-            del self.cache[key]
-        if key in self.expiry:
-            del self.expiry[key]
+        with self._lock:
+            if key in self.cache:
+                del self.cache[key]
+            if key in self.expiry:
+                del self.expiry[key]
 
     def purge(self):
-        self.cache = {}
-        self.expiry = {}
+        with self._lock:
+            self.cache = {}
+            self.expiry = {}
